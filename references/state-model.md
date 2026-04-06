@@ -20,6 +20,60 @@ Plan C standardizes where reusable project state belongs. All state follows a th
 - Promotion trigger: referenced 3 or more times within 7 days — extract core conclusion (max 3 lines) to HOT
 - Demotion trigger: 90 days unreferenced — move file to `memory/archive/` with date prefix `YYYY-MM-DD-`
 
+### WIKI Compilation View — `memory/wiki/`
+
+- Nature: read-only compiled index and synthesis of WARM files — a derived layer, not an independent temperature tier
+- Project isolation: `memory/wiki/<project>/index.md` partitioned by hot-cache `project` field; no `project` field = global index only
+- Auto-loaded: SessionStart loads the current project's `index.md` (skips silently if absent)
+- Auto-refreshed: PostToolUse silently updates `index.md` after any WARM file write (low risk — fully rebuildable)
+- Writer: only `memory-management` skill
+- Rollback: delete `memory/wiki/` to return to pre-wiki behavior with zero side effects
+- Does not participate in promotion/demotion lifecycle
+- Index fields are split into **precise** (score, status, next_action, mtime — extracted directly) and **best-effort** (summary — LLM inferred)
+- 健康度 mapping: score ≥80 → 良好, 60-79 → 需改进, <60 → 紧急, no score → —
+
+Capacity rules:
+
+| File | Limit |
+|------|-------|
+| Project-level `index.md` | 200 lines |
+| Global `index.md` | 300 lines |
+| Changelog (index bottom) | 5 entries (older entries move to `log.md` in Phase 2) |
+| `log.md` (Phase 2) | 500 lines; overflow archived to `log-archive/YYYY.md` |
+| Compiled pages (Phase 2) | 200 lines per page |
+
+WARM file frontmatter optional extension:
+
+```yaml
+project: acme-campaign-q2   # Optional. Tags file to a project for wiki isolation
+```
+
+If hot-cache declares an active project but the WARM file lacks a `project` field, `memory-management` auto-tags it during ingest.
+
+Compiled pages (Phase 2) use source hashing for freshness verification:
+
+```yaml
+---
+name: competitor-acme-corp
+type: entity           # entity | keyword | topic | comparison | synthesis
+project: acme-campaign-q2
+sources:
+  - path: memory/research/competitors/acme.md
+    hash: a1b2c3d4     # First 8 chars of SHA-256 of file content
+  - path: memory/audits/domain/acme-cite.md
+    hash: e5f6a7b8
+last_compiled: 2026-04-05
+---
+```
+
+Log timeline (Phase 2): `memory/wiki/log.md` — append-only record of ingest, query, and lint operations. 500-line limit; overflow archived annually to `memory/wiki/log-archive/YYYY.md`. Parseable: `grep "^## \[" memory/wiki/log.md | tail -5`
+
+Contradiction reconciliation (Phase 2): each resolution tagged `confidence: HIGH | MEDIUM | LOW`. LOW-confidence resolutions marked `[待确认]` in compiled pages; lint reminds until user confirms.
+
+Terminal architecture (Phase 3): when wiki compiled pages fully cover a WARM category, those WARM files become retirement candidates. Use `wiki-lint --retire-preview` to list candidates (dry-run only). After user confirmation, retired WARM files move to COLD (`memory/archive/YYYY-MM-DD-filename.md`). The terminal model is HOT / WIKI / COLD — wiki absorbs WARM's role as the primary knowledge layer, with COLD holding raw source files.
+
+> Full specification: [proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
+
 ### COLD — `memory/archive/`
 
 - No capacity limit
@@ -35,6 +89,35 @@ Plan C standardizes where reusable project state belongs. All state follows a th
 30 days unreferenced                   → HOT demotes to WARM
 90 days unreferenced                   → WARM demotes to COLD
 ```
+
+### Dual Truncation Rule
+
+HOT tier is limited to 80 lines AND 25KB (whichever triggers first). Truncation occurs at newline boundaries — no mid-line cuts. If exceeded, the FileChanged hook warns the user.
+
+### Staleness Protocol
+
+| Age | Treatment |
+|-----|-----------|
+| ≤7 days | Current — use without caveat |
+| 8–30 days | Point-in-time — verify against current state before asserting as fact |
+| 31–90 days | Stale — flag for review in SessionStart hook |
+| >90 days | Archive candidate — recommend archival via memory-management |
+
+## Memory File Frontmatter
+
+Every file in `memory/` (except `hot-cache.md`) SHOULD include YAML frontmatter:
+
+```yaml
+---
+name: campaign-q2-seo
+description: Q2 SEO campaign targeting 50 keywords across 3 verticals
+type: project
+---
+```
+
+Valid `type` values: `project`, `reference`, `decision`, `entity`
+
+The `description` field enables future semantic search across memory files.
 
 ## Durable State
 

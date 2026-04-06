@@ -14,6 +14,22 @@ Every `SKILL.md` should expose these sections near the top:
 - `Reference Materials`
 - `Next Best Skill`
 
+## Frontmatter Fields Reference
+
+| Field | Format | Required | Effect |
+|-------|--------|----------|--------|
+| `name` | kebab-case | Yes | Skill identifier, must match directory |
+| `description` | String ≤1024 chars | Yes | UI display + vector search discovery |
+| `version` | Semver | Yes | Skill version tracking |
+| `when_to_use` | String (underscores) | Recommended | Detailed trigger scenarios for auto-invocation |
+| `argument-hint` | String | Recommended | Shows argument format in command picker |
+| `allowed-tools` | String or array | Optional | Pre-approved tools (e.g., `WebFetch`) |
+| `license` | SPDX string | Optional | Default: Apache-2.0 |
+| `compatibility` | String | Optional | Platform compatibility statement |
+| `homepage` | URL | Optional | Skill homepage |
+
+Note: `when_to_use` uses underscores (not hyphens). This matches Claude Code's internal parser.
+
 ## Section Meanings
 
 ### When This Must Trigger
@@ -199,6 +215,32 @@ If yes, write a dated summary to the appropriate WARM path using filename `YYYY-
 - Source data references
 
 If any veto-level issue was found (CORE-EEAT T04/C01/R10 or CITE T03/T05/T09), also append a one-liner to `memory/hot-cache.md` without asking.
+
+## Optional Wiki Hints
+
+When a skill's output is relevant to wiki compiled pages, the handoff summary MAY include these additional fields. They are optional — skills that omit them still work correctly, as `memory-management` detects changes by scanning the `memory/` directory.
+
+```markdown
+### Handoff Summary
+
+- **Status**: DONE
+- **Wiki Entities**: [Acme Corp, Beta Inc]
+- **Wiki Keywords**: [best crm software, crm comparison 2026]
+```
+
+These hints help `memory-management` generate more precise compiled pages by providing explicit entity and keyword associations. They do not replace any existing handoff summary fields.
+
+## Response Presentation Norms
+
+When answering cross-skill queries or presenting wiki-derived information, follow these norms in addition to the Output Voice rules above:
+
+1. **Conclusion first** — lead with the finding or recommendation, not the file path or methodology
+2. **Natural language** — say "your homepage has 2 issues to fix" not "CORE-EEAT T04 and C01 veto items failed"
+3. **Collapsible technical detail** — place file paths, raw scores, and veto IDs in a details block so light users can skip them
+4. **End with next step** — every cross-skill answer should conclude with a suggested action
+5. **No internal jargon in user-facing output** — do not surface terms like "wiki", "index.md", "WARM tier", "ingest", or "frontmatter" to end users; use "your project records" or "previous analysis" instead
+
+These norms apply to all skills when their output incorporates data from multiple memory files or wiki pages.
 
 ## Write Paths by Category
 

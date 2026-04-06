@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "id": "seo-geo-claude-skills",
   "name": "seo-geo-claude-skills",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "displayName": "SEO & GEO Skills Library",
   "description": "20 SEO and GEO skills with prompt-based hook automation, three-tier memory, and protocol-layer gates for content quality, domain trust, entity truth, and campaign memory. Tool-agnostic, works with or without integrations.",
   "author": {
@@ -103,6 +103,11 @@
       "name": "write-content",
       "description": "Write SEO and GEO optimized content from a topic and target keyword",
       "path": "commands/write-content.md"
+    },
+    {
+      "name": "wiki-lint",
+      "description": "Run wiki health check — contradictions, orphan pages, stale claims, missing pages, source hash mismatches",
+      "path": "commands/wiki-lint.md"
     }
   ],
   "skills": [
@@ -142,6 +147,10 @@
     },
     {
       "event": "Stop",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "event": "FileChanged",
       "path": "hooks/hooks.json"
     }
   ],

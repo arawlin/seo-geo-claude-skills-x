@@ -27,9 +27,34 @@ Current versions of all skills. Agents can fetch this file from `https://raw.git
 | content-quality-auditor | cross-cutting | 6.0.0 | 2026-03-31 |
 | domain-authority-auditor | cross-cutting | 6.0.0 | 2026-03-31 |
 | entity-optimizer | cross-cutting | 6.0.0 | 2026-03-31 |
-| memory-management | cross-cutting | 6.0.0 | 2026-03-31 |
+| memory-management | cross-cutting | 7.0.0 | 2026-04-06 |
 
 ## Changelog
+
+### v7.0.0 — Wiki Knowledge Layer + Infrastructure Upgrades (2026-04-06)
+
+Major release: wiki compilation layer for cross-skill knowledge synthesis, plus infrastructure and community upgrades accumulated since v6.0.0. Inspired by [Karpathy's LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+
+**Wiki Knowledge Layer** ([full spec](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)):
+- **Structured index**: `memory/wiki/index.md` — auto-refreshed compiled index of all WARM files with precise fields (score, 健康度, status, next_action, mtime) and best-effort summaries
+- **Project isolation**: `memory/wiki/<project>/index.md` partitioned by hot-cache `project` field; single-project users unaffected
+- **Auto-refresh**: PostToolUse silently updates index after WARM writes; first init requires manual trigger (`refresh wiki index`)
+- **User-tier guidance**: SessionStart provides natural-language next-step guidance for light users; structured dashboards for power users
+- **Compiled pages** (Phase 2): entity/keyword/topic pages with SHA-256 source hash tracking and confidence-labeled contradiction reconciliation (HIGH/MEDIUM/LOW)
+- **`/seo:wiki-lint` command** (10th command): 7-check health scan — contradictions, orphan pages, stale claims, missing pages, cross-references, HOT drift, hash mismatches
+- **WARM retirement dry-run** (Phase 3): `wiki-lint --retire-preview` lists candidates; actual archival requires user confirmation
+- **Terminal architecture**: HOT/WIKI/COLD three-layer target via gradual WARM absorption
+- **Safe rollback**: `rm -rf memory/wiki/` reverts to pre-wiki behavior with zero side effects
+- **Response Presentation Norms**: conclusion-first, natural language, collapsible technical detail, no internal jargon in user-facing output
+- **Optional Wiki Hints**: handoff summary fields (Wiki Entities, Wiki Keywords) for cross-skill metadata
+
+**Infrastructure (from v6.1.0–v6.2.0)**:
+- `when_to_use` and `argument-hint` frontmatter fields added to all 20 skills
+- Hooks hardening: SessionStart matcher narrowed; Stop split into focused prompts; FileChanged monitors hot-cache overflow; UserPromptSubmit connector tier awareness
+- Memory system: dual truncation rule (80 lines + 25KB), staleness protocol, frontmatter standard
+- Community governance: SECURITY.md, CODE_OF_CONDUCT.md, CITATION.cff, PRIVACY.md, .github/FUNDING.yml, issue templates
+- README redesign: hero tagline, badges, 6-language switcher, collapsible skill finder
+- 5 localized READMEs: Chinese, Japanese, Korean, Spanish, Portuguese
 
 ### v6.0.0 — GStack Pattern Adoption + Full Polish (2026-03-31)
 
