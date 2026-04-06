@@ -65,4 +65,39 @@ Skills use `~~category` placeholders (e.g., `~~SEO tool`, `~~analytics`). Every 
 - Keep the shared contract and state-model language consistent with `references/skill-contract.md` and `references/state-model.md`
 - Branch naming: `feature/skill-name`, `fix/skill-name`, `docs/description`
 
+## CLI Tools
+
+System PATH in Claude Code sessions is minimal (`/usr/bin:/bin:/usr/sbin:/sbin`). Tools installed via Homebrew or npm are NOT on PATH by default. Always use absolute paths:
+
+- **gh** (GitHub CLI): `/opt/homebrew/bin/gh`
+- **clawhub** (ClawHub CLI): `/usr/local/bin/clawhub` (requires node at `/usr/local/bin/node`)
+- **node**: `/usr/local/bin/node`
+- **bun**: `~/.bun/bin/bun`
+
+Or prepend PATH at start of command: `export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"; gh ...`
+
+### ClawHub Publishing
+
+Skills are published **individually** (not as a single plugin package). Each `<category>/<slug>/SKILL.md` is a separate ClawHub skill.
+
+```bash
+# Auth check
+/usr/local/bin/clawhub whoami
+
+# Publish one skill
+/usr/local/bin/clawhub publish <category>/<slug> --version X.Y.Z --changelog "text" --tags latest --no-input
+
+# Publish all 20 skills (batch)
+export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
+for dir in research/keyword-research research/competitor-analysis research/serp-analysis research/content-gap-analysis build/seo-content-writer build/geo-content-optimizer build/meta-tags-optimizer build/schema-markup-generator optimize/on-page-seo-auditor optimize/technical-seo-checker optimize/internal-linking-optimizer optimize/content-refresher monitor/rank-tracker monitor/backlink-analyzer monitor/performance-reporter monitor/alert-manager cross-cutting/content-quality-auditor cross-cutting/domain-authority-auditor cross-cutting/entity-optimizer cross-cutting/memory-management; do
+  clawhub publish "$dir" --version X.Y.Z --changelog "text" --tags latest --no-input
+done
+```
+
+### GitHub Release
+
+```bash
+/opt/homebrew/bin/gh release create vX.Y.Z --title "title" --notes "body"
+```
+
 > [AGENTS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/AGENTS.md) · [README.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/README.md) · Install: [ClawHub](https://clawhub.ai/u/aaron-he-zhu) · [skills.sh](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)
