@@ -3,7 +3,7 @@
 **20スキル。9コマンド。検索ランキング + AI引用を同時に。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-7.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
 [English](../README.md) | [中文](README.zh.md) | **日本語** | [한국어](README.ko.md) | [Espanol](README.es.md) | [Portugues](README.pt.md)
@@ -17,7 +17,7 @@
 - **120項目の品質フレームワーク** — CORE-EEAT（80項目）+ CITE（40項目）、拒否権ゲート付き
 - **8言語、750以上のトリガー** — 日本語を含む多言語対応（フォーマル、カジュアル、タイプミス変形）
 - **依存関係ゼロ** — 純粋なMarkdownスキル、Python不要、仮想環境不要、APIキー不要
-- **ツール非依存** — 単独動作、またはMCP経由でAhrefs、Semrush、Google Search Consoleと連携
+- **ツール非依存** — 単独動作、またはMCP経由で14サーバー（Ahrefs、Semrush、Cloudflareなど）と連携
 - **6種類のインストール方法** — ClawHub、skills.sh、Claude Codeプラグイン、git submodule、fork、手動
 
 ## クイックスタート

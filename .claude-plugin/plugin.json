@@ -1,8 +1,8 @@
 {
   "id": "seo-geo-claude-skills",
   "name": "seo-geo-claude-skills",
-  "version": "7.0.0",
-  "description": "20 SEO and GEO skills with prompt-based hook automation, three-tier memory, and protocol-layer gates for content quality, domain trust, entity truth, and campaign memory. Tool-agnostic, works with or without integrations.",
+  "version": "8.0.0",
+  "description": "20 SEO and GEO skills plus 12 commands with prompt-based hook automation, three-tier memory, and protocol-layer gates for content quality, domain trust, entity truth, and campaign memory. Tool-agnostic, works with or without integrations.",
   "author": {
     "name": "Aaron He Zhu",
     "email": "hello@zhuhe.io",

@@ -3,7 +3,7 @@
 **20 个技能。9 个命令。搜索排名 + AI 引用，一次搞定。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-7.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
 [English](../README.md) | **中文** | [日本語](README.ja.md) | [한국어](README.ko.md) | [Espanol](README.es.md) | [Portugues](README.pt.md)
@@ -17,7 +17,7 @@
 - **120 项质量评分框架** — CORE-EEAT（80 项）+ CITE（40 项），带一票否决机制
 - **8 种语言，750+ 触发词** — 中英日韩西葡，含正式、口语和拼写变体
 - **零依赖** — 纯 Markdown 技能文件，无需 Python、虚拟环境或 API 密钥
-- **工具无关** — 独立运行，或通过 MCP 连接 Ahrefs、Semrush、Google Search Console
+- **工具无关** — 独立运行，或通过 14 个 MCP 服务器连接（Ahrefs、Semrush、Cloudflare 等）
 - **6 种安装方式** — ClawHub、skills.sh、Claude Code 插件、git submodule、fork、手动
 
 ## 快速开始

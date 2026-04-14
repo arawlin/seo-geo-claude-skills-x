@@ -3,7 +3,7 @@
 **20개 스킬. 9개 명령. 검색 순위 + AI 인용을 한번에.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-7.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
 [English](../README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | **한국어** | [Espanol](README.es.md) | [Portugues](README.pt.md)
@@ -17,7 +17,7 @@
 - **120개 항목 품질 프레임워크** — CORE-EEAT(80개) + CITE(40개), 거부권 게이트 포함
 - **8개 언어, 750+ 트리거** — 한국어 포함 다국어 지원 (공식, 일상, 오타 변형)
 - **의존성 제로** — 순수 Markdown 스킬, Python 불필요, 가상환경 불필요, API 키 불필요
-- **도구 무관** — 독립 실행 또는 MCP를 통해 Ahrefs, Semrush, Google Search Console 연동
+- **도구 무관** — 독립 실행 또는 MCP를 통해 14개 서버(Ahrefs, Semrush, Cloudflare 등) 연동
 - **6가지 설치 방법** — ClawHub, skills.sh, Claude Code 플러그인, git submodule, fork, 수동
 
 ## 빠른 시작

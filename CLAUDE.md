@@ -1,6 +1,6 @@
 # SEO & GEO Skills Library — Claude Code Context
 
-This plugin provides **20 skills and 10 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`.
+This plugin provides **20 skills and 12 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`.
 
 ## Skills by Phase
 
@@ -25,6 +25,8 @@ This plugin provides **20 skills and 10 commands** for Search Engine Optimizatio
 /seo:report          — Performance report
 /seo:setup-alert     — Monitoring alert configuration
 /seo:wiki-lint       — Wiki health check: contradictions, orphans, stale claims
+/seo:contract-lint   — Auditor Runbook drift detection, handoff schema check, jargon leak scan (v7.1.0+)
+/seo:p2-review       — Evaluate v7.1.0 deferred items against trigger conditions; tombstone review (2026-07-10)
 ```
 
 ## Quality Frameworks
@@ -54,13 +56,14 @@ If `memory-management` is active, prior audit results load automatically from th
 
 ## Tool Connector Pattern
 
-Skills use `~~category` placeholders (e.g., `~~SEO tool`, `~~analytics`). Every skill works without any integrations (Tier 1). MCP servers in `.mcp.json` add Ahrefs, SimilarWeb, HubSpot, Amplitude, Notion, Slack.
+Skills use `~~category` placeholders (e.g., `~~SEO tool`, `~~analytics`). Every skill works without any integrations (Tier 1). MCP servers in `.mcp.json` add Ahrefs, Semrush, SE Ranking, SISTRIX, SimilarWeb, Cloudflare, Vercel, HubSpot, Amplitude, Notion, Webflow, Sanity, Contentful, Slack.
 
 ## Contribution Rules
 
 - All `SKILL.md` files must include: `name`, `version`, `description`, `license`, `compatibility`, `metadata` frontmatter. Recommended: `when_to_use` (underscores, not hyphens) and `argument-hint`.
-- `plugin.json` must include: `schemaVersion`, `id`, and `description` on every command and skill entry
-- Keep `SKILL.md` body under 350 lines — move detail to `references/` subdirectories
+- `plugin.json` must include: `id` and `description` at top level. Commands auto-discovered from `./commands/` directory; skills listed as directory paths
+- Keep `SKILL.md` body under 350 lines — move detail to `references/` subdirectories. **Exception**: protocol-layer auditor skills (currently `content-quality-auditor` and `domain-authority-auditor`) may inline the authoritative Auditor Runbook §1-5 (~270 lines) directly in their SKILL.md body, bringing them to a ~750 line ceiling. Inlining is required because markdown-linked references do not execute reliably at skill activation. The inline block is delimited by `<!-- runbook-sync start: source_sha256=... block_sha256=... -->` markers and validated by `/seo:contract-lint`. See [references/decisions/2026-04-adr-001-inline-auditor-runbook.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/decisions/2026-04-adr-001-inline-auditor-runbook.md).
+- **New auditor-class skill authors**: start with [references/AUDITOR-AUTHORS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/AUDITOR-AUTHORS.md) — template skeleton, veto registration checklist, anti-patterns, and sync procedure.
 - After updating a skill: update all 5 tracking files — `VERSIONS.md`, `.claude-plugin/plugin.json`, `marketplace.json` (repo root), `README.md` skills table, and this `CLAUDE.md` category table
 - Keep the shared contract and state-model language consistent with `references/skill-contract.md` and `references/state-model.md`
 - Branch naming: `feature/skill-name`, `fix/skill-name`, `docs/description`

@@ -8,28 +8,81 @@ Current versions of all skills. Agents can fetch this file from `https://raw.git
 
 | Skill | Category | Version | Last Updated |
 |-------|----------|---------|--------------|
-| keyword-research | research | 6.0.0 | 2026-03-31 |
-| competitor-analysis | research | 6.0.0 | 2026-03-31 |
-| serp-analysis | research | 6.0.0 | 2026-03-31 |
-| content-gap-analysis | research | 6.0.0 | 2026-03-31 |
-| seo-content-writer | build | 6.0.0 | 2026-03-31 |
-| geo-content-optimizer | build | 6.0.0 | 2026-03-31 |
-| meta-tags-optimizer | build | 6.0.0 | 2026-03-31 |
-| schema-markup-generator | build | 6.0.0 | 2026-03-31 |
-| on-page-seo-auditor | optimize | 6.0.0 | 2026-03-31 |
-| technical-seo-checker | optimize | 6.0.0 | 2026-03-31 |
-| internal-linking-optimizer | optimize | 6.0.0 | 2026-03-31 |
-| content-refresher | optimize | 6.0.0 | 2026-03-31 |
-| rank-tracker | monitor | 6.0.0 | 2026-03-31 |
-| backlink-analyzer | monitor | 6.0.0 | 2026-03-31 |
-| performance-reporter | monitor | 6.0.0 | 2026-03-31 |
-| alert-manager | monitor | 6.0.0 | 2026-03-31 |
-| content-quality-auditor | cross-cutting | 6.0.0 | 2026-03-31 |
-| domain-authority-auditor | cross-cutting | 6.0.0 | 2026-03-31 |
-| entity-optimizer | cross-cutting | 6.0.0 | 2026-03-31 |
-| memory-management | cross-cutting | 7.0.0 | 2026-04-06 |
+| keyword-research | research | 8.0.0 | 2026-04-15 |
+| competitor-analysis | research | 8.0.0 | 2026-04-15 |
+| serp-analysis | research | 8.0.0 | 2026-04-15 |
+| content-gap-analysis | research | 8.0.0 | 2026-04-15 |
+| seo-content-writer | build | 8.0.0 | 2026-04-15 |
+| geo-content-optimizer | build | 8.0.0 | 2026-04-15 |
+| meta-tags-optimizer | build | 8.0.0 | 2026-04-15 |
+| schema-markup-generator | build | 8.0.0 | 2026-04-15 |
+| on-page-seo-auditor | optimize | 8.0.0 | 2026-04-15 |
+| technical-seo-checker | optimize | 8.0.0 | 2026-04-15 |
+| internal-linking-optimizer | optimize | 8.0.0 | 2026-04-15 |
+| content-refresher | optimize | 8.0.0 | 2026-04-15 |
+| rank-tracker | monitor | 8.0.0 | 2026-04-15 |
+| backlink-analyzer | monitor | 8.0.0 | 2026-04-15 |
+| performance-reporter | monitor | 8.0.0 | 2026-04-15 |
+| alert-manager | monitor | 8.0.0 | 2026-04-15 |
+| content-quality-auditor | cross-cutting | 8.0.0 | 2026-04-15 |
+| domain-authority-auditor | cross-cutting | 8.0.0 | 2026-04-15 |
+| entity-optimizer | cross-cutting | 8.0.0 | 2026-04-15 |
+| memory-management | cross-cutting | 8.0.0 | 2026-04-15 |
 
 ## Changelog
+
+### v8.0.0 — Unified Version Release (2026-04-15)
+
+Unifies all 20 skill versions to 8.0.0. Consolidates v7.0.0 (Wiki Knowledge Layer) and v7.1.0 (Auditor Runbook Inline Strategy) into a single coherent release with all skills at the same version.
+
+**Includes all v7.0.0 and v7.1.0 changes**:
+- Wiki Knowledge Layer with auto-refreshed structured index, project isolation, and `/seo:wiki-lint`
+- Auditor Runbook with Critical Fail Cap enforcement (veto items cap at 60/100)
+- Guardrail Negatives (windowed positive reframes for years, numbers, qualifiers)
+- User-Facing Translation Layer (no internal jargon in audit output)
+- `/seo:contract-lint` command for drift detection
+- `/seo:p2-review` command for deferred item evaluation
+- Auditor-class handoff extension fields (`cap_applied`, `raw_overall_score`, `final_overall_score`)
+- New reference files: auditor-runbook.md, AUDITOR-AUTHORS.md, contract-fail-caps.md, ADR convention
+
+---
+
+### v7.1.0 — Auditor Runbook Inline Strategy (2026-04-11)
+
+**Target**: protocol-layer auditors (`content-quality-auditor`, `domain-authority-auditor`).
+
+**Heads-up for existing users**: if you audited a page under v7.0.0 and re-audit it now, your score may drop — for example from 82 to 60 — even though you didn't change the page. This is not a regression. It's the new rule catching something the old rule missed. When it happens, **scroll to the "Critical Issue to Fix" section of your audit report**. One item there (usually a missing disclosure, a misleading title, or data that contradicts itself) is capping your score. Fix that one item and the score returns to its natural level.
+
+**What changed**:
+- **Critical Fail Cap now enforced numerically**: when any veto item fails (CORE-EEAT T04/C01/R10, CITE T03/T05/T09), the affected dimension and overall score are capped at **60/100**. 2+ veto fails return `status: BLOCKED` instead of a score. Previously, veto fails only "capped at Low" with no numeric ceiling, producing misleadingly high scores.
+- **Auditor Runbook** introduced at `references/auditor-runbook.md` as single source of truth for handoff schema, cap arithmetic (decision table + 3 worked examples), Guardrail Negatives (windowed positive reframes), Artifact Gate self-check, User-Facing Translation Layer, BLOCKED-path escape hatch, and cross-version rerun explainer. Sections §1-5 are inlined into both auditor SKILL.md files with dual sha256 sync markers (`source_sha256` + `block_sha256`) for drift detection.
+- **Guardrail Negatives**: years in `[current_year − 2, current_year]`, numbered lists, qualifiers, short acronyms, and correct homepage/inner-page title patterns are treated as positive signals. Auditors no longer flag "2026" as stale when authored in 2026. Pages bearing an older year (e.g., "2020" in 2026) still get flagged for R-dimension review.
+- **User-Facing Translation** (Runbook §5): veto item IDs, raw-vs-capped numeric deltas, and internal field names (`cap_applied`, `raw_overall_score`, `final_overall_score`) are forbidden in user-visible output. Translated to plain language. A rerun-after-upgrade detection prepends a one-line explainer when the score changed only because the rule changed.
+- **Handoff extension fields** (`cap_applied`, `raw_overall_score`, `final_overall_score`) added for auditor-class skills. Non-auditor skills unaffected. Consumer skills treat these fields as optional with documented defaults during the v7.1.0 → v7.2.0 deprecation window. An extra `class: auditor` frontmatter field marks protocol-layer gates for `/seo:contract-lint` discovery.
+- **CLAUDE.md 350-line rule** formally exempted for auditor-class skills to accommodate the inlined Runbook (~700 line ceiling).
+
+**New reference files**:
+- [references/auditor-runbook.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md) — authoritative Runbook
+- [references/AUDITOR-AUTHORS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/AUDITOR-AUTHORS.md) — onboarding guide for new auditor-class skill authors
+- [references/decisions/README.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/decisions/README.md) — Architecture Decision Record convention
+- [references/decisions/2026-04-adr-001-inline-auditor-runbook.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/decisions/2026-04-adr-001-inline-auditor-runbook.md) — rationale for this release
+- `memory/hot-cache.md` seeded with an Auditor Runbook index line
+- `memory/audits/` directory initialized for downstream P2 trigger evaluation
+
+**Modified reference files**:
+- [references/skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md) — added Auditor-class Extension clause to Handoff Summary Format
+- [references/core-eeat-benchmark.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/core-eeat-benchmark.md) — veto section links to Runbook §2 for cap arithmetic, no numbers restated
+- [references/cite-domain-rating.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/cite-domain-rating.md) — same treatment for T03/T05/T09
+
+**Shipped alongside v7.1.0**: `/seo:contract-lint` drift detection command (dual-hash validation: `source_sha256` + `block_sha256`), `/seo:p2-review` command for July 2026 tombstone evaluation, `references/contract-fail-caps.md` cap numbers SSOT, PostToolUse hook for external Artifact Gate validation (with silent-skip for non-audit Writes).
+
+**Deferred to v7.3.0**: multi-veto numeric cap calibration (requires 30+ real multi-veto audits in `memory/audits/`), Gap Typology field, Failure Modes Catalog. All subject to P2 observation triggers evaluated 2026-07-10 by `/seo:p2-review`.
+
+**Rejected during review**: Blind Pass / Coverage Gap (Claude cannot genuinely ignore in-context frameworks), Evidence Layering ceremony (no consumer), Python-based deterministic layer (violates Tier 1 zero-dependency). See ADR-001 for full rejection rationale.
+
+Reviewed across three rounds by 15 agent perspectives: Round 1 (Skeptic / UX Advocate / Impl Verifier / Prompt Engineer / Sustainability), Round 2 (Continuity Checker / Red Team / DevEx / Migration / Doc Quality), Round 3 (Impl Auditor / Integration Tester / Drift Preventer / Regression Checker / Release Readiness). The final implementation incorporates all 14 Round 3 findings including the 2 BLOCKERs (README.md sync, `class: auditor` discovery) and the 5 HIGH fixes (arithmetic integrity, hook silent-skip, cross-version rerun rule, archive format, dual-hash drift detection).
+
+---
 
 ### v7.0.0 — Wiki Knowledge Layer + Infrastructure Upgrades (2026-04-06)
 

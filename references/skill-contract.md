@@ -27,6 +27,7 @@ Every `SKILL.md` should expose these sections near the top:
 | `license` | SPDX string | Optional | Default: Apache-2.0 |
 | `compatibility` | String | Optional | Platform compatibility statement |
 | `homepage` | URL | Optional | Skill homepage |
+| `class` | `auditor` | Optional (required for auditor-class) | Marks the skill as a protocol-layer auditor that inlines [auditor-runbook.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md). Used by `/seo:contract-lint` for discovery via frontmatter glob. See [AUDITOR-AUTHORS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/AUDITOR-AUTHORS.md). |
 
 Note: `when_to_use` uses underscores (not hyphens). This matches Claude Code's internal parser.
 
@@ -79,6 +80,18 @@ Every skill should be able to produce a concise handoff summary using this shape
 - **Open Loops**: blockers, missing inputs, or unresolved risks
 - **Recommended Next Skill**: one primary next move
 ```
+
+### Auditor-class Extension (v7.1.0)
+
+Auditor-class skills (whose deliverable is a scored audit with a verdict — currently `content-quality-auditor` and `domain-authority-auditor`) extend this format with 3 additional fields:
+
+- `cap_applied` — boolean; set by Critical Fail Cap rule
+- `raw_overall_score` — number; score before cap
+- `final_overall_score` — number; score after cap
+
+These fields are authoritative in [references/auditor-runbook.md §1](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md). Non-auditor skills do not emit them.
+
+**Backward compatibility (v7.1.0 → v7.2.0 deprecation window)**: consumer skills must treat auditor-extension fields as optional with documented defaults. A handoff missing these fields is valid during the window; consumers assume `cap_applied: false` and use the overall score as both raw and final. After v7.2.0, auditor-extension fields become required for auditor-class producers, and consumers may then treat absence as a BLOCKED upstream.
 
 ## Promotion Rules
 
@@ -248,6 +261,9 @@ These norms apply to all skills when their output incorporates data from multipl
 |----------|-----------|---------|
 | Research (4 skills) | `memory/research/<skill>/` | keyword opportunities, competitor findings, SERP notes, content gaps |
 | Build (4 skills) | `memory/content/` | content briefs, meta tag decisions, schema annotations, publish status |
-| Optimize (4 skills) | `memory/audits/<skill>/` | audit summaries, veto items, fix priorities |
+| Optimize (4 skills) | `memory/audits/<skill>/` | per-skill audit summaries, veto items, fix priorities |
 | Monitor (4 skills) | `memory/monitoring/` | rank deltas, alert history, backlink changes |
 | Cross-cutting (4 skills) | per-role paths | see protocol-layer definitions |
+| **Protocol gate aggregate (v7.1.0+)** | `memory/audits/YYYY-MM.md` | **owned by `memory-management`**; monthly archive of `content-quality-auditor` and `domain-authority-auditor` handoffs in the structured format defined in [memory-management SKILL.md §Writes](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/memory-management/SKILL.md); consumed by `/seo:p2-review` and the Runbook §5 cross-version rule |
+
+**Note on `memory/audits/`**: two conventions coexist. The `<skill>/` subdirectory pattern (Optimize category, per-skill files) is for skill-specific audit artifacts (e.g., `memory/audits/technical-seo-checker/2026-04-11-example.md`). The flat `YYYY-MM.md` pattern (Protocol gate aggregate, monthly) is for the CORE-EEAT / CITE protocol-layer handoff archive. They are siblings, not a conflict.

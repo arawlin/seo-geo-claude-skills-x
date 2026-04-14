@@ -179,11 +179,19 @@
 
 ### Veto Items
 
-The following items can override the overall score — a Fail on any veto item caps the total at "Low" regardless of other scores:
+Failing any veto item activates the Critical Fail Cap. The cap arithmetic and thresholds are defined in [auditor-runbook.md §2](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md). Do not restate cap numbers here or elsewhere — this file owns the item definitions only.
 
-- **T04** — Affiliate links without disclosure
-- **C01** — Clickbait (title doesn't match content)
-- **R10** — Data contradicts itself
+| Veto ID | Dimension | Check |
+|---------|-----------|-------|
+| **T04** | Trust | Affiliate links without disclosure |
+| **C01** | Contextual Clarity | Clickbait — title promises something the page doesn't deliver |
+| **R10** | Referenceability | Data on the page contradicts itself |
+
+**Single veto fail**: cap applies per [Runbook §2 decision table](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md).
+
+**2+ veto fails**: audit returns `status: BLOCKED` per [Runbook §2 Worked Example 3](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md). Calibration for a numeric multi-veto cap is pending v7.3, gated on 30+ real multi-veto audits in `memory/audits/`.
+
+Rationale: prevents "79 items pass + 1 veto fails" from producing a misleadingly high overall score.
 
 ---
 

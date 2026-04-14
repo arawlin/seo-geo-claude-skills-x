@@ -3,7 +3,7 @@
 **20 skills. 9 comandos. Ranqueie nas buscas. Seja citado por IA.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-7.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
 [English](../README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Espanol](README.es.md) | **Portugues**
@@ -17,7 +17,7 @@ Skills e comandos Claude para Otimizacao de Mecanismos de Busca (SEO) e Otimizac
 - **120 itens de avaliacao** — CORE-EEAT (80 itens) + CITE (40 itens) com portoes de veto
 - **8 idiomas, 750+ gatilhos** — PT, EN, ZH, JA, KO, ES com variantes formais, coloquiais e erros de digitacao
 - **Zero dependencias** — skills em Markdown puro, sem Python, sem ambiente virtual, sem chaves de API
-- **Agnostico de ferramentas** — funciona sozinho ou com Ahrefs, Semrush, Google Search Console via MCP
+- **Agnostico de ferramentas** — funciona sozinho ou com 14 servidores MCP (Ahrefs, Semrush, Cloudflare e mais)
 - **6 metodos de instalacao** — ClawHub, skills.sh, plugin Claude Code, git submodule, fork, manual
 
 ## Inicio rapido

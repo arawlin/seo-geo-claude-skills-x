@@ -1,9 +1,9 @@
 # SEO & GEO Skills Library
 
-**20 skills. 10 commands. Rank in search. Get cited by AI.**
+**20 skills. 12 commands. Rank in search. Get cited by AI.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-7.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/aaron-he-zhu/seo-geo-claude-skills)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/commits/main)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-purple)](https://claude.ai/download)
@@ -19,7 +19,7 @@ Claude Skills and Commands for Search Engine Optimization (SEO) and Generative E
 - **120-item quality frameworks** — CORE-EEAT (80 items) + CITE (40 items) with veto gates, not narrative guesswork
 - **8 languages, 750+ triggers** — EN, ZH, JA, KO, ES, PT with formal, casual, and misspelling variants
 - **Zero dependencies** — pure markdown skills, no Python, no venv, no API keys required
-- **Tool-agnostic** — works standalone or with Ahrefs, Semrush, Google Search Console via MCP
+- **Tool-agnostic** — works standalone or with 14 MCP servers (Ahrefs, Semrush, Cloudflare, and more)
 - **6 install methods** — ClawHub, skills.sh, Claude Code plugin, git submodule, fork, manual
 
 ## Quick Start
@@ -249,6 +249,9 @@ One-shot tasks with explicit input and structured output.
 | `/seo:write-content <topic>` | Write SEO + GEO optimized content from a topic and target keyword |
 | `/seo:keyword-research <seed>` | Research and analyze keywords for a topic or niche |
 | `/seo:setup-alert <metric>` | Configure monitoring alerts for critical metrics |
+| `/seo:wiki-lint` | Wiki health check: detect contradictions, orphans, stale claims, missing pages |
+| `/seo:contract-lint` | Auditor Runbook drift detection, handoff schema check, jargon leak scan (v7.1.0+) |
+| `/seo:p2-review` | Evaluate v7.1.0 deferred items against trigger conditions; tombstone review (2026-07-10) |
 
 Command files: [commands/](https://github.com/aaron-he-zhu/seo-geo-claude-skills/tree/main/commands/)
 
