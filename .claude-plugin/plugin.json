@@ -27,7 +27,9 @@
     "rank-tracking",
     "backlink-analysis"
   ],
-  "commands": ["./commands/"],
+  "commands": [
+    "./commands/"
+  ],
   "skills": [
     "./research/competitor-analysis",
     "./research/content-gap-analysis",
