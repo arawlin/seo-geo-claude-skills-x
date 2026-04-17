@@ -5,13 +5,13 @@
     "email": "hello@zhuhe.io"
   },
   "description": "SEO & GEO skill operating system with a shared contract, protocol-layer gates, and reusable state handoffs",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "plugins": [
     {
       "name": "aaron-seo-geo",
       "source": "./",
       "description": "20 SEO and GEO skills plus 15 commands on one shared operating contract. Includes protocol-layer gates for content quality, domain trust, entity truth, and campaign memory alongside keyword research, content creation, audits, monitoring, schema markup, and AI citation optimization.",
-      "version": "9.0.0",
+      "version": "9.0.1",
       "author": {
         "name": "Aaron He Zhu",
         "email": "hello@zhuhe.io"
