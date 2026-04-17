@@ -1,5 +1,5 @@
 {
-  "id": "seo-geo-claude-skills",
+  "id": "aaron-seo-geo",
   "format": "claude-plugin",
   "hostTargets": ["claude-code"]
 }
