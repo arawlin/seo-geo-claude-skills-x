@@ -19,6 +19,3 @@ docs/plans/
 node_modules/
 package-lock.json
 
-# Plugin manifests are per-skill, not bundle-level
-.claude-plugin/
-

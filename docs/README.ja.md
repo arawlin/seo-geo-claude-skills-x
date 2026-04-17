@@ -1,16 +1,18 @@
 # SEO & GEO スキルライブラリ
 
-**20スキル。9コマンド。検索ランキング + AI引用を同時に。**
+**20スキル。15コマンド。検索ランキング + AI引用を同時に。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
-[English](../README.md) | [中文](README.zh.md) | **日本語** | [한국어](README.ko.md) | [Espanol](README.es.md) | [Portugues](README.pt.md)
+[English](../README.md) | [中文](README.zh.md) | **日本語** | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt.md)
 
-検索エンジン最適化（SEO）と生成エンジン最適化（GEO）のためのClaudeスキル＆コマンド集。依存関係ゼロ。[Claude Code](https://claude.ai/download)、[Cursor](https://cursor.com)、[Codex](https://openai.com/codex)、[35以上のエージェント](https://skills.sh)に対応。コンテンツ品質は[CORE-EEATベンチマーク](https://github.com/aaron-he-zhu/core-eeat-content-benchmark)（80項目）、ドメイン権威は[CITEドメイン評価](https://github.com/aaron-he-zhu/cite-domain-rating)（40項目）で評価。
+検索エンジン最適化（SEO）と生成エンジン最適化（GEO）のためのClaudeスキル＆コマンド集。依存関係ゼロ。[Claude Code](https://claude.ai/download)、[OpenClaw](https://openclaw.com)、[Gemini CLI](https://geminicli.com)、[Qwen Code](https://qwenlm.github.io/qwen-code-docs/)、[Amp](https://ampcode.com)、[Kimi](https://moonshotai.github.io/kimi-cli/)、[CodeBuddy](https://codebuddy.ai)にネイティブ対応。[35以上のエージェント](https://github.com/vercel-labs/skills#supported-agents)は `npx skills` 経由。コンテンツ品質は[CORE-EEATベンチマーク](https://github.com/aaron-he-zhu/core-eeat-content-benchmark)（80項目）、ドメイン権威は[CITEドメイン評価](https://github.com/aaron-he-zhu/cite-domain-rating)（40項目）で評価。
 
 > **SEO**は検索結果でのランキングを獲得します。**GEO**はAIシステム（ChatGPT、Perplexity、Google AI Overviews）からの引用を獲得します。このライブラリは両方をカバーします。
+
+用語に慣れていませんか？ [GLOSSARY.md](../GLOSSARY.md) をご覧ください。
 
 ### なぜこのスキルライブラリか
 
@@ -18,19 +20,38 @@
 - **8言語、750以上のトリガー** — 日本語を含む多言語対応（フォーマル、カジュアル、タイプミス変形）
 - **依存関係ゼロ** — 純粋なMarkdownスキル、Python不要、仮想環境不要、APIキー不要
 - **ツール非依存** — 単独動作、またはMCP経由で14サーバー（Ahrefs、Semrush、Cloudflareなど）と連携
-- **6種類のインストール方法** — ClawHub、skills.sh、Claude Codeプラグイン、git submodule、fork、手動
+- **7エージェントでネイティブインストール** — Claude Code、OpenClaw、Gemini CLI、Qwen Code、Amp、Kimi、CodeBuddy — その他 35+ エージェントは `npx skills` 経由
 
 ## クイックスタート
 
 ```bash
-# 全20スキルをインストール（skills.sh）
+# Claude Code
+/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
+
+# OpenClaw / ClawHub
+clawhub install aaron-he-zhu/<skill>
+
+# Gemini CLI
+gemini extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills
+
+# Qwen Code
+qwen extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills
+
+# Amp
+amp skill add aaron-he-zhu/seo-geo-claude-skills
+
+# Kimi Code CLI
+kimi plugin install https://github.com/aaron-he-zhu/seo-geo-claude-skills.git
+
+# CodeBuddy（アプリ内、2ステップ）
+/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
+/plugin install aaron-seo-geo
+
+# 汎用フォールバック（Cursor、Codex、opencode、Windsurf、Copilotなど35+エージェント）
 npx skills add aaron-he-zhu/seo-geo-claude-skills
 
-# 単一スキルのインストール
+# 単一スキルのみ
 npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
-
-# Claude Codeプラグインでインストール
-/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
 ```
 
 インストール後すぐに使えます：
@@ -103,6 +124,17 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 | `/seo:write-content <topic>` | SEO + GEO最適化コンテンツ執筆 |
 | `/seo:keyword-research <seed>` | キーワードリサーチ＆分析 |
 | `/seo:setup-alert <metric>` | モニタリングアラート設定 |
+| `/seo:geo-drift-check [URL]` | (実験的、v9.0+) 予測GEOスコアと実際のAIエンジン引用動作の差異を検証 |
+
+### メンテナンスコマンド(ライブラリメンテナー / パワーユーザー向け、日常利用では無視可)
+
+| コマンド | 説明 |
+|----------|------|
+| `/seo:wiki-lint` | Wikiヘルスチェック:矛盾、孤立、古い主張、欠落ページの検出 |
+| `/seo:contract-lint` | Auditor Runbookドリフト検出、handoffスキーマ検証、専門用語リーク走査 (v7.1.0+) |
+| `/seo:p2-review` | v7.1.0延期項目のトリガー条件評価;tombstone 再審 (2026-07-10) |
+| `/seo:sync-versions` | `.claude-plugin/plugin.json` のバージョン番号を全クロスエージェント manifest に伝播 (v9.0+、`scripts/sync-versions.py` の代替) |
+| `/seo:validate-library` | ライブラリレベルの品質ゲート:ディスクリプション予算、YAMLフィールド順序、言語カバレッジ、重複トリガー検出 (v9.0+、`scripts/validate-descriptions.py` の代替) |
 
 ## コントリビューション
 
@@ -112,4 +144,4 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 
 Apache License 2.0
 
-*英語READMEとの最終同期：v7.0.0*
+*英語READMEとの最終同期：v9.0.0*

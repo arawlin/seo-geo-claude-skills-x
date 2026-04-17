@@ -1,0 +1,126 @@
+name: Publish to ClawHub
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+jobs:
+  # ───────────── Gate: decide whether to publish ─────────────
+  detect-version:
+    runs-on: ubuntu-latest
+    outputs:
+      should-publish: ${{ steps.check.outputs.should-publish }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - id: check
+        run: |
+          set -euo pipefail
+          NEW=$(jq -r .version .claude-plugin/plugin.json)
+          echo "version=$NEW" >> "$GITHUB_OUTPUT"
+
+          # Manual dispatch or tag push → always publish
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "Trigger=$GITHUB_EVENT_NAME → publish $NEW"
+            echo "should-publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Push to main → only publish if plugin.json version bumped
+          if ! git cat-file -e HEAD^:.claude-plugin/plugin.json 2>/dev/null; then
+            echo "First commit introducing plugin.json → publish $NEW"
+            echo "should-publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OLD=$(git show HEAD^:.claude-plugin/plugin.json | jq -r .version)
+          if [[ "$OLD" == "$NEW" ]]; then
+            echo "Version unchanged ($OLD) — skipping publish"
+            echo "should-publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          GREATER=$(printf '%s\n%s\n' "$OLD" "$NEW" | sort -V | tail -n 1)
+          if [[ "$GREATER" != "$NEW" ]]; then
+            echo "::error::Version went backward: $OLD → $NEW. Refusing to publish."
+            exit 1
+          fi
+
+          echo "Version bumped: $OLD → $NEW → publish"
+          echo "should-publish=true" >> "$GITHUB_OUTPUT"
+
+  # ───────────── Bundle plugin track (inline) ─────────────
+  bundle-publish:
+    needs: detect-version
+    if: needs.detect-version.outputs.should-publish == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g clawhub
+      - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
+      - name: Publish bundle aaron-seo-geo@${{ needs.detect-version.outputs.version }}
+        run: |
+          clawhub package publish . \
+            --family bundle-plugin \
+            --bundle-format claude-plugin \
+            --host-targets claude-code \
+            --name aaron-seo-geo \
+            --display-name "Aaron SEO GEO" \
+            --version "${{ needs.detect-version.outputs.version }}" \
+            --tags latest \
+            --source-repo aaron-he-zhu/seo-geo-claude-skills \
+            --source-commit "$GITHUB_SHA" \
+            --source-ref "${GITHUB_REF_NAME}" \
+            --changelog "Published from ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}"
+
+  # ───────────── 20-skill matrix track ─────────────
+  skills-publish:
+    needs: detect-version
+    if: needs.detect-version.outputs.should-publish == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        skill:
+          - research/keyword-research
+          - research/competitor-analysis
+          - research/serp-analysis
+          - research/content-gap-analysis
+          - build/seo-content-writer
+          - build/geo-content-optimizer
+          - build/meta-tags-optimizer
+          - build/schema-markup-generator
+          - optimize/on-page-seo-auditor
+          - optimize/technical-seo-checker
+          - optimize/internal-linking-optimizer
+          - optimize/content-refresher
+          - monitor/rank-tracker
+          - monitor/backlink-analyzer
+          - monitor/performance-reporter
+          - monitor/alert-manager
+          - cross-cutting/content-quality-auditor
+          - cross-cutting/domain-authority-auditor
+          - cross-cutting/entity-optimizer
+          - cross-cutting/memory-management
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g clawhub
+      - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
+      - name: Publish ${{ matrix.skill }}@${{ needs.detect-version.outputs.version }}
+        run: |
+          clawhub publish "${{ matrix.skill }}" \
+            --version "${{ needs.detect-version.outputs.version }}" \
+            --changelog "Published from ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}" \
+            --tags latest \
+            --no-input

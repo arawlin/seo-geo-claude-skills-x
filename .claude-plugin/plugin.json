@@ -1,8 +1,8 @@
 {
-  "id": "seo-geo-claude-skills",
-  "name": "seo-geo-claude-skills",
-  "version": "8.0.0",
-  "description": "20 SEO and GEO skills plus 12 commands with prompt-based hook automation, three-tier memory, and protocol-layer gates for content quality, domain trust, entity truth, and campaign memory. Tool-agnostic, works with or without integrations.",
+  "id": "aaron-seo-geo",
+  "name": "aaron-seo-geo",
+  "version": "9.0.0",
+  "description": "20 SEO and GEO skills plus 15 commands on one shared operating contract. Includes protocol-layer gates for content quality, domain trust, entity truth, and campaign memory alongside keyword research, content creation, audits, monitoring, schema markup, and AI citation optimization. v9.0.0 adds legal/compliance hardening (FTC, GDPR, EU AI Act, WCAG), 10 new playbooks, SKILL.md size compliance (≤350 lines), native install for Gemini CLI / Qwen / Amp / Kimi / CodeBuddy, and the experimental /seo:geo-drift-check command.",
   "author": {
     "name": "Aaron He Zhu",
     "email": "hello@zhuhe.io",
@@ -19,7 +19,7 @@
     "generative-engine-optimization",
     "ai-citation",
     "core-eeat",
-    "cite",
+    "cite-framework",
     "keyword-research",
     "technical-seo",
     "content-writing",
@@ -27,7 +27,9 @@
     "rank-tracking",
     "backlink-analysis"
   ],
-  "commands": ["./commands/"],
+  "commands": [
+    "./commands/"
+  ],
   "skills": [
     "./research/competitor-analysis",
     "./research/content-gap-analysis",
