@@ -118,7 +118,7 @@ jobs:
       - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
       - name: Publish ${{ matrix.skill }}@${{ needs.detect-version.outputs.version }}
         run: |
-          clawhub skill publish "${{ matrix.skill }}" \
+          clawhub publish "${{ matrix.skill }}" \
             --version "${{ needs.detect-version.outputs.version }}" \
             --changelog "Published from ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}" \
             --tags latest \
