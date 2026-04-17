@@ -1,7 +1,6 @@
 name: Publish to ClawHub
 
 on:
-  pull_request:
   workflow_dispatch:
   push:
     branches: [main]
@@ -10,7 +9,6 @@ on:
 jobs:
   # ───────────── Gate: decide whether to publish ─────────────
   detect-version:
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     outputs:
       should-publish: ${{ steps.check.outputs.should-publish }}
@@ -27,7 +25,7 @@ jobs:
 
           # Manual dispatch or tag push → always publish
           if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            echo "Trigger=$GITHUB_EVENT_NAME / ref=$GITHUB_REF → publish"
+            echo "Trigger=$GITHUB_EVENT_NAME → publish $NEW"
             echo "should-publish=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -55,24 +53,31 @@ jobs:
           echo "Version bumped: $OLD → $NEW → publish"
           echo "should-publish=true" >> "$GITHUB_OUTPUT"
 
-  # ───────────── Bundle plugin track ─────────────
-  bundle-dry-run:
-    if: github.event_name == 'pull_request'
-    uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
-    with:
-      dry_run: true
-
+  # ───────────── Bundle plugin track (inline) ─────────────
   bundle-publish:
     needs: detect-version
     if: needs.detect-version.outputs.should-publish == 'true'
-    permissions:
-      contents: read
-      id-token: write
-    uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
-    with:
-      dry_run: false
-    secrets:
-      clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g clawhub
+      - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
+      - name: Publish bundle aaron-seo-geo@${{ needs.detect-version.outputs.version }}
+        run: |
+          clawhub package publish . \
+            --family bundle-plugin \
+            --bundle-format claude-plugin \
+            --host-targets claude-code \
+            --name aaron-seo-geo \
+            --version "${{ needs.detect-version.outputs.version }}" \
+            --tags latest \
+            --source-repo aaron-he-zhu/seo-geo-claude-skills \
+            --source-commit "$GITHUB_SHA" \
+            --source-ref "${GITHUB_REF_NAME}" \
+            --changelog "Published from ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}"
 
   # ───────────── 20-skill matrix track ─────────────
   skills-publish:
@@ -109,11 +114,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install clawhub CLI
-        run: npm install -g clawhub
-      - name: Login
-        run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
-      - name: Publish ${{ matrix.skill }}
+      - run: npm install -g clawhub
+      - run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
+      - name: Publish ${{ matrix.skill }}@${{ needs.detect-version.outputs.version }}
         run: |
           clawhub skill publish "${{ matrix.skill }}" \
             --version "${{ needs.detect-version.outputs.version }}" \
