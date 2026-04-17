@@ -4,10 +4,58 @@ on:
   pull_request:
   workflow_dispatch:
   push:
+    branches: [main]
     tags: ["v*"]
 
 jobs:
-  # ───────────────── Bundle plugin track ─────────────────
+  # ───────────── Gate: decide whether to publish ─────────────
+  detect-version:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      should-publish: ${{ steps.check.outputs.should-publish }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - id: check
+        run: |
+          set -euo pipefail
+          NEW=$(jq -r .version .claude-plugin/plugin.json)
+          echo "version=$NEW" >> "$GITHUB_OUTPUT"
+
+          # Manual dispatch or tag push → always publish
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "Trigger=$GITHUB_EVENT_NAME / ref=$GITHUB_REF → publish"
+            echo "should-publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Push to main → only publish if plugin.json version bumped
+          if ! git cat-file -e HEAD^:.claude-plugin/plugin.json 2>/dev/null; then
+            echo "First commit introducing plugin.json → publish $NEW"
+            echo "should-publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OLD=$(git show HEAD^:.claude-plugin/plugin.json | jq -r .version)
+          if [[ "$OLD" == "$NEW" ]]; then
+            echo "Version unchanged ($OLD) — skipping publish"
+            echo "should-publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          GREATER=$(printf '%s\n%s\n' "$OLD" "$NEW" | sort -V | tail -n 1)
+          if [[ "$GREATER" != "$NEW" ]]; then
+            echo "::error::Version went backward: $OLD → $NEW. Refusing to publish."
+            exit 1
+          fi
+
+          echo "Version bumped: $OLD → $NEW → publish"
+          echo "should-publish=true" >> "$GITHUB_OUTPUT"
+
+  # ───────────── Bundle plugin track ─────────────
   bundle-dry-run:
     if: github.event_name == 'pull_request'
     uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
@@ -15,7 +63,8 @@ jobs:
       dry_run: true
 
   bundle-publish:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    needs: detect-version
+    if: needs.detect-version.outputs.should-publish == 'true'
     permissions:
       contents: read
       id-token: write
@@ -25,9 +74,10 @@ jobs:
     secrets:
       clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}
 
-  # ───────────────── 20-skill matrix track ─────────────────
+  # ───────────── 20-skill matrix track ─────────────
   skills-publish:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    needs: detect-version
+    if: needs.detect-version.outputs.should-publish == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -63,13 +113,10 @@ jobs:
         run: npm install -g clawhub
       - name: Login
         run: clawhub login --token "${{ secrets.CLAWHUB_TOKEN }}"
-      - name: Resolve version from plugin.json
-        id: ver
-        run: echo "version=$(jq -r .version .claude-plugin/plugin.json)" >> "$GITHUB_OUTPUT"
       - name: Publish ${{ matrix.skill }}
         run: |
           clawhub skill publish "${{ matrix.skill }}" \
-            --version "${{ steps.ver.outputs.version }}" \
+            --version "${{ needs.detect-version.outputs.version }}" \
             --changelog "Published from ${GITHUB_REF_NAME} @ ${GITHUB_SHA:0:7}" \
             --tags latest \
             --no-input
