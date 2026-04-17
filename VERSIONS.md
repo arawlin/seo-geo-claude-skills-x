@@ -31,6 +31,14 @@ Current versions of all skills. Agents can fetch this file from `https://raw.git
 
 ## Changelog
 
+### v9.0.1 — Prompt-injection false positive fix (2026-04-18)
+
+Patch release addressing a ClawHub OpenClaw scan that flagged the published v9.0.0 as **Suspicious (medium confidence)**. The scanner correctly matched a prompt-injection literal in `commands/geo-drift-check.md:48` — the literal was defensive example text warning the model to distrust AI-engine output, but the quoted phrase itself was indistinguishable from a real injection attempt under regex scanning.
+
+**Change**: rewrote the warning to describe the injection category without embedding a literal override-style directive. No behavioral change to any skill or command; the defensive intent is preserved.
+
+**Files touched**: `commands/geo-drift-check.md` (line 48). All plugin manifests bumped to 9.0.1 for republish; skill-level `metadata.version` values unchanged because no skill content was modified.
+
 ### v9.0.0 — Quality Pass + Multi-Agent Compatibility (2026-04-17)
 
 Major release combining three streams of work: (1) a 6-agent panel quality review with legal/compliance hardening, (2) ten new playbooks and instructions-detail references that make skills directly executable without inline bloat, and (3) native install support for five additional AI coding agents.
