@@ -70,6 +70,17 @@ No trigger phrase may appear in more than one skill (case-insensitive, after Uni
 - `metadata.version` and the top-level `version:` (if present) must agree.
 - No stray BOM, tabs-mixed-with-spaces, or trailing whitespace in frontmatter keys.
 
+### 6. Marketplace file consistency (library-level)
+
+Claude Code's plugin loader reads `.claude-plugin/marketplace.json`, but the repo-root `marketplace.json` is the canonical tracking file documented in [CLAUDE.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/CLAUDE.md). Both paths must exist as **real files** (not symlinks) with **byte-identical content** — symlinks under version control are not portable to Windows without `core.symlinks=true` + Developer Mode, which most users do not have (see [#8](https://github.com/aaron-he-zhu/seo-geo-claude-skills/issues/8)).
+
+Check:
+- `marketplace.json` (repo root) exists and is a regular file.
+- `.claude-plugin/marketplace.json` exists and is a regular file (NOT a symlink — git mode `100644`, not `120000`).
+- The two files are byte-identical (SHA-256 match).
+
+Report one line: `MARKETPLACE: OK` or `MARKETPLACE: FAIL <reason>`. In `--strict` mode this check contributes to the final `STATUS: PASS/FAIL`. When this check fails, the fix is to copy the canonical root file to the plugin path: `cp marketplace.json .claude-plugin/marketplace.json`.
+
 ## Workflow
 
 1. Enumerate SKILL.md files:
@@ -78,9 +89,11 @@ No trigger phrase may appear in more than one skill (case-insensitive, after Uni
 
 2. For each file, read the frontmatter (everything between the first `---` and the second `---`).
 
-3. Run all five checks above. Collect findings.
+3. Run all five per-skill checks above. Collect findings.
 
-4. Print a summary table:
+4. Run the library-level marketplace consistency check (§6). Not per-skill — runs once.
+
+5. Print a summary table followed by the library-level result:
 
    ```
    SKILL                           DESC BYTES  YAML  LANG    DUPES  VERSION   STATUS
@@ -90,9 +103,10 @@ No trigger phrase may appear in more than one skill (case-insensitive, after Uni
    ...
    -----
    Total: 20  Passed: 20  Failed: 0
+   MARKETPLACE: OK
    ```
 
-5. **Strict mode** (`--strict`): end the final report line with exactly `STATUS: PASS` or `STATUS: FAIL`. CI scripts can parse the last line (`tail -n 1`) to decide whether to fail the build. Report-only mode (default) ends with a plain `Total: 20  Passed: N  Failed: M` summary without the STATUS marker.
+6. **Strict mode** (`--strict`): end the final report line with exactly `STATUS: PASS` or `STATUS: FAIL`. Strict-mode `STATUS: FAIL` is triggered by any per-skill failure OR a `MARKETPLACE: FAIL`. CI scripts can parse the last line (`tail -n 1`) to decide whether to fail the build. Report-only mode (default) ends with the marketplace result line without the STATUS marker.
 
 ## Fallback for no-Claude environments
 

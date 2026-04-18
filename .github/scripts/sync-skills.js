@@ -18,6 +18,7 @@ const CATEGORIES = [
 
 const ROOT = path.resolve(__dirname, "../..");
 const MARKETPLACE_PATH = path.join(ROOT, "marketplace.json");
+const MARKETPLACE_PLUGIN_PATH = path.join(ROOT, ".claude-plugin", "marketplace.json");
 const PLUGIN_PATH = path.join(ROOT, ".claude-plugin", "plugin.json");
 
 function discoverSkills() {
@@ -51,13 +52,11 @@ function discoverSkills() {
 function updateMarketplace(skills) {
   const data = JSON.parse(fs.readFileSync(MARKETPLACE_PATH, "utf8"));
   data.plugins[0].skills = skills;
-  fs.writeFileSync(
-    MARKETPLACE_PATH,
-    JSON.stringify(data, null, 2) + "\n",
-    "utf8"
-  );
+  const serialized = JSON.stringify(data, null, 2) + "\n";
+  fs.writeFileSync(MARKETPLACE_PATH, serialized, "utf8");
+  fs.writeFileSync(MARKETPLACE_PLUGIN_PATH, serialized, "utf8");
   console.log(
-    `Updated marketplace.json with ${skills.length} skills`
+    `Updated marketplace.json (root + .claude-plugin) with ${skills.length} skills`
   );
 }
 
