@@ -2,7 +2,7 @@
 name: validate-library
 description: Library-level quality gate. Walks all 20 SKILL.md files and verifies description budgets, YAML field order, language coverage, duplicate trigger detection, and frontmatter validity. Maintenance command — run before version bumps and PRs.
 argument-hint: "[--skill <name>] [--strict]"
-allowed-tools: ["Read", "Glob", "Grep"]
+allowed-tools: ["Read", "Glob", "Grep", "Bash"]
 parameters:
   - name: skill
     type: string
@@ -74,12 +74,15 @@ No trigger phrase may appear in more than one skill (case-insensitive, after Uni
 
 Claude Code's plugin loader reads `.claude-plugin/marketplace.json`, but the repo-root `marketplace.json` is the canonical tracking file documented in [CLAUDE.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/CLAUDE.md). Both paths must exist as **real files** (not symlinks) with **byte-identical content** — symlinks under version control are not portable to Windows without `core.symlinks=true` + Developer Mode, which most users do not have (see [#8](https://github.com/aaron-he-zhu/seo-geo-claude-skills/issues/8)).
 
-Check:
-- `marketplace.json` (repo root) exists and is a regular file.
-- `.claude-plugin/marketplace.json` exists and is a regular file (NOT a symlink — git mode `100644`, not `120000`).
-- The two files are byte-identical (SHA-256 match).
+**This check cannot be done with `Read` alone**: `Read` transparently follows symlinks and returns the target's content, so a broken-symlink-as-text file would parse as JSON on Linux/macOS and the check would pass. It must use Bash to inspect the git index mode and compute SHA-256 on disk.
 
-Report one line: `MARKETPLACE: OK` or `MARKETPLACE: FAIL <reason>`. In `--strict` mode this check contributes to the final `STATUS: PASS/FAIL`. When this check fails, the fix is to copy the canonical root file to the plugin path: `cp marketplace.json .claude-plugin/marketplace.json`.
+Procedure:
+
+1. Run `git ls-files -s marketplace.json .claude-plugin/marketplace.json`. Both lines must start with mode `100644` (regular file), NOT `120000` (symlink). Any `120000` line → `MARKETPLACE: FAIL symlink at <path>`.
+2. Run `shasum -a 256 marketplace.json .claude-plugin/marketplace.json | awk '{print $1}' | sort -u | wc -l`. Output must be `1` (single unique hash). Any other value → `MARKETPLACE: FAIL byte-mismatch`.
+3. If both pass → `MARKETPLACE: OK`.
+
+Report one line at the end of the run. In `--strict` mode this check contributes to the final `STATUS: PASS/FAIL`. When this check fails, the fix is to copy the canonical root file to the plugin path: `cp marketplace.json .claude-plugin/marketplace.json`.
 
 ## Workflow
 
