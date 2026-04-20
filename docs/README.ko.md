@@ -1,16 +1,18 @@
 # SEO & GEO 스킬 라이브러리
 
-**20개 스킬. 9개 명령. 검색 순위 + AI 인용을 한번에.**
+**20개 스킬. 15개 명령. 검색 순위 + AI 인용을 한번에.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.0.1-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
-[English](../README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | **한국어** | [Espanol](README.es.md) | [Portugues](README.pt.md)
+[English](../README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | **한국어** | [Español](README.es.md) | [Português](README.pt.md)
 
-검색 엔진 최적화(SEO)와 생성형 엔진 최적화(GEO)를 위한 Claude 스킬 및 명령 세트. 의존성 제로. [Claude Code](https://claude.ai/download), [Cursor](https://cursor.com), [Codex](https://openai.com/codex), [35개 이상의 에이전트](https://skills.sh) 지원. 콘텐츠 품질은 [CORE-EEAT 벤치마크](https://github.com/aaron-he-zhu/core-eeat-content-benchmark)(80개 항목), 도메인 권위는 [CITE 도메인 등급](https://github.com/aaron-he-zhu/cite-domain-rating)(40개 항목)으로 평가.
+검색 엔진 최적화(SEO)와 생성형 엔진 최적화(GEO)를 위한 Claude 스킬 및 명령 세트. 의존성 제로. [Claude Code](https://claude.ai/download), [OpenClaw](https://openclaw.com), [Gemini CLI](https://geminicli.com), [Qwen Code](https://qwenlm.github.io/qwen-code-docs/), [Amp](https://ampcode.com), [Kimi](https://moonshotai.github.io/kimi-cli/), [CodeBuddy](https://codebuddy.ai) 네이티브 지원. [35개 이상의 에이전트](https://github.com/vercel-labs/skills#supported-agents)는 `npx skills`로. 콘텐츠 품질은 [CORE-EEAT 벤치마크](https://github.com/aaron-he-zhu/core-eeat-content-benchmark)(80개 항목), 도메인 권위는 [CITE 도메인 등급](https://github.com/aaron-he-zhu/cite-domain-rating)(40개 항목)으로 평가.
 
 > **SEO**는 검색 결과에서 순위를 올립니다. **GEO**는 AI 시스템(ChatGPT, Perplexity, Google AI Overviews)에서 인용됩니다. 이 라이브러리는 둘 다 다룹니다.
+
+용어가 생소하신가요? [GLOSSARY.md](../GLOSSARY.md)를 참조하세요.
 
 ### 왜 이 스킬 라이브러리인가
 
@@ -18,19 +20,38 @@
 - **8개 언어, 750+ 트리거** — 한국어 포함 다국어 지원 (공식, 일상, 오타 변형)
 - **의존성 제로** — 순수 Markdown 스킬, Python 불필요, 가상환경 불필요, API 키 불필요
 - **도구 무관** — 독립 실행 또는 MCP를 통해 14개 서버(Ahrefs, Semrush, Cloudflare 등) 연동
-- **6가지 설치 방법** — ClawHub, skills.sh, Claude Code 플러그인, git submodule, fork, 수동
+- **7개 에이전트에서 네이티브 설치** — Claude Code, OpenClaw, Gemini CLI, Qwen Code, Amp, Kimi, CodeBuddy — 그 외 35+ 에이전트는 `npx skills`로
 
 ## 빠른 시작
 
 ```bash
-# 모든 20개 스킬 설치 (skills.sh)
+# Claude Code
+/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
+
+# OpenClaw / ClawHub
+clawhub install aaron-he-zhu/<skill>
+
+# Gemini CLI
+gemini extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills
+
+# Qwen Code
+qwen extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills
+
+# Amp
+amp skill add aaron-he-zhu/seo-geo-claude-skills
+
+# Kimi Code CLI
+kimi plugin install https://github.com/aaron-he-zhu/seo-geo-claude-skills.git
+
+# CodeBuddy (앱 내, 2단계)
+/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
+/plugin install aaron-seo-geo
+
+# 범용 폴백 (Cursor, Codex, opencode, Windsurf, Copilot 등 35+ 에이전트)
 npx skills add aaron-he-zhu/seo-geo-claude-skills
 
-# 단일 스킬 설치
+# 단일 스킬만 설치
 npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
-
-# Claude Code 플러그인으로 설치
-/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills
 ```
 
 설치 후 바로 사용:
@@ -103,6 +124,17 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 | `/seo:write-content <topic>` | SEO + GEO 최적화 콘텐츠 작성 |
 | `/seo:keyword-research <seed>` | 키워드 리서치 및 분석 |
 | `/seo:setup-alert <metric>` | 모니터링 알림 설정 |
+| `/seo:geo-drift-check [URL]` | (실험적, v9.0+) 예측 GEO Score와 실제 AI 엔진 인용 동작의 차이 검증 |
+
+### 유지보수 명령 (라이브러리 유지보수자 / 파워 유저용, 일상 사용 시 무시 가능)
+
+| 명령 | 설명 |
+|------|------|
+| `/seo:wiki-lint` | Wiki 건강 검사: 모순, 고아, 오래된 주장, 누락 페이지 감지 |
+| `/seo:contract-lint` | Auditor Runbook 드리프트 감지, handoff 스키마 검사, 전문 용어 누출 스캔 (v7.1.0+) |
+| `/seo:p2-review` | v7.1.0 연기 항목의 트리거 조건 평가; tombstone 재검토 (2026-07-10) |
+| `/seo:sync-versions` | `.claude-plugin/plugin.json`의 버전을 모든 크로스 에이전트 manifest로 전파 (v9.0+, `scripts/sync-versions.py` 대체) |
+| `/seo:validate-library` | 라이브러리 레벨 품질 게이트: 설명 예산, YAML 필드 순서, 언어 커버리지, 중복 트리거 감지 (v9.0+, `scripts/validate-descriptions.py` 대체) |
 
 ## 기여
 
@@ -112,4 +144,4 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 
 Apache License 2.0
 
-*영문 README 최종 동기화: v7.0.0*
+*영문 README 최종 동기화: v9.0.0*

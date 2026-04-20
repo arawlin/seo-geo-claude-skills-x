@@ -26,5 +26,6 @@
 - [ ] Follows the [Agent Skills specification](https://agentskills.io/specification.md)
 - [ ] `VERSIONS.md` updated with new version and date
 - [ ] `marketplace.json` (repo root) skills array updated (if adding a new skill)
+- [ ] `.claude-plugin/marketplace.json` byte-identical to root (`cp marketplace.json .claude-plugin/marketplace.json` — or let CI do it on main)
 - [ ] `.claude-plugin/plugin.json` skills array updated (if adding a new skill)
 - [ ] `README.md` skills table updated (if adding a new skill)

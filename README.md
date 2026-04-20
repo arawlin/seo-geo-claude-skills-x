@@ -1,9 +1,9 @@
 # SEO & GEO Skills Library
 
-**20 skills. 12 commands. Rank in search. Get cited by AI.**
+**20 skills. 15 commands. Rank in search. Get cited by AI.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-8.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.0.1-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/aaron-he-zhu/seo-geo-claude-skills)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/commits/main)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-purple)](https://claude.ai/download)
@@ -14,25 +14,52 @@ Claude Skills and Commands for Search Engine Optimization (SEO) and Generative E
 
 > **SEO** gets you ranked in search results. **GEO** gets you cited by AI systems (ChatGPT, Perplexity, Google AI Overviews). This library covers both.
 
+New to the terminology? See [GLOSSARY.md](GLOSSARY.md).
+
+## Quick Start in 60 seconds
+
+1. **Install** — three most common paths (full table of 7 native + fallback at [Installation](#installation)):
+   - **Claude Code**: `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills`
+   - **OpenClaw**: [clawhub.ai/plugins/aaron-seo-geo](https://clawhub.ai/plugins/aaron-seo-geo)
+   - **Universal (any agent)**: `npx skills add aaron-he-zhu/seo-geo-claude-skills`
+
+2. **Try it immediately**:
+   ```
+   Research keywords for my SaaS product targeting small teams
+   ```
+   A skill will auto-activate — no command needed.
+
+3. **Or use a direct command**:
+   ```
+   /seo:audit-page https://example.com/blog/my-article
+   ```
+
+For terminology, see [GLOSSARY.md](GLOSSARY.md).
+
 ### Why This Library
 
 - **120-item quality frameworks** — CORE-EEAT (80 items) + CITE (40 items) with veto gates, not narrative guesswork
 - **8 languages, 750+ triggers** — EN, ZH, JA, KO, ES, PT with formal, casual, and misspelling variants
 - **Zero dependencies** — pure markdown skills, no Python, no venv, no API keys required
 - **Tool-agnostic** — works standalone or with 14 MCP servers (Ahrefs, Semrush, Cloudflare, and more)
-- **6 install methods** — ClawHub, skills.sh, Claude Code plugin, git submodule, fork, manual
+- **Native install in 7 agents** — Claude Code, OpenClaw, Gemini CLI, Qwen Code, Amp, Kimi, CodeBuddy — plus 35+ more via `npx skills`
 
-## Quick Start
+## Installation
 
-> Works with [Claude Code](https://claude.ai/download), [OpenClaw](https://openclaw.com), [Cursor](https://cursor.com), [Codex](https://openai.com/codex), and [35+ other agents](https://skills.sh). No other dependencies.
+> Works natively in [Claude Code](https://claude.ai/download), [OpenClaw](https://openclaw.com), [Gemini CLI](https://geminicli.com), [Qwen Code](https://qwenlm.github.io/qwen-code-docs/), [Amp](https://ampcode.com), [Kimi Code CLI](https://moonshotai.github.io/kimi-cli/), [CodeBuddy](https://codebuddy.ai) — plus [35+ more agents](https://github.com/vercel-labs/skills#supported-agents) via `npx skills`. No other dependencies.
 
-1. **Install** — pick the method for your tool:
+1. **Install** — pick the command for your tool:
 
    | Your tool | Install command |
    |-----------|----------------|
-   | **OpenClaw** | `clawhub install aaron-he-zhu/<skill-name>` — [browse all 20](https://clawhub.ai/u/aaron-he-zhu) |
-   | **Claude Code** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` (all 20) |
-   | **Cursor / Codex / Windsurf / other** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` (all 20) |
+   | **Claude Code** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` |
+   | **OpenClaw** | `clawhub install aaron-he-zhu/<skill>` · [bundle](https://clawhub.ai/plugins/aaron-seo-geo) |
+   | **Gemini CLI** | `gemini extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
+   | **Qwen Code** | `qwen extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
+   | **Amp** | `amp skill add aaron-he-zhu/seo-geo-claude-skills` |
+   | **Kimi Code CLI** | `kimi plugin install https://github.com/aaron-he-zhu/seo-geo-claude-skills.git` |
+   | **CodeBuddy** | in-app: `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` then `/plugin install aaron-seo-geo` |
+   | **Cursor / Codex / opencode / Windsurf / Cline / Copilot / [35+ more](https://github.com/vercel-labs/skills#supported-agents)** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` |
 
    > All installation methods remain available at all times. If any marketplace is temporarily unavailable, use an alternative method.
 
@@ -238,6 +265,10 @@ Skills are organized into four execution phases plus one protocol layer. Use the
 
 One-shot tasks with explicit input and structured output.
 
+### User commands (10)
+
+Day-to-day SEO/GEO work. Use these directly from any Claude Code, Cursor, or Codex session.
+
 | Command | Description |
 |---------|-------------|
 | `/seo:audit-page <URL>` | Full on-page SEO + CORE-EEAT content quality audit with scored report |
@@ -249,9 +280,19 @@ One-shot tasks with explicit input and structured output.
 | `/seo:write-content <topic>` | Write SEO + GEO optimized content from a topic and target keyword |
 | `/seo:keyword-research <seed>` | Research and analyze keywords for a topic or niche |
 | `/seo:setup-alert <metric>` | Configure monitoring alerts for critical metrics |
+| `/seo:geo-drift-check [URL]` | (experimental, v9.0+) Validate predicted GEO Score against actual AI-engine citations |
+
+### Maintenance commands (5)
+
+For library maintainers / power users. Safe to ignore for daily use.
+
+| Command | Description |
+|---------|-------------|
 | `/seo:wiki-lint` | Wiki health check: detect contradictions, orphans, stale claims, missing pages |
 | `/seo:contract-lint` | Auditor Runbook drift detection, handoff schema check, jargon leak scan (v7.1.0+) |
 | `/seo:p2-review` | Evaluate v7.1.0 deferred items against trigger conditions; tombstone review (2026-07-10) |
+| `/seo:sync-versions` | Propagate canonical version from `.claude-plugin/plugin.json` to all cross-agent manifests (v9.0+, replaces `scripts/sync-versions.py`) |
+| `/seo:validate-library` | Library-level quality gate: description budgets, YAML field order, language coverage, duplicate triggers (v9.0+, replaces `scripts/validate-descriptions.py`) |
 
 Command files: [commands/](https://github.com/aaron-he-zhu/seo-geo-claude-skills/tree/main/commands/)
 
@@ -379,33 +420,20 @@ Not sure which skill to use? Here's a quick guide by goal:
 
 </details>
 
-## All Installation Methods
-
-| Method | Command | Best for |
-|--------|---------|----------|
-| **ClawHub** | `clawhub install aaron-he-zhu/<skill-name>` | OpenClaw users, individual skills |
-| **Skills CLI** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` | Most users, 35+ agents, all 20 at once |
-| **Claude Code Plugin** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` | Claude Code plugin system |
-| **Git Submodule** | `git submodule add ... .claude/skills/seo-geo` | Version-pinned team installs |
-| **Fork & Customize** | Fork + `npx skills add YOUR-ORG/...` | Teams with custom needs |
-| **Manual** | `git clone` + copy | No CLI needed |
+## Browse & advanced install
 
 Browse all 20 skills: [GitHub](https://github.com/aaron-he-zhu/seo-geo-claude-skills) · [ClawHub](https://clawhub.ai/u/aaron-he-zhu) · [skills.sh](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)
 
+For the full install table (7 native agents + universal fallback + submodule/fork/manual), see [Installation](#installation) above. A few less-common commands:
+
 ```bash
-# Install all skills (skills.sh)
-npx skills add aaron-he-zhu/seo-geo-claude-skills
-
-# Install a specific skill (skills.sh)
-npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
-
-# Install a specific skill (ClawHub)
+# Single skill via ClawHub
 clawhub install aaron-he-zhu/keyword-research
 
-# Preview available skills
+# Preview available skills (skills.sh)
 npx skills add aaron-he-zhu/seo-geo-claude-skills --list
 
-# Install globally for all agents
+# Global install for all agents (skills.sh)
 npx skills add aaron-he-zhu/seo-geo-claude-skills -g -y --all
 ```
 
@@ -431,6 +459,8 @@ See [CONTRIBUTING.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob
 ## Disclaimer
 
 These skills assist with SEO and GEO workflows but do not guarantee search rankings, AI citations, or traffic results. SEO and GEO outcomes depend on many factors outside the scope of this tool. Always verify recommendations with qualified professionals before making significant changes to your content strategy. AI-generated analysis should be reviewed by domain experts before being relied upon for business decisions.
+
+**Not legal advice.** Several skills and references (SECURITY.md scraping boundaries, CORE-EEAT T04 FTC disclosure, memory-management GDPR provisions, scoring-rubric.md WCAG/ADA section, llm-crawler-handling.md EU AI Act) cite statutes, case law, and regulator guidance current as of release date. Laws, penalty figures, and judicial interpretations evolve; jurisdictional coverage varies. Consult qualified legal counsel before relying on any legal summary in this repository for compliance decisions.
 
 ## License
 

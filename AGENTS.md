@@ -10,7 +10,7 @@ Guidelines for AI agents working in this repository.
 - **License**: Apache 2.0
 - **Skills Specification**: [Agent Skills](https://agentskills.io/specification.md)
 
-This is a content-only repository (no executable code). It contains 20 SEO and GEO skills, 9 one-shot commands, and shared reference documents for AI coding agents.
+This is a content-only repository (no executable code). It contains 20 SEO and GEO skills, 15 one-shot commands, and shared reference documents for AI coding agents.
 
 ## Repository Structure
 
@@ -41,7 +41,7 @@ seo-geo-claude-skills/
 │   ├── domain-authority-auditor/SKILL.md
 │   ├── entity-optimizer/SKILL.md
 │   └── memory-management/SKILL.md
-├── commands/                         # 9 one-shot command files
+├── commands/                         # 15 one-shot command files
 ├── references/                       # Shared reference documents
 │   ├── core-eeat-benchmark.md        # 80-item content quality framework
 │   ├── cite-domain-rating.md         # 40-item domain authority framework
@@ -214,9 +214,14 @@ Every skill works at Tier 1. Tool integration enhances but never gates functiona
 
 | Your tool | Install command |
 |-----------|----------------|
-| **OpenClaw** | `clawhub install aaron-he-zhu/<skill-name>` — [browse all 20](https://clawhub.ai/u/aaron-he-zhu) |
-| **Claude Code** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` (all 20) |
-| **Cursor / Codex / Windsurf / other** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` (all 20) |
+| **Claude Code** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` |
+| **OpenClaw** | `clawhub install aaron-he-zhu/<skill>` · [bundle](https://clawhub.ai/plugins/aaron-seo-geo) |
+| **Gemini CLI** | `gemini extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
+| **Qwen Code** | `qwen extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
+| **Amp** | `amp skill add aaron-he-zhu/seo-geo-claude-skills` |
+| **Kimi Code CLI** | `kimi plugin install https://github.com/aaron-he-zhu/seo-geo-claude-skills.git` |
+| **CodeBuddy** | in-app: `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` then `/plugin install aaron-seo-geo` |
+| **Cursor / Codex / opencode / Windsurf / Cline / Copilot / [35+ more](https://github.com/vercel-labs/skills#supported-agents)** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` |
 
 **Git Submodule** (version-pinned):
 ```bash

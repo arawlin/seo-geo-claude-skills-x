@@ -95,10 +95,11 @@ After adding or updating a skill, **all 5 files must stay in sync**:
 - [ ] `VERSIONS.md` — add or update the skill's version and date
 - [ ] `.claude-plugin/plugin.json` — add the skill path to the `skills` array
 - [ ] `marketplace.json` (repo root) — add the skill path to the `skills` array (must match plugin.json exactly)
+- [ ] `.claude-plugin/marketplace.json` — **mirror** of the repo-root file, must be byte-identical (run `cp marketplace.json .claude-plugin/marketplace.json` after editing the root). The CI script `.github/scripts/sync-skills.js` handles this automatically on push to main, but manual edits need the copy. See [#8](https://github.com/aaron-he-zhu/seo-geo-claude-skills/issues/8) for why this is a real file copy and not a symlink.
 - [ ] `README.md` — add the skill to the appropriate category table
 - [ ] `CLAUDE.md` — add the skill to the phase/category table
 
-> **Important**: `plugin.json` and `marketplace.json` must be updated together on every version bump. They must contain identical skills arrays. Keeping them out of sync breaks skills.sh marketplace discovery.
+> **Important**: `plugin.json` and `marketplace.json` must be updated together on every version bump. They must contain identical skills arrays. Keeping them out of sync breaks skills.sh marketplace discovery. The two `marketplace.json` copies (repo root + `.claude-plugin/`) must also be byte-identical — `/seo:validate-library` check #6 enforces this.
 
 ## Improving Existing Skills
 
@@ -127,6 +128,7 @@ Before submitting a PR:
 - [ ] Related skills are linked correctly
 - [ ] All 5 tracking files updated (VERSIONS.md, plugin.json, marketplace.json, README.md, CLAUDE.md)
 - [ ] plugin.json and marketplace.json skills arrays are identical
+- [ ] `.claude-plugin/marketplace.json` is byte-identical to repo-root `marketplace.json` (run `cp marketplace.json .claude-plugin/marketplace.json` if edited by hand)
 
 ## Submitting Your Contribution
 
