@@ -26,7 +26,7 @@
 - 中文内容选题和编辑规划
 - 以百度为主的关键词研究
 - 需要实用优先级判断的新站或低权重站
-- 同时结合官方平台、第三方工具和手工 SERP 审查的混合型工作流
+- 同时结合官方平台、第三方工具和 workspace 本地 SERP MCP 的混合型工作流
 
 这套映射不默认依赖 Ahrefs、Semrush 或 Google Search Console。
 
@@ -38,9 +38,12 @@
 | --- | --- | --- |
 | `~~SEO tool` | 百度指数、5118、爱站、站长工具 | 需求分、扩词、相关词、趋势输入 |
 | `~~search console` | 百度搜索资源平台、百度统计、服务端日志 | 查询词到页面的表现、收录、点击与曝光证据 |
-| `~~competitive intel` | 5118、爱站、百度前 10 手工抽样 | 竞品覆盖、结果页结构、交集分析 |
+| `~~competitive intel` | `search-serp-adapter`、5118、爱站 | 竞品覆盖、结果页结构、交集分析 |
 | `~~analytics` | 百度统计、第一方埋点、服务端日志 | 落地页访问上下文与转化辅助判断 |
 | `~~AI monitor` | 百度 AI 搜索、豆包、Kimi、元宝的手工追踪 | 需要 GEO 观察时作为补充输入 |
+
+在这个仓库里，`.vscode/mcp.json` 已经注册了一个本地 SERP MCP server，名称是
+`search-serp-adapter`。在需要实时百度结果页结构时，默认先使用它，再决定是否做人审。
 
 ## 来源优先级规则
 
@@ -63,9 +66,10 @@
 
 这些平台主要用于关键词发现、相关词扩展、需求估计和竞品覆盖分析。
 
-### 3. 手工 SERP 抽样
+### 3. Workspace 本地 SERP MCP
 
-当没有稳定 API，或不同平台结果冲突时，使用百度 PC 与移动端手工抽样作为最终校验。
+把 `.vscode/mcp.json` 中的 `search-serp-adapter` 作为百度 PC 和移动端结果抓取的主来源。
+只有在本地 MCP 不可用，或需要人工复核结果时，才退回手工检查。
 
 ## 指标翻译层
 
@@ -182,7 +186,7 @@ difficulty_score =
 
 - 5118 竞品词导出
 - 爱站竞品词报告
-- 关键主题下百度前 20 结果的手工采集
+- `search-serp-adapter` 导出的关键主题结果集
 
 ## 自动化的最小数据契约
 
@@ -243,6 +247,11 @@ difficulty_score =
 - `ecosystem_flag`
 - `freshness_hint`
 - `snippet_presence`
+
+实现说明：
+
+- 在这个 workspace 中，这个能力应优先通过 `.vscode/mcp.json` 里配置的
+  `search-serp-adapter` MCP server 提供。
 
 ### 4. 自站查询数据
 
@@ -339,20 +348,20 @@ Opportunity = (Demand Score × Intent Value) / Difficulty Score
 
 ## 推荐落地路径
 
-### 第一阶段：手工工作流
+### 第一阶段：本地 MCP 工作流
 
-先从手工采集开始：
+先从本地 SERP MCP 配合手工和第三方指标开始：
 
 - 百度指数截图或导出
 - 5118 或爱站关键词导出
-- 百度前 10 手工抽样
+- `search-serp-adapter` SERP 抓取结果
 - 百度搜索资源平台截图
 
 ### 第二阶段：文件驱动聚合
 
 把导出的 CSV 统一归一成本文档定义的字段。
 
-### 第三阶段：MCP 自动化
+### 第三阶段：扩展 MCP 自动化
 
 再把归一层包装成 `~~SEO tool` 和 `~~search console` 的实现，供自动化流程调用。
 

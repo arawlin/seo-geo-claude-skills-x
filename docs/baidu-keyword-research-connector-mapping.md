@@ -31,7 +31,7 @@ This mapping is designed for:
 - Baidu-led keyword research
 - New or low-authority sites that need practical prioritization
 - Hybrid workflows that combine official platform data, third-party tools, and
-  manual SERP review
+  workspace-local SERP MCP retrieval
 
 This mapping does not assume that Ahrefs, Semrush, or Google Search Console are
 present.
@@ -44,9 +44,13 @@ Map the generic connector categories to Baidu-market sources as follows.
 | --- | --- | --- |
 | `~~SEO tool` | Baidu Index, 5118, Aizhan, Chinaz | Demand scoring, expansion, related terms, trend inputs |
 | `~~search console` | Baidu Search Resource Platform, Baidu Tongji, server logs | Query-to-page performance, indexation, click and impression evidence |
-| `~~competitive intel` | 5118, Aizhan, manual Baidu top-10 sampling | Competitor coverage, ranking pattern review, overlap analysis |
+| `~~competitive intel` | `search-serp-adapter`, 5118, Aizhan | Competitor coverage, ranking pattern review, overlap analysis |
 | `~~analytics` | Baidu Tongji, first-party analytics, server logs | Landing page traffic context and conversion support |
 | `~~AI monitor` | Manual tracking for Baidu AI Search, Doubao, Kimi, Yuanbao | GEO observations when AI citation monitoring is required |
+
+In this repository, `.vscode/mcp.json` already registers a local SERP MCP server
+named `search-serp-adapter`. Use it as the default source for live Baidu SERP
+structure before falling back to manual review.
 
 ## Source Priority Rules
 
@@ -72,10 +76,11 @@ landing pages, and click behavior.
 Use these platforms for keyword discovery, related queries, demand estimation,
 and competitor coverage.
 
-### 3. Manual SERP Sampling
+### 3. Workspace-local SERP MCP
 
-Use manual Baidu desktop and mobile result sampling when no stable API exists or
-when platform outputs conflict.
+Use `search-serp-adapter` from `.vscode/mcp.json` as the primary source for
+Baidu desktop and mobile result retrieval. Only fall back to manual review when
+the local MCP server is unavailable or when results need human verification.
 
 ## Metric Translation Layer
 
@@ -195,7 +200,7 @@ Recommended sources:
 
 - 5118 competitor keyword exports
 - Aizhan competitor term reports
-- manual top-20 Baidu ranking collection for key clusters
+- `search-serp-adapter` result exports for key clusters
 
 ## Minimum Data Contract For Automation
 
@@ -257,6 +262,11 @@ Output:
 - `ecosystem_flag`
 - `freshness_hint`
 - `snippet_presence`
+
+Implementation note:
+
+- In this workspace, route this operation through the local
+  `search-serp-adapter` MCP server configured in `.vscode/mcp.json`.
 
 ### 4. Site Query Data
 
@@ -354,20 +364,20 @@ actually supports.
 
 ## Recommended Rollout Path
 
-### Phase 1: Manual Workflow
+### Phase 1: Local MCP Workflow
 
-Start with manual collection:
+Start with the local SERP MCP plus manual and third-party metrics:
 
 - Baidu Index screenshots or exports
 - 5118 or Aizhan keyword exports
-- manual Baidu top-10 sampling
+- `search-serp-adapter` SERP retrieval
 - Baidu Search Resource Platform screenshots
 
 ### Phase 2: File-Driven Aggregation
 
 Normalize exported CSV files into the fields defined in this document.
 
-### Phase 3: MCP Automation
+### Phase 3: Expanded MCP Automation
 
 Wrap the normalized data layer behind `~~SEO tool` and `~~search console`
 implementations for automated use.
