@@ -22,3 +22,7 @@ docs/plans/
 
 # Node (if any tooling added later)
 node_modules/
+
+vendors/
+
+browser-state/
