@@ -31,142 +31,67 @@ A comprehensive **SEO and GEO performance report** that aggregates data across a
 
 ## Usage
 
-Single domain:
 ```
 /seo:report example.com last-month
 /seo:report example.com last-quarter vs previous-quarter
-/seo:report example.com [YYYY-MM-DD] to [YYYY-MM-DD]
 /seo:report example.com last-90-days format=executive
-```
-
-Named project (loads from `memory/wiki/<slug>/index.md`):
-```
 /seo:report project=acme-q2 last-month
-```
-
-Agency cross-client mode — aggregate all registered projects:
-```
-/seo:report project=all last-week
 /seo:report project=all last-month format=executive
 ```
 
-**Arguments:**
-- Either `domain` OR `project=<slug>` OR `project=all` (required — exactly one)
-- Time period (required): `last-month`, `last-quarter`, `Q[N]-[YYYY]`, `[YYYY-MM-DD] to [YYYY-MM-DD]`, `last-30-days`, `last-90-days`
-- Comparison period (optional): `vs previous-quarter`, `vs last-year`, `vs previous-period`
-- `format=executive` (optional): Condensed summary for stakeholders (default: `detailed`)
+**Arguments:** Either `domain` OR `project=<slug>` OR `project=all` (exactly one) + time period (required) + optional `vs <comparison>` + optional `format=executive`.
 
 ## Workflow
 
 ### Single-domain or single-project mode
 
-1. **Resolve scope** — If `domain=X`, use X. If `project=<slug>`, read `memory/wiki/<slug>/index.md` to pull the domain(s) registered for that project (a project can own multiple domains).
-2. **Generate Performance Report** — Invoke `performance-reporter` with resolved domain(s), period, and comparison. Collects data across all channels (organic traffic, rankings, backlinks, GEO visibility, technical health).
-3. **Include CITE/CORE-EEAT Context** (optional) — If `domain-authority-auditor` or `content-quality-auditor` have been run previously for this domain, include latest scores.
-4. **Compile Output** — Format below. For `format=executive`, include only Executive Summary and Prioritized Action Plan.
+1. **Resolve scope** -- If `domain=X`, use X. If `project=<slug>`, read `memory/wiki/<slug>/index.md` for registered domain(s).
+2. **Generate Performance Report** -- Invoke `performance-reporter` with resolved domain(s), period, and comparison.
+3. **Include CITE/CORE-EEAT Context** (optional) -- If auditors have been run previously, include latest scores.
+4. **Compile Output** -- For `format=executive`, include only Executive Summary and Prioritized Action Plan.
 
 ### Cross-project mode (`project=all`)
 
-1. **Enumerate projects** — List every `memory/wiki/<slug>/index.md` file. Extract project name + owning domain(s).
-2. **Per-project loop** — Run steps 2-3 of the single-project flow for each project. Collect per-project sections.
-3. **Aggregate** — Build a cross-project executive summary: total traffic, aggregate rank movement, number of P0/P1 issues per project, cross-project patterns (e.g., "3 of 5 projects show Core Web Vitals regression"). The per-project detail sections render below the aggregate summary, each labeled with the project slug.
-4. **Output** — Use the `CROSS-PROJECT` output format (below). `format=executive` collapses to aggregate summary + per-project one-liners.
+1. **Enumerate projects** -- List every `memory/wiki/<slug>/index.md`. Extract project name + domain(s).
+2. **Per-project loop** -- Run single-project steps 2-3 for each project.
+3. **Aggregate** -- Cross-project executive summary: total traffic, aggregate rank movement, P0/P1 issues per project, cross-project patterns.
+4. **Output** -- Use cross-project format. `format=executive` collapses to aggregate summary + per-project one-liners.
 
 ## Output Format
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SEO & GEO PERFORMANCE REPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output uses the following structure (single-domain or cross-project, parameterized):
 
-DOMAIN: [domain]
-PERIOD: [date range]
-COMPARISON: [vs period]
+```markdown
+## SEO & GEO PERFORMANCE REPORT (or CROSS-PROJECT PERFORMANCE REPORT)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EXECUTIVE SUMMARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**Scope**: [domain] or [N projects: slug1, slug2, ...]
+**Period**: [date range] | **Comparison**: [vs period]
 
-PERFORMANCE SNAPSHOT: key metrics with period-over-period changes
-KEY WINS / CRITICAL CONCERNS / STRATEGIC RECOMMENDATIONS
+### Executive Summary
+Performance snapshot: key metrics with period-over-period changes.
+Key wins / critical concerns / strategic recommendations.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DETAILED FINDINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Aggregate Summary (cross-project only)
+Total organic sessions (vs prev, delta%). Rank winners/losers.
+P0 issues across portfolio (by project). Cross-project patterns (1-3 bullets).
 
-1. Organic Traffic Performance
-2. Keyword Rankings & Visibility
-3. Domain Authority (CITE Score)
-4. Backlink Profile Health
-5. Technical SEO Health
-6. GEO Performance
-7. Content Performance
+### Detailed Findings (7 sections)
+1. Organic Traffic  2. Keyword Rankings  3. Domain Authority (CITE)
+4. Backlinks  5. Technical SEO  6. GEO Performance  7. Content Performance
+(Cross-project: per-project detail with same 7 sections, condensed, labeled by slug.)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PRIORITIZED ACTION PLAN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Prioritized Action Plan
+P0 Critical / P1 High / P2 Medium / P3 Low.
+(Cross-project: grouped by theme, not by project.)
 
-P0 CRITICAL / P1 HIGH / P2 MEDIUM / P3 LOW
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-APPENDIX
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Data Sources, Methodology, Historical Trends, Competitor Benchmarking
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-## Cross-Project Output Format (`project=all`)
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CROSS-PROJECT PERFORMANCE REPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-PROJECTS: [count] ([slug1], [slug2], ...)
-PERIOD: [date range]
-COMPARISON: [vs period]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-AGGREGATE SUMMARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Total organic sessions: X (vs prev: Y, delta Z%)
-Rank winners / losers: A / B (top-3 positions)
-P0 issues across portfolio: N (by project: slug=n, ...)
-Cross-project patterns: [1-3 bullets]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PER-PROJECT DETAIL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-## [slug1] — [domain]
-  [same 7-section structure as single-domain report, condensed]
-
-## [slug2] — [domain]
-  ...
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PORTFOLIO ACTION PLAN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-P0 items across all projects, grouped by theme (not by project).
-Useful for agencies planning the team's focus for the coming period.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Appendix
+Data Sources, Methodology, Historical Trends, Competitor Benchmarking.
 ```
 
 ## Tips
 
-- Compare to same period last year to account for seasonality
-- Use `format=executive` for stakeholder presentations
-- Verify analytics tracking is firing correctly before investigating drops
-- Focus on trend analysis over absolute numbers when using manual data
-- For `project=all`, ensure each project has a populated `memory/wiki/<slug>/index.md` first; otherwise run `/seo:wiki-lint` to see which projects are registered
+Compare to same period last year for seasonality. Use `format=executive` for stakeholders. For `project=all`, ensure each project has `memory/wiki/<slug>/index.md` first (run `/seo:wiki-lint` to check).
 
 ## Related Skills
 
-- [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) -- Comprehensive performance reporting
-- [domain-authority-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/domain-authority-auditor/SKILL.md) -- CITE domain authority scoring
-- [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) -- CORE-EEAT content quality scoring
+- [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) | [domain-authority-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/domain-authority-auditor/SKILL.md) | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md)
