@@ -34,13 +34,10 @@ metadata:
     - "rich snippets"
     - "FAQ schema"
     - "schema.org"
-    - "structured data markup"
     # EN-casual
     - "add FAQ rich results"
     - "I want star ratings in Google"
     - "product markup"
-    - "recipe schema"
-    - "add structured data to my page"
     # EN-question
     - "how to add schema markup"
     - "how to get rich snippets"
@@ -77,9 +74,6 @@ metadata:
     - "dados estruturados"
     - "marcação schema"
     - "resultados ricos"
-    # Misspellings
-    - "shema markup"
-    - "structred data"
 ---
 
 # Schema Markup Generator

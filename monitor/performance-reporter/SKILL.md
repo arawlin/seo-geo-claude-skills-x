@@ -30,17 +30,11 @@ metadata:
     - "performance report"
     - "traffic report"
     - "SEO dashboard"
-    - "SEO analytics"
-    - "monthly report"
     # EN-casual
-    - "report to stakeholders"
     - "monthly SEO report"
     - "show me my SEO results"
-    - "present SEO results to my boss"
     - "report to my boss"
-    - "monthly SEO summary"
     # EN-question
-    - "how are my SEO metrics"
     - "how is my SEO performing"
     # ZH-pro
     - "SEO报告"
@@ -65,8 +59,6 @@ metadata:
     - "reporte de rendimiento"
     # PT
     - "relatório SEO"
-    # Misspellings
-    - "SEO repoort"
 ---
 
 # Performance Reporter

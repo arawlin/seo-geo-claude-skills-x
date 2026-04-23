@@ -28,17 +28,14 @@ metadata:
     - "track rankings"
     - "check keyword positions"
     - "ranking changes"
-    - "monitor SERP positions"
     - "keyword tracking"
     - "position monitoring"
     # EN-casual
     - "how am I ranking"
-    - "where do I rank for this keyword"
     - "did my rankings change"
     - "where do I rank now"
     - "check my positions"
     # EN-question
-    - "what position am I ranking at"
     - "how are my rankings doing"
     # ZH-pro
     - "排名追踪"
@@ -68,8 +65,6 @@ metadata:
     - "rastreamento de rankings"
     - "monitoramento de posições"
     - "posição no Google"
-    # Misspellings
-    - "rank trackng"
 ---
 
 # Rank Tracker

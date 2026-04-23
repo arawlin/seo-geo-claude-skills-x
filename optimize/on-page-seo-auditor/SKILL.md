@@ -33,23 +33,17 @@ metadata:
     - "audit page SEO"
     - "on-page SEO check"
     - "SEO score"
-    - "page optimization"
     - "on-page audit"
     - "SEO page analysis"
-    - "content audit"
     # EN-casual
-    - "what SEO issues does this page have"
     - "check my page"
-    - "score my page"
     - "why isn't this page ranking"
     - "what's wrong with this page's SEO"
     - "is my page optimized"
-    - "my rankings tanked"
     - "why did my rankings drop"
     # EN-question
     - "why is my page not ranking"
     - "how do I improve my page SEO"
-    - "what SEO problems does this page have"
     # EN-competitor
     - "Screaming Frog alternative"
     - "Yoast SEO alternative"
@@ -84,9 +78,6 @@ metadata:
     - "puntuación SEO"
     # PT
     - "auditoria SEO on-page"
-    # Misspellings
-    - "on page SEO aduit"
-    - "SEO scroe"
 ---
 
 # On-Page SEO Auditor

@@ -32,21 +32,16 @@ metadata:
     - "optimize for AI"
     - "get cited by ChatGPT"
     - "AI optimization"
-    - "appear in AI answers"
     - "GEO optimization"
     - "generative engine optimization"
-    - "AI-friendly content"
     - "LLM citations"
     # EN-casual
     - "get cited by AI"
     - "show up in ChatGPT answers"
     - "AI doesn't mention my brand"
-    - "make content AI-quotable"
     - "how do I get AI to mention me"
-    - "ChatGPT doesn't know my brand"
     # EN-question
     - "how to appear in AI answers"
-    - "how to get cited by AI"
     - "why doesn't AI mention my brand"
     # EN-competitor
     - "Perplexity optimization"
@@ -80,9 +75,6 @@ metadata:
     # PT
     - "otimização para IA"
     - "aparecer nas respostas da IA"
-    # Misspellings
-    - "generative engine optimisation"
-    - "GEO optimisation"
 ---
 
 # GEO Content Optimizer

@@ -35,7 +35,6 @@ metadata:
     - "keyword research"
     - "find keywords"
     - "keyword analysis"
-    - "keyword discovery"
     - "search volume analysis"
     - "keyword difficulty"
     - "topic research"
@@ -43,15 +42,12 @@ metadata:
     # EN-casual
     - "what should I write about"
     - "what are people searching for"
-    - "what are people googling"
-    - "find me topics to write"
     - "give me keyword ideas"
     - "which keywords should I target"
     - "why is my traffic low"
     - "I need content ideas"
     # EN-question
     - "how do I find good keywords"
-    - "what keywords should I target"
     - "how competitive is this keyword"
     # EN-competitor
     - "Ahrefs keyword explorer alternative"
@@ -98,9 +94,6 @@ metadata:
     - "cómo encontrar palabras clave"
     # PT
     - "pesquisa de palavras-chave"
-    # Misspellings
-    - "keywrod research"
-    - "keywork research"
 ---
 
 # Keyword Research

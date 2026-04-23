@@ -27,17 +27,12 @@ metadata:
     # EN-formal
     - "fix internal links"
     - "improve site architecture"
-    - "link structure"
-    - "distribute page authority"
     - "internal linking strategy"
-    - "site navigation"
     - "link equity"
     # EN-casual
     - "orphan pages"
     - "site architecture is messy"
-    - "pages have no links pointing to them"
     - "pages have no links"
-    - "site structure is messy"
     # EN-question
     - "how to improve internal linking"
     - "how to fix orphan pages"
@@ -73,8 +68,6 @@ metadata:
     - "links internos"
     - "arquitetura do site"
     - "páginas órfãs"
-    # Misspellings
-    - "internal linkng"
 ---
 
 # Internal Linking Optimizer

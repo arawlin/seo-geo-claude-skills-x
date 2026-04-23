@@ -29,20 +29,15 @@ metadata:
     - "update old content"
     - "refresh content"
     - "content is outdated"
-    - "improve declining rankings"
-    - "revive old blog posts"
     - "content decay"
     - "content refresh strategy"
     # EN-casual
     - "traffic is dropping"
     - "ranking dropped"
     - "this post is outdated"
-    - "traffic is declining on this page"
-    - "rankings dropped for this article"
     - "my old content needs updating"
     # EN-question
     - "how to fix declining traffic"
-    - "why is my content losing rankings"
     - "how often should I update content"
     # EN-competitor
     - "Clearscope content refresh"
@@ -73,9 +68,6 @@ metadata:
     - "refrescar contenido antiguo"
     # PT
     - "atualizar conteúdo"
-    # Misspellings
-    - "content refesh"
-    - "content refreshh"
 ---
 
 # Content Refresher

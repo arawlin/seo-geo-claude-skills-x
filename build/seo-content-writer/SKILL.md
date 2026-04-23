@@ -33,21 +33,16 @@ metadata:
     - "create blog post"
     - "write an article"
     - "content writing"
-    - "draft optimized content"
     - "write for SEO"
     - "SEO copywriting"
-    - "blog writing"
     # EN-casual
     - "write me a blog post"
-    - "write me an article"
     - "help me write about"
-    - "draft an article about"
     - "I need a blog post"
     - "create content for my site"
     # EN-question
     - "how do I write content that ranks"
     - "how to write SEO friendly content"
-    - "what makes content rank well"
     # EN-competitor
     - "SurferSEO alternative"
     - "Clearscope alternative"
@@ -82,9 +77,6 @@ metadata:
     # PT
     - "redação SEO"
     - "escrever artigo SEO"
-    # Misspellings
-    - "SEO copywritting"
-    - "writting SEO content"
 ---
 
 # SEO Content Writer

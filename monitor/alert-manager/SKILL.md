@@ -28,17 +28,12 @@ metadata:
     # EN-formal
     - "set up SEO alerts"
     - "monitor rankings"
-    - "ranking notifications"
     - "traffic alerts"
     - "competitor alerts"
-    - "automated monitoring"
     # EN-casual
-    - "notify me when rankings drop"
     - "alert me if rankings drop"
     - "notify me of traffic changes"
-    - "watch competitor changes"
     - "watch my keywords for changes"
-    - "alert me about changes"
     # EN-question
     - "how to monitor my rankings"
     - "how to set up SEO alerts"
@@ -62,8 +57,6 @@ metadata:
     - "monitoreo de rankings"
     # PT
     - "alertas de SEO"
-    # Misspellings
-    - "SEO allerts"
 ---
 
 # Alert Manager

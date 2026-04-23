@@ -31,15 +31,12 @@ metadata:
     - "SERP analysis"
     - "what ranks for"
     - "SERP features"
-    - "why does this page rank"
     - "featured snippets"
     - "AI overviews"
     # EN-casual
     - "what's on page one for this query"
     - "who ranks for this keyword"
     - "what does Google show for"
-    - "what shows up for this search"
-    - "who is on page one"
     # EN-question
     - "why does this page rank first"
     - "what SERP features appear for"
@@ -64,8 +61,6 @@ metadata:
     - "análisis de resultados de búsqueda"
     # PT
     - "análise de SERP"
-    # Misspellings
-    - "serp anaylsis"
 ---
 
 # SERP Analysis

@@ -27,8 +27,6 @@ metadata:
     # EN-formal
     - "remember project context"
     - "save SEO data"
-    - "track campaign progress"
-    - "store keyword data"
     - "manage project memory"
     - "project context"
     - "refresh wiki index"
@@ -36,8 +34,6 @@ metadata:
     - "wiki lint"
     # EN-casual
     - "remember this for next time"
-    - "save my keyword data"
-    - "keep track of this campaign"
     - "what did we decide last time"
     - "what do we know so far"
     - "project status"
@@ -75,10 +71,6 @@ metadata:
     - "memória do projeto"
     - "contexto de sessão"
     - "gerenciar memória"
-    # Misspellings
-    - "memroy management"
-    - "project memery"
-    - "hot cahce"
 ---
 
 # Memory Management

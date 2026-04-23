@@ -29,14 +29,11 @@ metadata:
     - "audit domain authority"
     - "CITE audit"
     - "domain trust score"
-    - "domain credibility check"
     - "domain rating"
     - "site authority"
     # EN-casual
     - "how trustworthy is my site"
     - "is my domain credible"
-    - "is my domain trustworthy"
-    - "domain credibility score"
     - "Google penalty recovery"
     - "my site got penalized"
     # EN-question
@@ -61,8 +58,6 @@ metadata:
     - "auditoría de dominio"
     # PT
     - "autoridade de domínio"
-    # Misspellings
-    - "domain autority"
 ---
 
 # Domain Authority Auditor

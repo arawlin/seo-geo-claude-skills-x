@@ -39,22 +39,17 @@ metadata:
     - "crawl issues"
     - "site indexing problems"
     - "canonical tag issues"
-    - "duplicate content"
-    - "mobile-friendly check"
     - "site speed"
     - "site health check"
     # EN-casual
     - "my site is slow"
     - "Google can't crawl my site"
-    - "Google can't find my pages"
-    - "mobile issues"
     - "indexing problems"
     - "why is my site slow"
     # EN-question
     - "how do I fix my page speed"
     - "why is my site not indexed"
     - "how to improve Core Web Vitals"
-    - "why did my site disappear from Google"
     # EN-competitor
     - "PageSpeed Insights alternative"
     - "GTmetrix alternative"
@@ -98,9 +93,6 @@ metadata:
     - "auditoria SEO técnica"
     - "meu site não aparece no Google"
     - "velocidade de carregamento"
-    # Misspellings
-    - "techincal SEO"
-    - "core web vitalls"
 ---
 
 # Technical SEO Checker

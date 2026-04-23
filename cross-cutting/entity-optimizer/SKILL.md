@@ -28,17 +28,14 @@ metadata:
     # EN-formal
     - "optimize entity presence"
     - "build knowledge graph"
-    - "improve knowledge panel"
     - "entity audit"
     - "establish brand entity"
     - "entity disambiguation"
     # EN-casual
     - "Google doesn't know my brand"
     - "no knowledge panel"
-    - "establish my brand"
     - "establish my brand as an entity"
     - "get a Google knowledge card"
-    - "no Wikipedia entry"
     # EN-question
     - "how to get a knowledge panel"
     - "how to build brand entity"
@@ -66,9 +63,6 @@ metadata:
     - "panel de conocimiento"
     # PT
     - "otimização de entidade"
-    # Misspellings
-    - "knowlege panel"
-    - "enity optimization"
 ---
 
 # Entity Optimizer

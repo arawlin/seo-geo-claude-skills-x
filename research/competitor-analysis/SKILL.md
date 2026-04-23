@@ -31,20 +31,15 @@ metadata:
     - "competitor SEO"
     - "competitive analysis"
     - "competitor keywords"
-    - "competitor backlinks"
-    - "market analysis"
     - "competitive intelligence"
     # EN-casual
     - "what are my competitors doing"
-    - "what are they doing differently"
     - "why do they rank higher"
     - "spy on competitor SEO"
-    - "what are they doing better"
     - "why do they outrank me"
     # EN-question
     - "who are my SEO competitors"
     - "how do I beat my competitors"
-    - "why do competitors rank higher"
     # EN-competitor
     - "SpyFu alternative"
     - "Semrush competitor analysis"
@@ -73,9 +68,6 @@ metadata:
     - "análisis competitivo SEO"
     # PT
     - "análise de concorrentes"
-    # Misspellings
-    - "competitve analysis"
-    - "compeditor analysis"
 ---
 
 # Competitor Analysis

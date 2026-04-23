@@ -31,21 +31,16 @@ metadata:
     - "write meta description"
     - "improve CTR"
     - "Open Graph tags"
-    - "social media preview"
     - "title optimization"
     - "meta tags"
-    - "Twitter cards"
     # EN-casual
     - "my title tag needs work"
     - "low click-through rate"
     - "fix my meta tags"
     - "OG tags not showing"
-    - "social preview looks wrong"
-    - "my click rate is low"
     # EN-question
     - "how to write a good title tag"
     - "how to improve click-through rate"
-    - "what is a good meta description"
     # EN-competitor
     - "Yoast SEO title tool"
     - "RankMath title optimizer"
@@ -76,9 +71,6 @@ metadata:
     - "etiquetas Open Graph"
     # PT
     - "otimizar meta tags"
-    # Misspellings
-    - "meta discription"
-    - "tittle tag"
 ---
 
 # Meta Tags Optimizer

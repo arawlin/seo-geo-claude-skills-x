@@ -32,20 +32,14 @@ metadata:
     - "check link profile"
     - "find toxic links"
     - "link building opportunities"
-    - "link profile analysis"
     - "backlink audit"
-    - "link quality"
     # EN-casual
     - "who links to me"
     - "I have spammy links"
     - "how do I get more backlinks"
-    - "how do I get more links"
     - "disavow links"
-    - "link building outreach"
-    - "disavow file"
     # EN-question
     - "how to build backlinks"
-    - "how to find toxic backlinks"
     # ZH-pro
     - "外链分析"
     - "反向链接"
@@ -72,9 +66,6 @@ metadata:
     - "enlaces entrantes"
     # PT
     - "análise de backlinks"
-    # Misspellings
-    - "backlink anaylsis"
-    - "backlnk analysis"
 ---
 
 # Backlink Analyzer

@@ -32,15 +32,11 @@ metadata:
     - "EEAT score"
     - "CORE-EEAT audit"
     - "content quality check"
-    - "content assessment"
-    - "quality score"
     # EN-casual
     - "is this ready to publish"
     - "grade my article"
     - "check before publishing"
-    - "how good is my content"
     - "is my content good enough to rank"
-    - "rate my content quality"
     # EN-question
     - "is my content ready to publish"
     - "how do I improve content quality"
@@ -63,8 +59,6 @@ metadata:
     - "puntuación EEAT"
     # PT
     - "auditoria de qualidade"
-    # Misspellings
-    - "EEAT scroe"
 ---
 
 # Content Quality Auditor

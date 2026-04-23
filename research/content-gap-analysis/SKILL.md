@@ -29,15 +29,11 @@ metadata:
     - "find content gaps"
     - "content opportunities"
     - "topic analysis"
-    - "content strategy gaps"
     - "editorial calendar"
-    - "untapped topics"
     # EN-casual
     - "what am I missing"
-    - "topics to cover"
     - "what do competitors write about"
     - "what should I cover next"
-    - "topics I haven't written about"
     - "they cover this but I don't"
     # EN-question
     - "what topics am I missing"
@@ -62,8 +58,6 @@ metadata:
     - "oportunidades de contenido"
     # PT
     - "lacunas de conteúdo"
-    # Misspellings
-    - "content gab analysis"
 ---
 
 # Content Gap Analysis
