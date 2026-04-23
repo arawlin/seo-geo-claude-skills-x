@@ -2,6 +2,7 @@
 name: contract-lint
 description: Validate auditor Runbook inline copies, handoff schema compliance, and jargon leaks across all SKILL.md files. Produces drift report.
 argument-hint: "[--skill <name>] [--strict]"
+allowed-tools: ["Read", "Grep", "Bash"]
 parameters:
   - name: skill
     type: string
