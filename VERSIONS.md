@@ -31,6 +31,18 @@ Current versions of all skills. Agents can fetch this file from `https://raw.git
 
 ## Changelog
 
+### v9.1.0 — Library-wide compression (2026-04-23)
+
+Library-wide compression (-34%, 37,129 → 24,587 lines). All 20 skills and 15 commands preserved, no breaking changes to skill I/O contracts, triggers, or execution logic.
+
+**What changed**: removed redundant boilerplate from SKILL.md files (When This Must Trigger, Validation Checkpoints, verbose Data Sources), compressed generic reference files (robots-txt, http-status-codes, KPI definitions) to SEO-essential content, trimmed command output format decorations, consolidated root documentation (AGENTS.md, GLOSSARY→README, 4 multilingual READMEs removed), and pruned low-value trigger variants (misspellings, duplicates).
+
+**What did NOT change**: Instructions sections, Skill Contract (Reads/Writes/Promotes), Quick Start sections, CORE-EEAT benchmark, CITE domain rating, auditor runbooks, instructions-detail files, example reports, hooks behavior, plugin/marketplace manifests.
+
+**Token impact**: ~33% fewer tokens per skill activation; ~38% fewer tokens for technical-seo-checker reference loading.
+
+---
+
 ### v9.0.1 — Prompt-injection false positive fix (2026-04-18)
 
 Patch release addressing a ClawHub OpenClaw scan that flagged the published v9.0.0 as **Suspicious (medium confidence)**. The scanner correctly matched a prompt-injection literal in `commands/geo-drift-check.md:48` — the literal was defensive example text warning the model to distrust AI-engine output, but the quoted phrase itself was indistinguishable from a real injection attempt under regex scanning.
