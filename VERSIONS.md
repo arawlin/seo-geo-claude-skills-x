@@ -77,7 +77,7 @@ Major release combining three streams of work: (1) a 6-agent panel quality revie
 #### Memory System Expansion
 
 - Memory scaffolding: `memory/glossary.md`, `memory/decisions.md`, `memory/open-loops.md`, `memory/entities/candidates.md`, `memory/geo-feedback/` (with YAML frontmatter + initial templates)
-- Top-level `GLOSSARY.md` (12 library-internal terms) linked from README and 5 localized docs. Reduces jargon friction for new users.
+- Library terminology merged into `README.md#terminology` (collapsed details section). Reduces jargon friction for new users.
 
 #### Contract Hardening
 
