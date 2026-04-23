@@ -8,26 +8,26 @@ Current versions of all skills. Agents can fetch this file from `https://raw.git
 
 | Skill | Category | Version | Last Updated |
 |-------|----------|---------|--------------|
-| keyword-research | research | 9.0.0 | 2026-04-17 |
-| competitor-analysis | research | 9.0.0 | 2026-04-17 |
-| serp-analysis | research | 9.0.0 | 2026-04-17 |
-| content-gap-analysis | research | 9.0.0 | 2026-04-17 |
-| seo-content-writer | build | 9.0.0 | 2026-04-17 |
-| geo-content-optimizer | build | 9.0.0 | 2026-04-17 |
-| meta-tags-optimizer | build | 9.0.0 | 2026-04-17 |
-| schema-markup-generator | build | 9.0.0 | 2026-04-17 |
-| on-page-seo-auditor | optimize | 9.0.0 | 2026-04-17 |
-| technical-seo-checker | optimize | 9.0.0 | 2026-04-17 |
-| internal-linking-optimizer | optimize | 9.0.0 | 2026-04-17 |
-| content-refresher | optimize | 9.0.0 | 2026-04-17 |
-| rank-tracker | monitor | 9.0.0 | 2026-04-17 |
-| backlink-analyzer | monitor | 9.0.0 | 2026-04-17 |
-| performance-reporter | monitor | 9.0.0 | 2026-04-17 |
-| alert-manager | monitor | 9.0.0 | 2026-04-17 |
-| content-quality-auditor | cross-cutting | 9.0.0 | 2026-04-17 |
-| domain-authority-auditor | cross-cutting | 9.0.0 | 2026-04-17 |
-| entity-optimizer | cross-cutting | 9.0.0 | 2026-04-17 |
-| memory-management | cross-cutting | 9.0.0 | 2026-04-17 |
+| keyword-research | research | 9.1.0 | 2026-04-23 |
+| competitor-analysis | research | 9.1.0 | 2026-04-23 |
+| serp-analysis | research | 9.1.0 | 2026-04-23 |
+| content-gap-analysis | research | 9.1.0 | 2026-04-23 |
+| seo-content-writer | build | 9.1.0 | 2026-04-23 |
+| geo-content-optimizer | build | 9.1.0 | 2026-04-23 |
+| meta-tags-optimizer | build | 9.1.0 | 2026-04-23 |
+| schema-markup-generator | build | 9.1.0 | 2026-04-23 |
+| on-page-seo-auditor | optimize | 9.1.0 | 2026-04-23 |
+| technical-seo-checker | optimize | 9.1.0 | 2026-04-23 |
+| internal-linking-optimizer | optimize | 9.1.0 | 2026-04-23 |
+| content-refresher | optimize | 9.1.0 | 2026-04-23 |
+| rank-tracker | monitor | 9.1.0 | 2026-04-23 |
+| backlink-analyzer | monitor | 9.1.0 | 2026-04-23 |
+| performance-reporter | monitor | 9.1.0 | 2026-04-23 |
+| alert-manager | monitor | 9.1.0 | 2026-04-23 |
+| content-quality-auditor | cross-cutting | 9.1.0 | 2026-04-23 |
+| domain-authority-auditor | cross-cutting | 9.1.0 | 2026-04-23 |
+| entity-optimizer | cross-cutting | 9.1.0 | 2026-04-23 |
+| memory-management | cross-cutting | 9.1.0 | 2026-04-23 |
 
 ## Changelog
 

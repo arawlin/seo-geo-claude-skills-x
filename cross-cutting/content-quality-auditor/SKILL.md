@@ -1,7 +1,7 @@
 ---
 name: content-quality-auditor
 description: 'Publish-readiness gate: 80-item CORE-EEAT audit with weighted scoring, veto checks, and fix plan. 内容质量/EEAT评分'
-version: "9.0.0"
+version: "9.1.0"
 license: Apache-2.0
 allowed-tools: WebFetch
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
@@ -11,7 +11,7 @@ argument-hint: "<URL or paste content> [keyword]"
 class: auditor
 metadata:
   author: aaron-he-zhu
-  version: "9.0.0"
+  version: "9.1.0"
   geo-relevance: "high"
   tags:
     - seo

@@ -1,7 +1,7 @@
 ---
 name: performance-reporter
 description: 'Generate SEO/GEO dashboards: rankings, traffic, backlinks, AI visibility for stakeholders. SEO报告/绩效仪表盘'
-version: "9.0.0"
+version: "9.1.0"
 license: Apache-2.0
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
 homepage: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
@@ -9,7 +9,7 @@ when_to_use: "Use when generating SEO performance reports, traffic summaries, ra
 argument-hint: "<domain> [date range]"
 metadata:
   author: aaron-he-zhu
-  version: "9.0.0"
+  version: "9.1.0"
   geo-relevance: "medium"
   tags:
     - seo

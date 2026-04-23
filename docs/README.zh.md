@@ -144,4 +144,4 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 
 Apache License 2.0
 
-*最后同步英文 README：v9.0.0*
+*最后同步英文 README：v9.1.0*

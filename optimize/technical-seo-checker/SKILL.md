@@ -1,7 +1,7 @@
 ---
 name: technical-seo-checker
 description: 'Technical SEO audit: Core Web Vitals, crawl, indexing, mobile, speed, architecture, redirects. 技术SEO/网站速度'
-version: "9.0.0"
+version: "9.1.0"
 license: Apache-2.0
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
 homepage: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
@@ -10,7 +10,7 @@ argument-hint: "<URL or domain>"
 allowed-tools: WebFetch
 metadata:
   author: aaron-he-zhu
-  version: "9.0.0"
+  version: "9.1.0"
   geo-relevance: "low"
   tags:
     - seo
