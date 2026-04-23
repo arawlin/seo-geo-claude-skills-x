@@ -26,75 +26,44 @@ Analyzes and enhances **title tags, meta descriptions, and social media tags** t
 ```
 /seo:optimize-meta https://example.com/landing-page
 /seo:optimize-meta title="Current Title" keyword="target keyword"
-/seo:optimize-meta https://example.com/blog-post target="best practices"
 /seo:optimize-meta url="..." mode="a/b-test"
 ```
 
-**Arguments:**
-- URL or page details (required)
-- `keyword="target keyword"` (optional but recommended)
-- `target="focus topic"` (alternative to keyword)
-- `mode="a/b-test"` (generates multiple variants for testing)
+**Arguments:** URL or page details (required) + optional `keyword=` + optional `mode="a/b-test"`.
 
 ## Workflow
 
-1. **Analyze Current Meta Tags** -- Invoke `meta-tags-optimizer` with URL/details and target keyword. Evaluates title tag, meta description, and Open Graph/Twitter Card tags for length, keyword placement, CTR appeal, and completeness.
-2. **Generate Optimized Variants** -- Produce 3-5 title tag variants and 3-5 meta description variants with scoring. Optionally invoke `seo-content-writer` title formula methodology for additional CTR-optimized variants.
-3. **Compile Output** -- Format results with before/after comparison, implementation code, and A/B test recommendations (if mode="a/b-test").
+1. **Analyze Current Meta Tags** -- Invoke `meta-tags-optimizer`. Evaluates title, meta description, OG/Twitter Card tags for length, keyword placement, CTR appeal, completeness.
+2. **Generate Optimized Variants** -- 3-5 title and 3-5 description variants with scoring.
+3. **Compile Output** -- Before/after comparison, implementation code, A/B test recommendations (if mode="a/b-test").
 
 ## Output Format
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-META TAG OPTIMIZATION REPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+## META TAG OPTIMIZATION REPORT
 
-PAGE: [URL or Title]
-TARGET KEYWORD: [keyword]
+**Page**: [URL or Title] | **Target Keyword**: [keyword]
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CURRENT META TAGS ANALYSIS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Current Meta Tags Analysis
+Title Tag X/10, Meta Description X/10, Social Tags X/10 -- current values, lengths, issues.
 
-TITLE TAG: X/10 -- current value, length, issues
-META DESCRIPTION: X/10 -- current value, length, issues
-SOCIAL TAGS: X/10 -- OG/Twitter status
+### Optimized Title Tag Variants
+Recommended + 2-3 variants with length, score, rationale.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OPTIMIZED TITLE TAG VARIANTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Optimized Meta Description Variants
+Recommended + 1-2 variants with length, score.
 
-RECOMMENDED + 2-3 variants with length, score, rationale
+### Implementation Code
+Copy-paste HTML: title, meta description, OG tags, Twitter Card tags.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OPTIMIZED META DESCRIPTION VARIANTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-RECOMMENDED + 1-2 variants with length, score
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-IMPLEMENTATION CODE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[Copy-paste HTML: title, meta description, OG tags, Twitter Card tags]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-A/B TEST RECOMMENDATIONS (when mode="a/b-test")
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[Test setup, control vs variant, hypothesis]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### A/B Test Recommendations (when mode="a/b-test")
+Test setup, control vs variant, hypothesis.
 ```
 
 ## Tips
 
-- Front-load primary keyword in the first half of the title tag
-- Include one clear call-to-action in every meta description
-- Add year to title tags for recurring topics (+3-8% CTR)
-- Test title variants for at least 4 weeks before declaring a winner
+Front-load primary keyword in first half of title. Include CTA in every meta description. Add year to titles for recurring topics (+3-8% CTR). Test variants for 4+ weeks.
 
 ## Related Skills
 
-- [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md) -- Full meta tag optimization workflow
-- [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md) -- SEO-optimized content creation
+- [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md) | [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md)

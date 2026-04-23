@@ -19,9 +19,9 @@ parameters:
 
 # Wiki Lint Command
 
-> Wiki health check for the [SEO & GEO Skills Library](https://github.com/aaron-he-zhu/seo-geo-claude-skills). Full wiki spec: [references/proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
+> Wiki health check for the [SEO & GEO Skills Library](https://github.com/aaron-he-zhu/seo-geo-claude-skills). Full spec: [references/proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
 
-Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies, then produces a structured report.
+Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies.
 
 ## Usage
 
@@ -36,61 +36,30 @@ Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies
 
 | Check | Description | Auto-fixable |
 |-------|-------------|-------------|
-| **Contradiction** | Two wiki pages or WARM files assert conflicting facts about the same entity/keyword | Only if confidence=HIGH (time-series: use latest value + changelog) |
-| **Stale claim** | Wiki page cites a WARM file whose source hash no longer matches current content | Yes (re-compile from source) |
-| **Orphan page** | Wiki page with zero inbound links from other wiki pages | No (suggest deletion or linking) |
-| **Missing page** | Entity or keyword mentioned 3+ times across wiki pages but has no dedicated page | No (suggest creation) |
-| **Missing cross-reference** | Two pages discuss the same topic but don't link to each other | Yes (add link) |
-| **HOT drift** | hot-cache.md references an entity/keyword whose wiki page has materially changed | No (suggest HOT update) |
-| **Hash mismatch** | Compiled page `sources.hash` differs from current WARM file content hash | Yes (re-compile) |
+| **Contradiction** | Two wiki/WARM files assert conflicting facts about same entity | HIGH only (time-series: use latest + changelog) |
+| **Stale claim** | Wiki page cites WARM file whose source hash changed | Yes (re-compile) |
+| **Orphan page** | Wiki page with zero inbound links | No (suggest deletion/linking) |
+| **Missing page** | Entity mentioned 3+ times but has no page | No (suggest creation) |
+| **Missing cross-ref** | Two pages discuss same topic without linking | Yes (add link) |
+| **HOT drift** | hot-cache.md references entity whose wiki page changed | No (suggest HOT update) |
+| **Hash mismatch** | Compiled page `sources.hash` differs from current WARM content | Yes (re-compile) |
 
 ## Contradiction Resolution
 
-Each resolution is tagged with a confidence level:
-
-- **HIGH**: Time-series data (e.g., DR values) — automatically use latest value, preserve older value as changelog entry
-- **MEDIUM**: Judgment calls where evidence is available but ambiguous — LLM proposes resolution, marked `[待确认]` until user confirms
-- **LOW**: Insufficient evidence to resolve — flagged for user attention, not auto-resolved even with `--fix`
+- **HIGH**: Time-series data -- auto-use latest value, preserve older as changelog.
+- **MEDIUM**: Ambiguous evidence -- LLM proposes, marked `[待确认]` until user confirms.
+- **LOW**: Insufficient evidence -- flagged for user, not auto-resolved even with `--fix`.
 
 ## Output Format
 
 ```markdown
-## Wiki Lint Report — [project name] (YYYY-MM-DD)
+## Wiki Lint Report -- [project] (YYYY-MM-DD)
 
-### Contradictions (N found)
-| # | Entity/Keyword | Claim A (source, date) | Claim B (source, date) | Resolution | Confidence |
-|---|---------------|----------------------|----------------------|------------|------------|
-| 1 | Acme Corp DR | DR 68 (Jan audit) | DR 72 (Mar audit) | Use 72, changelog 68→72 | HIGH |
-
-### Stale Claims (N found)
-| # | Wiki Page | Source File | Expected Hash | Actual Hash |
-|---|-----------|-------------|--------------|-------------|
-
-### Orphan Pages (N found)
-| # | Page | Suggestion |
-|---|------|------------|
-
-### Missing Pages (N suggested)
-| # | Entity/Keyword | Mention Count | Suggested Type |
-|---|---------------|---------------|----------------|
-
-### Missing Cross-References (N found)
-| # | Page A | Page B | Shared Topic |
-|---|--------|--------|-------------|
-
-### HOT Drift (N found)
-| # | Entity/Keyword | HOT Value | Wiki Value | Suggestion |
-|---|---------------|-----------|------------|------------|
-
-### Hash Mismatches (N found)
-| # | Compiled Page | Source File | Recorded Hash | Actual Hash |
-|---|--------------|-------------|--------------|-------------|
+### Contradictions (N) / Stale Claims (N) / Orphan Pages (N) / Missing Pages (N) / Missing Cross-Refs (N) / HOT Drift (N) / Hash Mismatches (N)
+[Each section with relevant table columns]
 
 ### Summary
-- Total checks: N
-- Issues found: N
-- Auto-fixed (--fix): N
-- Requires user action: N
+Total checks: N | Issues: N | Auto-fixed: N | Requires user action: N
 ```
 
-Results are appended to `memory/wiki/log.md`.
+Results appended to `memory/wiki/log.md`.

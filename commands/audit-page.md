@@ -28,91 +28,49 @@ A combined **on-page SEO** + **CORE-EEAT content quality** audit. For full site-
 /seo:audit-page https://example.com/landing-page keyword="primary keyword"
 ```
 
-**Arguments:**
-- URL or pasted content (required)
-- `keyword="target keyword"` (optional but recommended for relevance scoring)
+**Arguments:** URL or pasted content (required) + optional `keyword="target keyword"` (recommended for relevance scoring).
 
 ## Workflow
 
-1. **Run On-Page SEO Audit** -- Invoke `on-page-seo-auditor` with the URL/content and target keyword. Scores 8 areas (Title, Meta Description, Headers, Content, Keywords, Links, Images, Technical).
+1. **Run On-Page SEO Audit** -- Invoke `on-page-seo-auditor`. Scores 8 areas (Title, Meta Description, Headers, Content, Keywords, Links, Images, Technical).
 2. **Run CORE-EEAT Content Quality Audit** -- Invoke `content-quality-auditor`. Veto check first, then score all 80 items across 8 dimensions. Calculate GEO Score (CORE) and SEO Score (EEAT).
-3. **Compile Output** -- Merge both results into the format below. Generate priority-ranked action list by severity (Critical / Important / Minor).
+3. **Compile Output** -- Merge both results. Generate priority-ranked action list by severity.
 
 ## Output Format
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ON-PAGE SEO AUDIT: [Page Title or URL]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+## ON-PAGE SEO AUDIT: [Page Title or URL]
 
-OVERALL SCORE: XX/100
+**Overall Score**: XX/100
 
-[████████████████████░░░░░░░░░░░░░░░░░░░░] XX%
+### Section Scores
+8 area scores with bar charts.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION SCORES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Priority Action List
+CRITICAL / IMPORTANT / MINOR items with specific fixes.
 
-[8 area scores with bar charts]
+### Concrete Action Checklist
+[ ] Action items.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PRIORITY ACTION LIST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## CORE-EEAT CONTENT QUALITY
 
-CRITICAL / IMPORTANT / MINOR items with specific fixes
+**Content Type**: [type] | **Veto Status**: Pass/Fail | **Weighted Score**: XX/100 ([rating])
+**GEO Score (CORE)**: XX/100 | **SEO Score (EEAT)**: XX/100
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONCRETE ACTION CHECKLIST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Dimension Scores: Contextual Clarity, Organization, Referenceability, Exclusivity, Experience, Expertise, Authority, Trust -- each XX/100.
 
-[ ] [Action items]
+Top 5 Content Quality Improvements: [Issue] -- [specific action].
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CORE-EEAT CONTENT QUALITY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Detailed Findings
+Section-by-section breakdown in plain language. Internal item IDs emitted only in YAML handoff at `memory/audits/` per Runbook §5.
 
-Content Type: [type]
-Veto Status: Pass / Fail [item]
-Weighted Score: XX/100 ([rating])
-
-GEO Score (CORE): XX/100    SEO Score (EEAT): XX/100
-
-Dimension Scores:
-Contextual Clarity   [████████░░] XX/100
-Organization         [████████░░] XX/100
-Referenceability     [████████░░] XX/100
-Exclusivity          [████████░░] XX/100
-Experience           [████████░░] XX/100
-Expertise            [████████░░] XX/100
-Authority            [████████░░] XX/100
-Trust                [████████░░] XX/100
-
-Top 5 Content Quality Improvements:
-1. [Issue in plain language] -- [specific action]
-...
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DETAILED FINDINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[Section-by-section breakdown in plain language. Internal item IDs
- (CORE-EEAT benchmark identifiers) are emitted only in the YAML handoff
- artifact at `memory/audits/` with `class: auditor-output` frontmatter —
- never in this user-facing view, per Runbook §5 translation layer.]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NOTE: For technical SEO (speed, crawl, HTTPS), run: /seo:check-technical
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTE: For technical SEO (speed, crawl, HTTPS), run `/seo:check-technical`.
 ```
 
 ## Tips
 
-- Provide target keyword for accurate relevance scoring
-- Use alongside `/seo:check-technical` for full technical + content picture
-- Some EEAT items (A01, A05, A07) require site-level data; mark "N/A" if not observable
-- Run audits monthly for key pages and compare scores over time
+Provide target keyword for relevance scoring. Some EEAT items (A01, A05, A07) require site-level data -- mark "N/A" if not observable. Run monthly on key pages.
 
 ## Related Skills
 
-- [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) -- Detailed on-page SEO analysis
-- [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) -- Full CORE-EEAT 80-item content quality audit
+- [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md)
