@@ -32,6 +32,19 @@ Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies
 /seo:wiki-lint --retire-preview
 ```
 
+## Workflow
+
+1. Glob `memory/wiki/*.md` (filter by `--project` if set)
+2. Build WARM index: read `memory/*.md` (excluding `wiki/`), map entity → path + hash
+3. Contradiction scan: compare claim values across pages/WARM for same entity
+4. Stale claim scan: recompute `shasum -a 256` vs `sources.hash` in each wiki page
+5. Orphan detection: build inbound-link index, flag pages with zero inlinks
+6. Missing page detection: flag entities mentioned 3+ times with no dedicated page
+7. Cross-reference gaps: flag page pairs sharing topics without reciprocal links
+8. HOT drift: compare `memory/hot-cache.md` values against wiki pages
+9. Hash recheck: re-run step 4 to catch mid-scan file changes
+10. Report: output structured results, append to `memory/wiki/log.md`
+
 ## Checks Performed
 
 | Check | Description | Auto-fixable |
