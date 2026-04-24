@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">First BTC purchase overview placeholder</title>
+  <desc id="desc">Placeholder graphic for the overall beginner BTC purchase workflow screenshot.</desc>
+  <rect width="1200" height="675" fill="#f5f7fb"/>
+  <rect x="40" y="40" width="1120" height="595" rx="24" fill="#ffffff" stroke="#d9e1ec" stroke-width="4"/>
+  <rect x="80" y="96" width="220" height="32" rx="8" fill="#dce6ff"/>
+  <rect x="80" y="160" width="1040" height="120" rx="16" fill="#eef3ff"/>
+  <rect x="80" y="312" width="300" height="240" rx="16" fill="#f3f6fb"/>
+  <rect x="450" y="312" width="300" height="240" rx="16" fill="#f3f6fb"/>
+  <rect x="820" y="312" width="300" height="240" rx="16" fill="#f3f6fb"/>
+  <text x="600" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#355070">Replace with verified workflow screenshot</text>
+  <text x="600" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#54657e">Platform choice → account setup → first buy → wallet decision</text>
+  <text x="230" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Selection</text>
+  <text x="600" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Purchase</text>
+  <text x="970" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Storage</text>
+</svg>

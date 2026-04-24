@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Platform comparison placeholder</title>
+  <desc id="desc">Placeholder graphic for a platform comparison screenshot with fee, KYC, and safety columns.</desc>
+  <rect width="1200" height="675" fill="#f5f7fb"/>
+  <rect x="48" y="48" width="1104" height="579" rx="24" fill="#ffffff" stroke="#d9e1ec" stroke-width="4"/>
+  <rect x="84" y="100" width="1032" height="60" rx="12" fill="#e6eefc"/>
+  <rect x="84" y="196" width="1032" height="340" rx="16" fill="#f7f9fd"/>
+  <line x1="360" y1="196" x2="360" y2="536" stroke="#d9e1ec" stroke-width="3"/>
+  <line x1="620" y1="196" x2="620" y2="536" stroke="#d9e1ec" stroke-width="3"/>
+  <line x1="880" y1="196" x2="880" y2="536" stroke="#d9e1ec" stroke-width="3"/>
+  <text x="600" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#355070">Replace with verified platform comparison</text>
+  <text x="220" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Fees</text>
+  <text x="490" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">KYC</text>
+  <text x="750" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Security</text>
+  <text x="1000" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#355070">Region</text>
+</svg>

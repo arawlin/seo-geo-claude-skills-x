@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Wallet and withdrawal placeholder</title>
+  <desc id="desc">Placeholder graphic for wallet receive and withdrawal confirmation screenshots.</desc>
+  <rect width="1200" height="675" fill="#f5f7fb"/>
+  <rect x="48" y="48" width="1104" height="579" rx="24" fill="#ffffff" stroke="#d9e1ec" stroke-width="4"/>
+  <circle cx="280" cy="320" r="150" fill="#f3f6fb"/>
+  <rect x="520" y="150" width="520" height="340" rx="18" fill="#f3f6fb"/>
+  <rect x="520" y="520" width="520" height="34" rx="8" fill="#e6eefc"/>
+  <text x="280" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#355070">Wallet receive screen</text>
+  <text x="780" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#355070">Withdrawal confirmation</text>
+  <text x="600" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#355070">Replace with verified wallet and withdrawal screenshots</text>
+</svg>

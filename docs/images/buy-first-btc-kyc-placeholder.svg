@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">KYC placeholder</title>
+  <desc id="desc">Placeholder graphic for account setup and KYC screenshots.</desc>
+  <rect width="1200" height="675" fill="#f5f7fb"/>
+  <rect x="48" y="48" width="1104" height="579" rx="24" fill="#ffffff" stroke="#d9e1ec" stroke-width="4"/>
+  <rect x="84" y="100" width="460" height="420" rx="18" fill="#f3f6fb"/>
+  <rect x="656" y="100" width="460" height="420" rx="18" fill="#f3f6fb"/>
+  <rect x="84" y="550" width="1032" height="36" rx="10" fill="#e6eefc"/>
+  <text x="314" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#355070">Registration screen</text>
+  <text x="886" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#355070">KYC and security settings</text>
+  <text x="600" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#355070">Replace with current verified screenshots</text>
+</svg>
