@@ -70,11 +70,11 @@ These files reference cap numbers defined here. None of them restate the numbers
 The 40-tier cap for 2+ veto fails is deferred until real data exists.
 
 - **Trigger condition**: 30+ audits in `memory/audits/` with multi-veto fail scenarios
-- **Review date**: 2026-07-10
-- **Runner**: `/seo:p2-review` command (reads `memory/audits/` and reports trigger status)
+- **Review trigger**: when 30+ real multi-veto audits exist, or during the next maintainer calibration review
+- **Runner**: `/seo:run-evals` plus maintainer review of `memory/audits/` evidence
 - **Owner**: project maintainer (aaron-he-zhu)
 - **Action on trigger met**: propose numeric 40-tier cap for v7.3, back-calibrated against the 30+ observed multi-veto cases
-- **Action on trigger unmet at 2026-07-10**: close the deferred item; no 40-tier cap ever ships; BLOCKED path remains authoritative for multi-veto cases
+- **Action on trigger unmet**: keep the deferred item closed for release; no 40-tier cap ships; BLOCKED path remains authoritative for multi-veto cases
 
 ---
 

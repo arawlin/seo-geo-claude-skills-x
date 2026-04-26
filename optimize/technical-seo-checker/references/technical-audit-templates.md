@@ -1,39 +1,35 @@
-# Technical SEO Checker — Compact Output Templates
+# Technical SEO Checker - Compact Output Templates
 
-Use one reporting shape everywhere: **evidence -> checks -> issues -> fixes -> score**. Keep only the sections you actually tested.
+Use one reporting shape: evidence -> checks -> issues -> fixes -> score. Mark unsupported checks `N/A`; cite crawl date, source, sample size, and representative URLs.
 
 ## Shared Conventions
 
 | Item | Rule |
 |------|------|
 | Status | `✅` pass, `⚠️` partial risk, `❌` fail |
-| Severity | `P0` blocks indexing/revenue, `P1` materially suppresses performance, `P2` hygiene |
-| Evidence | Cite source, crawl date, sample size, and representative URLs |
-| Actions | Name the fix, expected impact, and owner if known |
-| Score | Use `/10` per step; mark unsupported checks `N/A` |
+| Severity | `P0` blocks indexing/revenue, `P1` suppresses performance, `P2` hygiene |
+| Score | `/10` per section; final report rolls to `/100` |
 
 ## Step Map
 
-| Step | Focus | Must Capture | Common Blockers |
-|------|-------|--------------|-----------------|
-| 1 | Crawlability | robots.txt, sitemap, crawl sample | blocked templates, crawl waste, chains, orphans |
-| 2 | Indexability | coverage ratio, blockers, canonicals | noindex, canonical conflicts, 4xx/5xx |
-| 3 | Performance | CWV + supporting metrics | LCP bloat, JS, fonts, server latency |
-| 4 | Mobile | viewport, parity, tap targets | missing mobile content, layout overflow |
-| 5 | Security | HTTPS, mixed content, headers | weak redirects, expired certs, CSP gaps |
-| 6 | URL structure | patterns, redirects, consistency | parameters, uppercase, loops |
-| 7 | Structured data | current schema, errors, opportunities | invalid JSON-LD, wrong type, missing required fields |
-| 8 | International | hreflang, locale targeting | missing return tags, bad language codes |
-| 9 | Summary | scorecard, queue, roadmap | unclear priorities, no owner, no monitoring plan |
+| Step | Focus | Must Capture |
+|------|-------|--------------|
+| 1 | Crawlability | robots.txt, sitemap, crawl sample, crawl waste |
+| 2 | Indexability | coverage, noindex, canonicals, 4xx/5xx |
+| 3 | Performance | LCP, INP, CLS, TTFB, blocking resources |
+| 4 | Mobile | viewport, content parity, tap targets, overflow |
+| 5 | Security | SSL, HTTPS, mixed content, HSTS, headers |
+| 6 | URL structure | host/protocol, slugs, parameters, redirects |
+| 7 | Structured data | current schema, errors, missing opportunities |
+| 8 | International | hreflang, return tags, x-default |
+| 9 | Summary | scorecard, priority queue, roadmap, monitoring |
 
-## Step 1: Audit Crawlability
-
-```markdown
 ## Crawlability
 
 **Evidence**: robots.txt=[URL] | sitemap=[URL] | crawl sample=[X URLs/pages]
 
 **robots.txt snapshot**
+
 ```txt
 [current robots.txt directives or notable lines]
 ```
@@ -46,6 +42,7 @@ Use one reporting shape everywhere: **evidence -> checks -> issues -> fixes -> s
 | CSS/JS/assets not unintentionally blocked | ✅/⚠️/❌ | [notes] | [fix] |
 
 **Recommended robots.txt patch**
+
 ```txt
 [updated robots.txt snippet if needed]
 ```
@@ -54,45 +51,24 @@ Use one reporting shape everywhere: **evidence -> checks -> issues -> fixes -> s
 |---------------|--------|----------|--------|
 | Sitemap is discoverable | ✅/⚠️/❌ | [notes] | [fix] |
 | XML is valid | ✅/⚠️/❌ | [notes] | [fix] |
-| Only indexable URLs included | ✅/⚠️/❌ | [notes] | [fix] |
+| Contains only indexable URLs | ✅/⚠️/❌ | [notes] | [fix] |
 | `lastmod` is present and trustworthy | ✅/⚠️/❌ | [notes] | [fix] |
 
-| crawl-budget check | Status | Evidence | Action |
-|--------------------|--------|----------|--------|
-| Important templates crawlable | ✅/⚠️/❌ | [notes] | [fix] |
-| Crawl waste controlled | ✅/⚠️/❌ | [duplicates/orphans/chains] | [fix] |
+Score: [X]/10. Issues: P0/P1/P2 with affected URL patterns and fixes.
 
-**Issues**
-- **P0** [Issue] — [affected URLs/pattern] — [fix]
-- **P1** [Issue] — [scope] — [fix]
-
-**Score**: [X]/10
-```
-
-## Step 2: Audit Indexability
-
-```markdown
 ## Indexability
 
-**Evidence**: sitemap pages=[X] | indexed pages=[X] | coverage=[X]%
+**Evidence**: coverage source=[GSC/crawl/manual] | sample=[X URLs] | crawl date=[date]
 
 | Check | Status | Evidence | Action |
-|------|--------|----------|--------|
+|-------|--------|----------|--------|
 | Noindex/X-Robots blocks intentional | ✅/⚠️/❌ | [notes] | [fix] |
 | Canonicals are self-consistent | ✅/⚠️/❌ | [notes] | [fix] |
-| 4xx/5xx/loops are controlled | ✅/⚠️/❌ | [notes] | [fix] |
+| 4xx/5xx/loops controlled | ✅/⚠️/❌ | [notes] | [fix] |
 | Duplicate clusters resolved | ✅/⚠️/❌ | [notes] | [fix] |
 
-**Issues**
-- **P0** [Issue] — [scope] — [fix]
-- **P1** [Issue] — [scope] — [fix]
+Score: [X]/10. Issues: P0/P1/P2 with affected URL patterns and fixes.
 
-**Score**: [X]/10
-```
-
-## Step 3: Audit Site Speed & Core Web Vitals
-
-```markdown
 ## Performance
 
 | Metric | Mobile | Desktop | Target | Status |
@@ -102,125 +78,73 @@ Use one reporting shape everywhere: **evidence -> checks -> issues -> fixes -> s
 | CLS | [X] | [X] | <0.1 | ✅/⚠️/❌ |
 | TTFB | [X]ms | [X]ms | <800ms | ✅/⚠️/❌ |
 
-| Resource | Count | Size | Main Blocker |
-|----------|-------|------|--------------|
-| Images | [X] | [X]MB | [notes] |
-| JavaScript | [X] | [X]MB | [notes] |
-| CSS/fonts | [X] | [X]KB | [notes] |
+Add resource blockers, high-impact fixes, and score.
 
-**High-impact fixes**
-1. [Fix] — est. impact [metric improvement]
-2. [Fix] — est. impact [metric improvement]
-
-**Score**: [X]/10
-```
-
-## Step 4: Audit Mobile-Friendliness
-
-```markdown
 ## Mobile
 
+**Evidence**: device/sample=[mobile crawler/device] | pages=[X] | date=[date]
+
 | Check | Status | Evidence | Action |
-|------|--------|----------|--------|
+|-------|--------|----------|--------|
 | Viewport configured | ✅/⚠️/❌ | [notes] | [fix] |
 | Text and tap targets usable | ✅/⚠️/❌ | [notes] | [fix] |
-| No horizontal overflow | ✅/⚠️/❌ | [notes] | [fix] |
-| Mobile has content/meta/schema parity | ✅/⚠️/❌ | [notes] | [fix] |
+| No horizontal overflow | ✅/⚠️/❌ | [examples] | [fix] |
+| Mobile content/meta/schema parity | ✅/⚠️/❌ | [notes] | [fix] |
 
-**Issues**
-- **P1** [Issue] — [scope] — [fix]
+Score: [X]/10. Issues: P0/P1/P2 with affected templates and fixes.
 
-**Score**: [X]/10
-```
-
-## Step 5: Audit Security & HTTPS
-
-```markdown
 ## Security
 
 | Check | Status | Evidence | Action |
-|------|--------|----------|--------|
+|-------|--------|----------|--------|
 | SSL certificate valid | ✅/⚠️/❌ | [expiry/notes] | [fix] |
 | HTTPS forced site-wide | ✅/⚠️/❌ | [redirect notes] | [fix] |
 | Mixed content resolved | ✅/⚠️/❌ | [count/examples] | [fix] |
 | HSTS configured appropriately | ✅/⚠️/❌ | [header/max-age/preload notes] | [fix] |
 | Security headers reasonable | ✅/⚠️/❌ | [missing headers] | [fix] |
 
-**Issues**
-- **P0** [Issue] — [scope] — [fix]
-- **P2** [Issue] — [scope] — [fix]
+Score: [X]/10. Issues: P0/P1/P2 with affected hosts and fixes.
 
-**Score**: [X]/10
-```
-
-## Step 6: Audit URL Structure
-
-```markdown
 ## URL Structure
 
+**Evidence**: crawl sample=[X URLs] | redirect sample=[X] | date=[date]
+
 | Check | Status | Evidence | Action |
-|------|--------|----------|--------|
-| Canonical host/protocol enforced | ✅/⚠️/❌ | [notes] | [fix] |
-| URL format readable and stable | ✅/⚠️/❌ | [notes] | [fix] |
-| Parameters/sessions controlled | ✅/⚠️/❌ | [notes] | [fix] |
-| Redirect chains and loops minimized | ✅/⚠️/❌ | [notes] | [fix] |
+|-------|--------|----------|--------|
+| Canonical host/protocol consistent | ✅/⚠️/❌ | [notes] | [fix] |
+| Slugs stable and readable | ✅/⚠️/❌ | [patterns] | [fix] |
+| Parameters controlled | ✅/⚠️/❌ | [examples] | [fix] |
+| Redirect chains/loops avoided | ✅/⚠️/❌ | [examples] | [fix] |
 
-**Issues**
-- **P1** [Issue] — [scope] — [fix]
+Score: [X]/10. Issues: P0/P1/P2 with affected patterns and fixes.
 
-**Score**: [X]/10
-```
-
-## Step 7: Audit Structured Data
-
-Schema quality aligns to CORE-EEAT `O05`, so report both implementation correctness and missing opportunities.
-
-```markdown
 ## Structured Data
 
-| Schema Type | Pages | Valid | Errors/Warnings |
-|-------------|-------|-------|-----------------|
-| [Type] | [X] | ✅/⚠️/❌ | [notes] |
-| [Type] | [X] | ✅/⚠️/❌ | [notes] |
-
-| Opportunity | Current | Recommended | Why |
-|-------------|---------|-------------|-----|
-| Blog/article | [current] | Article + FAQ | [reason] |
-| Product | [current] | Product + Review | [reason] |
-| Homepage | [current] | Organization | [reason] |
-
-**Issues**
-- **P1** [Validation error] — [scope] — [fix]
-
-**Score**: [X]/10
-```
-
-## Step 8: Audit International SEO
-
-```markdown
-## International SEO
+**Evidence**: validator=[tool/manual] | pages=[X] | date=[date]
 
 | Check | Status | Evidence | Action |
-|------|--------|----------|--------|
-| Hreflang tags present where needed | ✅/⚠️/❌ | [notes] | [fix] |
-| Return tags and self-references valid | ✅/⚠️/❌ | [notes] | [fix] |
-| Language/region codes valid | ✅/⚠️/❌ | [notes] | [fix] |
-| x-default / locale targeting sensible | ✅/⚠️/❌ | [notes] | [fix] |
+|-------|--------|----------|--------|
+| Current schema valid | ✅/⚠️/❌ | [types/errors] | [fix] |
+| Rich-result warnings triaged | ✅/⚠️/❌ | [warnings] | [fix] |
+| Visible-content alignment holds | ✅/⚠️/❌ | [examples] | [fix] |
+| Missing opportunities mapped | ✅/⚠️/❌ | Article/FAQ/Product/Organization/Breadcrumb | [fix] |
 
-**Examples**
-- `[locale]` -> `[URL]` -> [status]
+Score: [X]/10. Issues: P0/P1/P2 with affected templates and fixes.
 
-**Score**: [X]/10
-```
+## International SEO
 
-## Step 9: Generate Technical Audit Summary
+**Evidence**: locale sample=[X URLs] | date=[date]
 
-```markdown
-# Technical SEO Audit Report
+| Check | Status | Evidence | Action |
+|-------|--------|----------|--------|
+| Hreflang present where needed | ✅/⚠️/❌/N/A | [notes] | [fix] |
+| Return tags and self-references valid | ✅/⚠️/❌/N/A | [examples] | [fix] |
+| Language/region codes valid | ✅/⚠️/❌/N/A | [codes] | [fix] |
+| `x-default` configured when useful | ✅/⚠️/❌/N/A | [notes] | [fix] |
 
-**Domain**: [domain]
-**Audit date**: [YYYY-MM-DD]
-**Pages analyzed**: [X]
+Score: [X]/10 or N/A. Issues: P0/P1/P2 with affected locale groups and fixes.
+
+## Technical Audit Summary
 
 | Area | Score | Top Blocker | First Fix |
 |------|:-----:|-------------|-----------|
@@ -231,32 +155,6 @@ Schema quality aligns to CORE-EEAT `O05`, so report both implementation correctn
 | Security | [X]/10 | [issue] | [fix] |
 | URL structure | [X]/10 | [issue] | [fix] |
 | Structured data | [X]/10 | [issue] | [fix] |
-| International (optional) | [X]/10 | [issue] | [fix] |
+| International | [X]/10 or N/A | [issue] | [fix] |
 
-## Priority Queue
-
-| Priority | Issue | Scope | Fix | ETA |
-|----------|-------|-------|-----|-----|
-| P0 | [Issue] | [scope] | [fix] | [time] |
-| P1 | [Issue] | [scope] | [fix] | [time] |
-| P2 | [Issue] | [scope] | [fix] | [time] |
-
-## Quick Wins
-
-- [Quick win 1]
-- [Quick win 2]
-- [Quick win 3]
-
-## 30-Day Roadmap
-
-- **Week 1**: [critical fixes]
-- **Week 2-3**: [high-priority fixes]
-- **Week 4+**: [optimization and monitoring]
-
-## Monitoring
-
-- Core Web Vitals drops
-- Crawl error spikes
-- Index coverage changes
-- Security regressions
-```
+Finish with P0/P1/P2 queue, quick wins, 30-day roadmap, and monitoring triggers for Core Web Vitals, crawl errors, index coverage, structured data, and security headers.

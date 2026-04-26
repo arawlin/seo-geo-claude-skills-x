@@ -8,53 +8,28 @@ parameters:
     type: string
     required: true
     description: URL or domain to check
+  - name: performance_report
+    type: string
+    required: false
+    description: Optional PageSpeed, CrUX, Lighthouse, or Core Web Vitals data
 ---
 
 # Check Technical Command
 
-A focused **technical SEO health check** covering infrastructure, performance, and crawlability. Complements `/seo:audit-page` (content quality + on-page SEO).
+Run a technical SEO health check for a URL or domain.
 
-## Usage
+## Route
 
-```
-/seo:check-technical https://example.com
-/seo:check-technical example.com
-```
+Use [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md).
 
-**Arguments:** URL or domain (required).
+## Steps
 
-## Workflow
+1. Normalize target and gather crawlability, indexability, rendering, performance, HTTPS/security, schema, and architecture evidence.
+2. Keep robots.txt, sitemap, canonical, lastmod, HSTS, INP, and structured-data opportunities explicit.
+3. If PageSpeed/CrUX/Lighthouse data is missing, mark CWV metrics `N/A` and request reports instead of guessing LCP/INP/CLS.
+4. Prioritize issues by severity and effort.
+5. Return fixes and next best skill.
 
-1. **Determine Scope** -- Single page vs site-wide based on input (full URL vs bare domain).
-2. **Run Technical SEO Audit** -- Invoke `technical-seo-checker`. Audits: crawlability, HTTPS/security, page speed/Core Web Vitals, mobile responsiveness, URL/redirect health, infrastructure.
-3. **Compile Output** -- Weighted overall score and prioritized action list.
+## Output
 
-## Output Format
-
-```markdown
-## TECHNICAL SEO CHECK: [URL or Domain]
-
-**Overall Technical Score**: XX/100
-
-### Section Scores
-6 areas: Crawlability, HTTPS, Page Speed, Mobile, URL Health, Infrastructure.
-
-### Core Web Vitals
-LCP / INP / CLS / TTFB with pass/fail status.
-
-### Priority Action List
-CRITICAL / IMPORTANT / MINOR items with specific fixes.
-
-### Action Checklist
-[ ] Action items.
-
-NOTE: For content quality + on-page SEO, run `/seo:audit-page`.
-```
-
-## Tips
-
-Prioritize Core Web Vitals (direct ranking impact). Use PageSpeed Insights and Search Console for data. Re-run after infrastructure changes.
-
-## Related Skills
-
-- [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md)
+Target, health score, critical blockers, robots/sitemap status, Core Web Vitals, security findings, fix queue, and handoff.
