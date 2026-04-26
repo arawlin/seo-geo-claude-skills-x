@@ -12,69 +12,49 @@ parameters:
 
 # Check Technical Command
 
-A focused **technical SEO health check** covering infrastructure, performance, and crawlability. Complements `/seo:audit-page` which covers content quality + on-page SEO.
+A focused **technical SEO health check** covering infrastructure, performance, and crawlability. Complements `/seo:audit-page` (content quality + on-page SEO).
 
 ## Usage
 
 ```
 /seo:check-technical https://example.com
-/seo:check-technical https://example.com/specific-page
 /seo:check-technical example.com
 ```
 
-**Arguments:**
-- URL or domain (required)
+**Arguments:** URL or domain (required).
 
 ## Workflow
 
-1. **Determine Scope** -- Single page vs site-wide check based on input (full URL vs bare domain).
-2. **Run Technical SEO Audit** -- Invoke `technical-seo-checker`. Audits all areas: crawlability, HTTPS/security, page speed/Core Web Vitals, mobile responsiveness, URL/redirect health, infrastructure.
-3. **Compile Output** -- Format results with weighted overall score and prioritized action list.
+1. **Determine Scope** -- Single page vs site-wide based on input (full URL vs bare domain).
+2. **Run Technical SEO Audit** -- Invoke `technical-seo-checker`. Audits: crawlability, HTTPS/security, page speed/Core Web Vitals, mobile responsiveness, URL/redirect health, infrastructure.
+3. **Compile Output** -- Weighted overall score and prioritized action list.
 
 ## Output Format
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TECHNICAL SEO CHECK: [URL or Domain]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+## TECHNICAL SEO CHECK: [URL or Domain]
 
-OVERALL TECHNICAL SCORE: XX/100
+**Overall Technical Score**: XX/100
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION SCORES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Section Scores
+6 areas: Crawlability, HTTPS, Page Speed, Mobile, URL Health, Infrastructure.
 
-[6 area scores: Crawlability, HTTPS, Page Speed, Mobile, URL Health, Infrastructure]
+### Core Web Vitals
+LCP / INP / CLS / TTFB with pass/fail status.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CORE WEB VITALS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### Priority Action List
+CRITICAL / IMPORTANT / MINOR items with specific fixes.
 
-LCP / INP / CLS / TTFB with pass/fail status
+### Action Checklist
+[ ] Action items.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PRIORITY ACTION LIST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-CRITICAL / IMPORTANT / MINOR items with specific fixes
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ACTION CHECKLIST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[ ] [Action items]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NOTE: For content quality + on-page SEO, run: /seo:audit-page
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTE: For content quality + on-page SEO, run `/seo:audit-page`.
 ```
 
 ## Tips
 
-- Prioritize Core Web Vitals -- they directly impact rankings
-- Use Google PageSpeed Insights and Search Console for data without integrations
-- Re-run after infrastructure changes
+Prioritize Core Web Vitals (direct ranking impact). Use PageSpeed Insights and Search Console for data. Re-run after infrastructure changes.
 
 ## Related Skills
 
-- [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md) -- Comprehensive technical SEO audit
+- [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md)

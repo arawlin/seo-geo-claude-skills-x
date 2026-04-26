@@ -3,21 +3,21 @@
 **20 个技能。15 个命令。搜索排名 + AI 引用，一次搞定。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-9.0.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.5.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
-[English](../README.md) | **中文** | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Português](README.pt.md)
+[English](../README.md) | **中文**
 
 面向搜索引擎优化（SEO）和生成式引擎优化（GEO）的 Claude 技能与命令集。零依赖，原生支持 [Claude Code](https://claude.ai/download)、[OpenClaw](https://openclaw.com)、[Gemini CLI](https://geminicli.com)、[Qwen Code](https://qwenlm.github.io/qwen-code-docs/)、[Amp](https://ampcode.com)、[Kimi](https://moonshotai.github.io/kimi-cli/)、[CodeBuddy](https://codebuddy.ai)，以及 [35+ 其他代理](https://github.com/vercel-labs/skills#supported-agents) 通过 `npx skills`。内容质量由 [CORE-EEAT 基准](https://github.com/aaron-he-zhu/core-eeat-content-benchmark)（80 项）评分，域名权威由 [CITE 域名评级](https://github.com/aaron-he-zhu/cite-domain-rating)（40 项）评分。
 
 > **SEO** 让你在搜索结果中获得排名。**GEO** 让你被 AI 系统（ChatGPT、Perplexity、Google AI Overviews）引用。本库同时覆盖两者。
 
-不熟悉术语？请查看 [GLOSSARY.md](../GLOSSARY.md)。
+不熟悉术语？请查看 [README 术语表](../README.md#terminology)。
 
 ### 为什么选择这个技能库
 
 - **120 项质量评分框架** — CORE-EEAT（80 项）+ CITE（40 项），带一票否决机制
-- **8 种语言，750+ 触发词** — 中英日韩西葡，含正式、口语和拼写变体
+- **多语言触发覆盖** — 中英日韩西葡，兼顾正式与口语表达
 - **零依赖** — 纯 Markdown 技能文件，无需 Python、虚拟环境或 API 密钥
 - **工具无关** — 独立运行，或通过 14 个 MCP 服务器连接（Ahrefs、Semrush、Cloudflare 等）
 - **7 个代理原生安装** — Claude Code、OpenClaw、Gemini CLI、Qwen Code、Amp、Kimi、CodeBuddy — 外加 35+ 代理通过 `npx skills`
@@ -134,7 +134,7 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 | `/seo:contract-lint` | Auditor Runbook 漂移检测、handoff schema 检查、术语泄漏扫描 (v7.1.0+) |
 | `/seo:p2-review` | 评估 v7.1.0 延期项目触发条件;tombstone 复审 (2026-07-10) |
 | `/seo:sync-versions` | 将 `.claude-plugin/plugin.json` 的版本号传播到所有跨 agent manifest(v9.0+,替代 `scripts/sync-versions.py`) |
-| `/seo:validate-library` | 库级质量闸:描述预算、YAML 字段顺序、语言覆盖、重复触发词检测(v9.0+,替代 `scripts/validate-descriptions.py`) |
+| `/seo:validate-library` | 库级质量闸:描述预算、YAML 字段顺序、语言覆盖、重复触发词、发布护栏(v9.0+,替代 `scripts/validate-descriptions.py`) |
 
 ## 贡献
 
@@ -144,4 +144,4 @@ npx skills add aaron-he-zhu/seo-geo-claude-skills -s keyword-research
 
 Apache License 2.0
 
-*最后同步英文 README：v9.0.0*
+*最后同步英文 README：v9.5.0*

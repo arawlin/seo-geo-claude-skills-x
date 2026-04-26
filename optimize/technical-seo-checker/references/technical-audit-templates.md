@@ -1,364 +1,217 @@
-# Technical SEO Checker — Output Templates
+# Technical SEO Checker — Compact Output Templates
 
-Detailed output templates for technical-seo-checker steps 1-9. Referenced from [SKILL.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md).
+Use one reporting shape everywhere: **evidence -> checks -> issues -> fixes -> score**. Keep only the sections you actually tested.
 
----
+## Shared Conventions
+
+| Item | Rule |
+|------|------|
+| Status | `✅` pass, `⚠️` partial risk, `❌` fail |
+| Severity | `P0` blocks indexing/revenue, `P1` materially suppresses performance, `P2` hygiene |
+| Evidence | Cite source, crawl date, sample size, and representative URLs |
+| Actions | Name the fix, expected impact, and owner if known |
+| Score | Use `/10` per step; mark unsupported checks `N/A` |
+
+## Step Map
+
+| Step | Focus | Must Capture | Common Blockers |
+|------|-------|--------------|-----------------|
+| 1 | Crawlability | robots.txt, sitemap, crawl sample | blocked templates, crawl waste, chains, orphans |
+| 2 | Indexability | coverage ratio, blockers, canonicals | noindex, canonical conflicts, 4xx/5xx |
+| 3 | Performance | CWV + supporting metrics | LCP bloat, JS, fonts, server latency |
+| 4 | Mobile | viewport, parity, tap targets | missing mobile content, layout overflow |
+| 5 | Security | HTTPS, mixed content, headers | weak redirects, expired certs, CSP gaps |
+| 6 | URL structure | patterns, redirects, consistency | parameters, uppercase, loops |
+| 7 | Structured data | current schema, errors, opportunities | invalid JSON-LD, wrong type, missing required fields |
+| 8 | International | hreflang, locale targeting | missing return tags, bad language codes |
+| 9 | Summary | scorecard, queue, roadmap | unclear priorities, no owner, no monitoring plan |
 
 ## Step 1: Audit Crawlability
 
 ```markdown
-## Crawlability Analysis
+## Crawlability
 
-### Robots.txt Review
+**Evidence**: robots.txt=[URL] | sitemap=[URL] | crawl sample=[X URLs/pages]
 
-**URL**: [domain]/robots.txt
-**Status**: [Found/Not Found/Error]
-
-**Current Content**:
-```
-[robots.txt content]
+**robots.txt snapshot**
+```txt
+[current robots.txt directives or notable lines]
 ```
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| File exists | ✅/❌ | [notes] |
-| Valid syntax | ✅/⚠️/❌ | [errors found] |
-| Sitemap declared | ✅/❌ | [sitemap URL] |
-| Important pages blocked | ✅/⚠️/❌ | [blocked paths] |
-| Assets blocked | ✅/⚠️/❌ | [CSS/JS blocked?] |
-| Correct user-agents | ✅/⚠️/❌ | [notes] |
+| robots.txt check | Status | Evidence | Action |
+|------------------|--------|----------|--------|
+| File exists and parses | ✅/⚠️/❌ | [notes] | [fix] |
+| Sitemap declared | ✅/⚠️/❌ | [notes] | [fix] |
+| Important templates not blocked | ✅/⚠️/❌ | [notes] | [fix] |
+| CSS/JS/assets not unintentionally blocked | ✅/⚠️/❌ | [notes] | [fix] |
 
-**Issues Found**:
-- [Issue 1]
-- [Issue 2]
-
-**Recommended robots.txt**:
-```
-User-agent: *
-Allow: /
-Disallow: /admin/
-Disallow: /private/
-
-Sitemap: https://example.com/sitemap.xml
+**Recommended robots.txt patch**
+```txt
+[updated robots.txt snippet if needed]
 ```
 
----
+| sitemap check | Status | Evidence | Action |
+|---------------|--------|----------|--------|
+| Sitemap is discoverable | ✅/⚠️/❌ | [notes] | [fix] |
+| XML is valid | ✅/⚠️/❌ | [notes] | [fix] |
+| Only indexable URLs included | ✅/⚠️/❌ | [notes] | [fix] |
+| `lastmod` is present and trustworthy | ✅/⚠️/❌ | [notes] | [fix] |
 
-### XML Sitemap Review
+| crawl-budget check | Status | Evidence | Action |
+|--------------------|--------|----------|--------|
+| Important templates crawlable | ✅/⚠️/❌ | [notes] | [fix] |
+| Crawl waste controlled | ✅/⚠️/❌ | [duplicates/orphans/chains] | [fix] |
 
-**Sitemap URL**: [URL]
-**Status**: [Found/Not Found/Error]
+**Issues**
+- **P0** [Issue] — [affected URLs/pattern] — [fix]
+- **P1** [Issue] — [scope] — [fix]
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Sitemap exists | ✅/❌ | [notes] |
-| Valid XML format | ✅/⚠️/❌ | [errors] |
-| In robots.txt | ✅/❌ | [notes] |
-| Submitted to ~~search console | ✅/⚠️/❌ | [notes] |
-| URLs count | [X] | [appropriate?] |
-| Only indexable URLs | ✅/⚠️/❌ | [notes] |
-| Includes priority | ✅/⚠️ | [notes] |
-| Includes lastmod | ✅/⚠️ | [accurate?] |
-
-**Issues Found**:
-- [Issue 1]
-
----
-
-### Crawl Budget Analysis
-
-| Factor | Status | Impact |
-|--------|--------|--------|
-| Crawl errors | [X] errors | [Low/Med/High] |
-| Duplicate content | [X] pages | [Low/Med/High] |
-| Thin content | [X] pages | [Low/Med/High] |
-| Redirect chains | [X] found | [Low/Med/High] |
-| Orphan pages | [X] found | [Low/Med/High] |
-
-**Crawlability Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 2: Audit Indexability
 
 ```markdown
-## Indexability Analysis
+## Indexability
 
-### Index Status Overview
+**Evidence**: sitemap pages=[X] | indexed pages=[X] | coverage=[X]%
 
-| Metric | Count | Notes |
-|--------|-------|-------|
-| Pages in sitemap | [X] | |
-| Pages indexed | [X] | [source: site: search] |
-| Index coverage ratio | [X]% | [good if >90%] |
+| Check | Status | Evidence | Action |
+|------|--------|----------|--------|
+| Noindex/X-Robots blocks intentional | ✅/⚠️/❌ | [notes] | [fix] |
+| Canonicals are self-consistent | ✅/⚠️/❌ | [notes] | [fix] |
+| 4xx/5xx/loops are controlled | ✅/⚠️/❌ | [notes] | [fix] |
+| Duplicate clusters resolved | ✅/⚠️/❌ | [notes] | [fix] |
 
-### Index Blockers Check
+**Issues**
+- **P0** [Issue] — [scope] — [fix]
+- **P1** [Issue] — [scope] — [fix]
 
-| Blocker Type | Found | Pages Affected |
-|--------------|-------|----------------|
-| noindex meta tag | [X] | [list or "none"] |
-| noindex X-Robots | [X] | [list or "none"] |
-| Robots.txt blocked | [X] | [list or "none"] |
-| Canonical to other | [X] | [list or "none"] |
-| 4xx/5xx errors | [X] | [list or "none"] |
-| Redirect loops | [X] | [list or "none"] |
-
-### Canonical Tags Audit
-
-| Check | Status | Notes |
-|-------|--------|-------|
-| Canonicals present | ✅/⚠️/❌ | [X]% of pages |
-| Self-referencing | ✅/⚠️/❌ | [notes] |
-| Consistent (HTTP/HTTPS) | ✅/⚠️/❌ | [notes] |
-| Consistent (www/non-www) | ✅/⚠️/❌ | [notes] |
-| No conflicting signals | ✅/⚠️/❌ | [notes] |
-
-### Duplicate Content Issues
-
-| Issue Type | Count | Examples |
-|------------|-------|----------|
-| Exact duplicates | [X] | [URLs] |
-| Near duplicates | [X] | [URLs] |
-| Parameter duplicates | [X] | [URLs] |
-| WWW/non-WWW | [X] | [notes] |
-| HTTP/HTTPS | [X] | [notes] |
-
-**Indexability Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 3: Audit Site Speed & Core Web Vitals
 
 ```markdown
-## Performance Analysis
-
-### Core Web Vitals
+## Performance
 
 | Metric | Mobile | Desktop | Target | Status |
 |--------|--------|---------|--------|--------|
-| LCP (Largest Contentful Paint) | [X]s | [X]s | <2.5s | ✅/⚠️/❌ |
-| FID (First Input Delay) | [X]ms | [X]ms | <100ms | ✅/⚠️/❌ |
-| CLS (Cumulative Layout Shift) | [X] | [X] | <0.1 | ✅/⚠️/❌ |
-| INP (Interaction to Next Paint) | [X]ms | [X]ms | <200ms | ✅/⚠️/❌ |
+| LCP | [X]s | [X]s | <2.5s | ✅/⚠️/❌ |
+| INP | [X]ms | [X]ms | <200ms | ✅/⚠️/❌ |
+| CLS | [X] | [X] | <0.1 | ✅/⚠️/❌ |
+| TTFB | [X]ms | [X]ms | <800ms | ✅/⚠️/❌ |
 
-### Additional Performance Metrics
-
-| Metric | Value | Status |
-|--------|-------|--------|
-| Time to First Byte (TTFB) | [X]ms | ✅/⚠️/❌ |
-| First Contentful Paint (FCP) | [X]s | ✅/⚠️/❌ |
-| Speed Index | [X] | ✅/⚠️/❌ |
-| Total Blocking Time | [X]ms | ✅/⚠️/❌ |
-| Page Size | [X]MB | ✅/⚠️/❌ |
-| Requests | [X] | ✅/⚠️/❌ |
-
-### Performance Issues
-
-**LCP Issues**:
-- [Issue]: [Impact] - [Solution]
-- [Issue]: [Impact] - [Solution]
-
-**CLS Issues**:
-- [Issue]: [Impact] - [Solution]
-
-**Resource Loading**:
-| Resource Type | Count | Size | Issues |
-|---------------|-------|------|--------|
+| Resource | Count | Size | Main Blocker |
+|----------|-------|------|--------------|
 | Images | [X] | [X]MB | [notes] |
 | JavaScript | [X] | [X]MB | [notes] |
-| CSS | [X] | [X]KB | [notes] |
-| Fonts | [X] | [X]KB | [notes] |
+| CSS/fonts | [X] | [X]KB | [notes] |
 
-### Optimization Recommendations
+**High-impact fixes**
+1. [Fix] — est. impact [metric improvement]
+2. [Fix] — est. impact [metric improvement]
 
-**High Impact**:
-1. [Recommendation] - Est. improvement: [X]s
-2. [Recommendation] - Est. improvement: [X]s
-
-**Medium Impact**:
-1. [Recommendation]
-2. [Recommendation]
-
-**Performance Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 4: Audit Mobile-Friendliness
 
 ```markdown
-## Mobile Optimization Analysis
+## Mobile
 
-### Mobile-Friendly Test
+| Check | Status | Evidence | Action |
+|------|--------|----------|--------|
+| Viewport configured | ✅/⚠️/❌ | [notes] | [fix] |
+| Text and tap targets usable | ✅/⚠️/❌ | [notes] | [fix] |
+| No horizontal overflow | ✅/⚠️/❌ | [notes] | [fix] |
+| Mobile has content/meta/schema parity | ✅/⚠️/❌ | [notes] | [fix] |
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Mobile-friendly overall | ✅/❌ | [notes] |
-| Viewport configured | ✅/❌ | [viewport tag] |
-| Text readable | ✅/⚠️/❌ | Font size: [X]px |
-| Tap targets sized | ✅/⚠️/❌ | [notes] |
-| Content fits viewport | ✅/❌ | [notes] |
-| No horizontal scroll | ✅/❌ | [notes] |
+**Issues**
+- **P1** [Issue] — [scope] — [fix]
 
-### Responsive Design Check
-
-| Element | Desktop | Mobile | Issues |
-|---------|---------|--------|--------|
-| Navigation | [status] | [status] | [notes] |
-| Images | [status] | [status] | [notes] |
-| Forms | [status] | [status] | [notes] |
-| Tables | [status] | [status] | [notes] |
-| Videos | [status] | [status] | [notes] |
-
-### Mobile-First Indexing
-
-| Check | Status | Notes |
-|-------|--------|-------|
-| Mobile version has all content | ✅/⚠️/❌ | [notes] |
-| Mobile has same structured data | ✅/⚠️/❌ | [notes] |
-| Mobile has same meta tags | ✅/⚠️/❌ | [notes] |
-| Mobile images have alt text | ✅/⚠️/❌ | [notes] |
-
-**Mobile Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 5: Audit Security & HTTPS
 
 ```markdown
-## Security Analysis
+## Security
 
-### HTTPS Status
+| Check | Status | Evidence | Action |
+|------|--------|----------|--------|
+| SSL certificate valid | ✅/⚠️/❌ | [expiry/notes] | [fix] |
+| HTTPS forced site-wide | ✅/⚠️/❌ | [redirect notes] | [fix] |
+| Mixed content resolved | ✅/⚠️/❌ | [count/examples] | [fix] |
+| HSTS configured appropriately | ✅/⚠️/❌ | [header/max-age/preload notes] | [fix] |
+| Security headers reasonable | ✅/⚠️/❌ | [missing headers] | [fix] |
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| SSL certificate valid | ✅/❌ | Expires: [date] |
-| HTTPS enforced | ✅/❌ | [redirects properly?] |
-| Mixed content | ✅/⚠️/❌ | [X] issues |
-| HSTS enabled | ✅/⚠️ | [notes] |
-| Certificate chain | ✅/⚠️/❌ | [notes] |
+**Issues**
+- **P0** [Issue] — [scope] — [fix]
+- **P2** [Issue] — [scope] — [fix]
 
-### Security Headers
-
-| Header | Present | Value | Recommended |
-|--------|---------|-------|-------------|
-| Content-Security-Policy | ✅/❌ | [value] | [recommendation] |
-| X-Frame-Options | ✅/❌ | [value] | DENY or SAMEORIGIN |
-| X-Content-Type-Options | ✅/❌ | [value] | nosniff |
-| X-XSS-Protection | ✅/❌ | [value] | 1; mode=block |
-| Referrer-Policy | ✅/❌ | [value] | [recommendation] |
-
-**Security Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 6: Audit URL Structure
 
 ```markdown
-## URL Structure Analysis
+## URL Structure
 
-### URL Pattern Review
+| Check | Status | Evidence | Action |
+|------|--------|----------|--------|
+| Canonical host/protocol enforced | ✅/⚠️/❌ | [notes] | [fix] |
+| URL format readable and stable | ✅/⚠️/❌ | [notes] | [fix] |
+| Parameters/sessions controlled | ✅/⚠️/❌ | [notes] | [fix] |
+| Redirect chains and loops minimized | ✅/⚠️/❌ | [notes] | [fix] |
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| HTTPS URLs | ✅/⚠️/❌ | [X]% HTTPS |
-| Lowercase URLs | ✅/⚠️/❌ | [notes] |
-| No special characters | ✅/⚠️/❌ | [notes] |
-| Readable/descriptive | ✅/⚠️/❌ | [notes] |
-| Appropriate length | ✅/⚠️/❌ | Avg: [X] chars |
-| Keywords in URLs | ✅/⚠️/❌ | [notes] |
-| Consistent structure | ✅/⚠️/❌ | [notes] |
+**Issues**
+- **P1** [Issue] — [scope] — [fix]
 
-### URL Issues Found
-
-| Issue Type | Count | Examples |
-|------------|-------|----------|
-| Dynamic parameters | [X] | [URLs] |
-| Session IDs in URLs | [X] | [URLs] |
-| Uppercase characters | [X] | [URLs] |
-| Special characters | [X] | [URLs] |
-| Very long URLs (>100) | [X] | [URLs] |
-
-### Redirect Analysis
-
-| Check | Status | Notes |
-|-------|--------|-------|
-| Redirect chains | [X] found | [max chain length] |
-| Redirect loops | [X] found | [URLs] |
-| 302 → 301 needed | [X] found | [URLs] |
-| Broken redirects | [X] found | [URLs] |
-
-**URL Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 7: Audit Structured Data
 
-> **CORE-EEAT alignment**: Schema markup quality maps to O05 (Schema Markup) in the CORE-EEAT benchmark. See [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) for full content quality audit.
+Schema quality aligns to CORE-EEAT `O05`, so report both implementation correctness and missing opportunities.
 
 ```markdown
-## Structured Data Analysis
+## Structured Data
 
-### Schema Markup Found
+| Schema Type | Pages | Valid | Errors/Warnings |
+|-------------|-------|-------|-----------------|
+| [Type] | [X] | ✅/⚠️/❌ | [notes] |
+| [Type] | [X] | ✅/⚠️/❌ | [notes] |
 
-| Schema Type | Pages | Valid | Errors |
-|-------------|-------|-------|--------|
-| [Type 1] | [X] | ✅/❌ | [errors] |
-| [Type 2] | [X] | ✅/❌ | [errors] |
+| Opportunity | Current | Recommended | Why |
+|-------------|---------|-------------|-----|
+| Blog/article | [current] | Article + FAQ | [reason] |
+| Product | [current] | Product + Review | [reason] |
+| Homepage | [current] | Organization | [reason] |
 
-### Validation Results
+**Issues**
+- **P1** [Validation error] — [scope] — [fix]
 
-**Errors**:
-- [Error 1]: [affected pages] - [solution]
-- [Error 2]: [affected pages] - [solution]
-
-**Warnings**:
-- [Warning 1]: [notes]
-
-### Missing Schema Opportunities
-
-| Page Type | Current Schema | Recommended |
-|-----------|----------------|-------------|
-| Blog posts | [current] | Article + FAQ |
-| Products | [current] | Product + Review |
-| Homepage | [current] | Organization |
-
-**Structured Data Score**: [X]/10
+**Score**: [X]/10
 ```
 
----
-
-## Step 8: Audit International SEO (if applicable)
+## Step 8: Audit International SEO
 
 ```markdown
-## International SEO Analysis
+## International SEO
 
-### Hreflang Implementation
+| Check | Status | Evidence | Action |
+|------|--------|----------|--------|
+| Hreflang tags present where needed | ✅/⚠️/❌ | [notes] | [fix] |
+| Return tags and self-references valid | ✅/⚠️/❌ | [notes] | [fix] |
+| Language/region codes valid | ✅/⚠️/❌ | [notes] | [fix] |
+| x-default / locale targeting sensible | ✅/⚠️/❌ | [notes] | [fix] |
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Hreflang tags present | ✅/❌ | [notes] |
-| Self-referencing | ✅/⚠️/❌ | [notes] |
-| Return tags present | ✅/⚠️/❌ | [notes] |
-| Valid language codes | ✅/⚠️/❌ | [notes] |
-| x-default tag | ✅/⚠️ | [notes] |
+**Examples**
+- `[locale]` -> `[URL]` -> [status]
 
-### Language/Region Targeting
-
-| Language | URL | Hreflang | Status |
-|----------|-----|----------|--------|
-| [en-US] | [URL] | [tag] | ✅/⚠️/❌ |
-| [es-ES] | [URL] | [tag] | ✅/⚠️/❌ |
-
-**International Score**: [X]/10
+**Score**: [X]/10
 ```
-
----
 
 ## Step 9: Generate Technical Audit Summary
 
@@ -366,71 +219,44 @@ Sitemap: https://example.com/sitemap.xml
 # Technical SEO Audit Report
 
 **Domain**: [domain]
-**Audit Date**: [date]
-**Pages Analyzed**: [X]
+**Audit date**: [YYYY-MM-DD]
+**Pages analyzed**: [X]
 
-## Overall Technical Health: [X]/100
+| Area | Score | Top Blocker | First Fix |
+|------|:-----:|-------------|-----------|
+| Crawlability | [X]/10 | [issue] | [fix] |
+| Indexability | [X]/10 | [issue] | [fix] |
+| Performance | [X]/10 | [issue] | [fix] |
+| Mobile | [X]/10 | [issue] | [fix] |
+| Security | [X]/10 | [issue] | [fix] |
+| URL structure | [X]/10 | [issue] | [fix] |
+| Structured data | [X]/10 | [issue] | [fix] |
+| International (optional) | [X]/10 | [issue] | [fix] |
 
-```
-Score Breakdown:
-████████░░ Crawlability: 8/10
-███████░░░ Indexability: 7/10
-█████░░░░░ Performance: 5/10
-████████░░ Mobile: 8/10
-█████████░ Security: 9/10
-██████░░░░ URL Structure: 6/10
-█████░░░░░ Structured Data: 5/10
-```
+## Priority Queue
 
-## Critical Issues (Fix Immediately)
-
-1. **[Issue]**: [Impact]
-   - Affected: [pages/scope]
-   - Solution: [specific fix]
-   - Priority: 🔴 Critical
-
-2. **[Issue]**: [Impact]
-   - Affected: [pages/scope]
-   - Solution: [specific fix]
-   - Priority: 🔴 Critical
-
-## High Priority Issues
-
-1. **[Issue]**: [Solution]
-2. **[Issue]**: [Solution]
-
-## Medium Priority Issues
-
-1. **[Issue]**: [Solution]
-2. **[Issue]**: [Solution]
+| Priority | Issue | Scope | Fix | ETA |
+|----------|-------|-------|-----|-----|
+| P0 | [Issue] | [scope] | [fix] | [time] |
+| P1 | [Issue] | [scope] | [fix] | [time] |
+| P2 | [Issue] | [scope] | [fix] | [time] |
 
 ## Quick Wins
 
-These can be fixed quickly for immediate improvement:
+- [Quick win 1]
+- [Quick win 2]
+- [Quick win 3]
 
-1. [Quick fix 1]
-2. [Quick fix 2]
-3. [Quick fix 3]
+## 30-Day Roadmap
 
-## Implementation Roadmap
+- **Week 1**: [critical fixes]
+- **Week 2-3**: [high-priority fixes]
+- **Week 4+**: [optimization and monitoring]
 
-### Week 1: Critical Fixes
-- [ ] [Task 1]
-- [ ] [Task 2]
+## Monitoring
 
-### Week 2-3: High Priority
-- [ ] [Task 1]
-- [ ] [Task 2]
-
-### Week 4+: Optimization
-- [ ] [Task 1]
-- [ ] [Task 2]
-
-## Monitoring Recommendations
-
-Set up alerts for:
 - Core Web Vitals drops
 - Crawl error spikes
 - Index coverage changes
-- Security issues
+- Security regressions
 ```

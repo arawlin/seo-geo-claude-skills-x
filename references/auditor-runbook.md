@@ -25,7 +25,7 @@ Any restatement of a rule outside its owning file is a drift bug and will be fla
 
 ## §1 · Handoff Schema (authoritative)
 
-Every auditor-class handoff MUST follow this shape. Emitted audit artifact files (e.g., `memory/audits/**/*.md`) MUST include `class: auditor-output` in their YAML frontmatter so the PostToolUse Artifact Gate and Stop-time archiving hooks can detect them by frontmatter class instead of prose pattern-matching. Files lacking this marker are not treated as audit artifacts regardless of body content.
+Every auditor-class handoff MUST follow this shape. Emitted audit artifact files (e.g., `memory/audits/**/*.md`) MUST include `class: auditor-output` in their YAML frontmatter so the PostToolUse Artifact Gate and guarded auditor archive checks can detect them by frontmatter class instead of prose pattern-matching. Files lacking this marker are not treated as audit artifacts regardless of body content.
 
 ```yaml
 ---
@@ -48,15 +48,17 @@ raw_overall_score: <number>      # REQUIRED for auditors; score before cap
 final_overall_score: <number>    # REQUIRED for auditors; score after cap
 ```
 
-### Backward compatibility (v7.1.0 → v7.2.0 deprecation window)
+### Legacy compatibility for archived outputs
 
-Downstream skills consuming handoffs must treat the cap-related fields as **optional with documented defaults** during the deprecation window. If absent, apply these defaults:
+New auditor-class outputs MUST include the cap-related fields. The Artifact Gate treats missing `cap_applied`, `raw_overall_score`, or `final_overall_score` (unless `status: BLOCKED`) as a validation failure.
+
+Consumers reading pre-v7.2 archived outputs may apply these defaults:
 
 - `cap_applied: false` (assume no cap when field missing)
 - `raw_overall_score: <use final_overall_score>` (treat as equal)
 - `final_overall_score: <use the overall score from the audit, whatever field name>`
 
-This prevents breakage when an audit produced before the upgrade is consumed by a skill after the upgrade. A consuming skill MUST never error on missing cap fields during the deprecation window. After v7.2.0, fields become required for all auditor-class producers; consumers may then treat absence as a BLOCKED upstream.
+This compatibility rule is read-time only; it does not permit new auditor artifacts to omit required auditor-extension fields.
 
 ### Non-auditor skills
 
