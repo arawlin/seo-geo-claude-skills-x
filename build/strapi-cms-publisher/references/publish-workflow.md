@@ -4,6 +4,21 @@ Detailed mapping and execution notes for the `strapi-cms-publisher` skill.
 
 ---
 
+## Fixed REST Endpoints
+
+Use these endpoints directly on normal runs. Do not spend runtime budget rediscovering content types or components unless the user says the Strapi model changed.
+
+| Purpose | Endpoint | Notes |
+|---------|----------|-------|
+| Article lookup and write | `/api/articles` | Query by `slug.label`, create drafts, update drafts |
+| Category lookup and create | `/api/categories` | Resolve or create category relations |
+| Tag lookup and create | `/api/tags` | Resolve or create tag relations |
+| Media upload | `/api/upload` | Upload local or downloaded remote images |
+
+These paths are fixed by the current Strapi structure and should be treated as the default execution contract for this skill.
+
+---
+
 ## Fixed Content Model
 
 The workflow targets a fixed Strapi setup with these entry points:
@@ -144,20 +159,20 @@ If the connected upload tool only accepts URL-based ingestion rather than raw lo
 
 ### Category
 
-- Look up existing categories before writing the article.
+- Look up existing categories through `/api/categories` before writing the article.
 - `Category.slug.label` is taxonomy metadata only and is not used for rewritten internal article links.
 - If the category is missing, stage a category create in the review summary.
 - If the input only provides a bare slug and not a display name, ask for the missing name before approval.
 
 ### Tags
 
-- Look up tags before writing the article.
+- Look up tags through `/api/tags` before writing the article.
 - Batch every missing tag into the review summary.
 - Create missing tags only after approval, then attach the returned `documentId` values to the article payload.
 
 ### Existing articles
 
-- Query by `slug.label`.
+- Query `/api/articles` by `slug.label`.
 - If a draft already exists, stage the action as `update`.
 - Show the diff summary or at least the intent summary before asking for approval.
 - Never overwrite an existing article silently.

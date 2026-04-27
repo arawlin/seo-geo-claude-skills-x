@@ -87,6 +87,7 @@ and ask before updating the existing entry
 ## Preconditions
 
 - The Strapi content model is fixed; do not spend runtime budget re-introspecting content types unless the user says the model changed.
+- Use the fixed REST endpoints directly on normal runs: `GET/POST/PUT /api/articles`, `GET/POST /api/categories`, `GET/POST /api/tags`, and `POST /api/upload` for media.
 - Keep writes **draft only**. Never publish automatically.
 - Rewrite local article links as `/article/{articleSlug}`. Do not prepend a base URL or keep category segments in rewritten internal links.
 - If the connected runtime lacks Strapi write access, still produce the dry-run plan and confirmation summary.
@@ -100,12 +101,12 @@ When a user requests Strapi publishing, run these eight steps in order:
 2. **Parse the Article Bundle** — read frontmatter using the fixed contract, read Markdown body, extract every `<script type="application/ld+json">` block, load any sidecar JSON-LD files, and remove extracted script blocks from the Markdown that will be sent to `Article.content`.
 3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
 4. **Rewrite Internal Links and Images** — convert local article links into `/article/{articleSlug}` form directly from the linked filename, preserve anchors, upload local and remote images to Strapi media, and replace Markdown image URLs with the returned media URLs. Do not spend runtime budget checking whether the linked article already exists in Strapi before rewriting the URL.
-5. **Resolve Taxonomy and Article State** — look up category, tags, and article records before writing. Stage missing categories and tags for creation, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
+5. **Resolve Taxonomy and Article State** — use `/api/categories`, `/api/tags`, and `/api/articles` directly to look up existing category, tag, and article records before writing. Stage missing categories and tags for creation, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
 6. **Present a Single Confirmation Summary** — show article creates, article updates, pending category creates, pending tag creates, media uploads, and unresolved references. No write operation is allowed before explicit user approval.
-7. **Execute Draft Writes** — after approval, create missing categories and tags first, remember their `documentId` values, then create or update the draft article entry and attach the resolved relations and media-backed Markdown.
+7. **Execute Draft Writes** — after approval, create missing categories via `/api/categories`, create missing tags via `/api/tags`, upload media via `/api/upload`, then create or update the draft article entry via `/api/articles` and attach the resolved relations and media-backed Markdown.
 8. **Read Back and Emit Handoff** — fetch the saved draft, verify core fields (`title`, `slug`, `content`, `seo.structuredData`, taxonomy, image URLs), and output a handoff summary plus any remaining blockers.
 
-> **Reference**: See [references/publish-workflow.md](./references/publish-workflow.md) for the full field map, schema merge rules, internal-link algorithm, image handling notes, and confirmation matrix.
+> **Reference**: See [references/publish-workflow.md](./references/publish-workflow.md) for the fixed endpoint map, field map, schema merge rules, internal-link algorithm, image handling notes, and confirmation matrix.
 
 ## Example
 
@@ -130,7 +131,7 @@ On user confirmation, save a dated summary to `memory/content/YYYY-MM-DD-<topic>
 
 ## Reference Materials
 
-- [Publish Workflow](./references/publish-workflow.md) — Field mapping, schema merge rules, internal-link algorithm, media upload notes, and confirmation matrix
+- [Publish Workflow](./references/publish-workflow.md) — Fixed endpoint map, field mapping, schema merge rules, internal-link algorithm, media upload notes, and confirmation matrix
 - [Frontmatter Contract](./references/frontmatter-contract.md) — Fixed field names for category, tags, image inputs, and SEO overrides
 
 ## Next Best Skill
