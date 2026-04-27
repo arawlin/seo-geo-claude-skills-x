@@ -7,6 +7,7 @@ Non-obvious decisions with context, consequences, and rejected alternatives.
 ## Current ADRs
 
 - [ADR-001: Inline Auditor Runbook instead of Contract Inheritance](2026-04-adr-001-inline-auditor-runbook.md) — Accepted, v7.1.0
+- [ADR-002: Guardrailed Systematic Slimming Plan](2026-04-adr-002-systematic-slimming-plan.md) — Accepted, v9.5.0+
 
 ## When to write an ADR
 

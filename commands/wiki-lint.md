@@ -19,7 +19,7 @@ parameters:
 
 # Wiki Lint Command
 
-> Wiki health check for the [SEO & GEO Skills Library](https://github.com/aaron-he-zhu/seo-geo-claude-skills). Full spec: [references/proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
+> Wiki health check for the [SEO & GEO Skills Library](https://github.com/aaron-he-zhu/seo-geo-claude-skills). Design archive: [references/proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
 
 Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies.
 

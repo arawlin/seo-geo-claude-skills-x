@@ -4,15 +4,23 @@ This repository uses one contract across all 20 skills. The contract keeps each 
 
 ## Required Top Sections
 
-Every `SKILL.md` should expose these sections near the top:
+Every `SKILL.md` must expose these compact operating sections:
 
-- `When This Must Trigger`
 - `Quick Start`
 - `Skill Contract`
+- `Handoff Summary` (regular skills use a `### Handoff Summary` subsection; auditor-class skills satisfy this through the inline `## §1 · Handoff Schema (authoritative)` runbook section)
+- `Data Sources`
 - `Instructions`
-- `Validation Checkpoints`
 - `Reference Materials`
 - `Next Best Skill`
+
+Auditor-class skills must additionally expose:
+
+- `When This Must Trigger`
+- `Validation Checkpoints`
+- Inline `runbook-sync` markers for the authoritative auditor runbook block
+
+Optional sections such as `What This Skill Does`, `Example`, `Tips for Success`, `Save Results`, and non-auditor `Validation Checkpoints` may be present when they materially improve execution quality. They are not required for the compact skill skeleton.
 
 ## Frontmatter Fields Reference
 
@@ -68,13 +76,13 @@ This section defines operational behavior in four fields:
 
 ### Termination rules for Next Best Skill chains
 
-Skill handoff chains MUST not recurse indefinitely. Each skill's `Next Best Skill` block MUST specify at least one of:
+Skill handoff chains MUST not recurse indefinitely. **Global default termination rule applies to every Next Best Skill block**:
 
-1. **Verdict-conditional branching** (pattern used by `content-quality-auditor`): `Primary only when verdict = X; stop when verdict = Y`
-2. **Depth limit**: explicit `max-depth: N` in the block — default 3
-3. **Visited-set check**: if the Next Best target was the caller in the same chain, STOP and report chain-complete
+1. **Visited-set check**: if the Next Best target was already invoked in this session's chain, STOP and report chain-complete.
+2. **Depth limit**: default `max-depth: 3` unless a stricter block-level limit is stated.
+3. **Ambiguity stop**: when routing is ambiguous, stop and report the recommended options instead of auto-following.
 
-When ambiguous, stop. Never follow a Next Best Skill recommendation if it would return to a skill already invoked in this session's chain.
+Individual `Next Best Skill` blocks may add verdict-conditional branching, explicit terminal outcomes, or a stricter `max-depth`, but they inherit the global visited-set and depth rules even when those rules are not repeated locally.
 
 ## Handoff Summary Format
 
@@ -101,7 +109,7 @@ Auditor-class skills (whose deliverable is a scored audit with a verdict — cur
 
 These fields are authoritative in [references/auditor-runbook.md §1](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/auditor-runbook.md). Non-auditor skills do not emit them.
 
-**Backward compatibility (v7.1.0 → v7.2.0 deprecation window)**: consumer skills must treat auditor-extension fields as optional with documented defaults. A handoff missing these fields is valid during the window; consumers assume `cap_applied: false` and use the overall score as both raw and final. After v7.2.0, auditor-extension fields become required for auditor-class producers, and consumers may then treat absence as a BLOCKED upstream.
+**Legacy compatibility**: consumers may read pre-v7.2 archived auditor outputs defensively by assuming `cap_applied: false` and treating the available overall score as both raw and final. New auditor-class outputs MUST include the three auditor-extension fields; the Artifact Gate treats missing `cap_applied`, `raw_overall_score`, or `final_overall_score` (unless `status: BLOCKED`) as a validation failure.
 
 ## Promotion Rules
 

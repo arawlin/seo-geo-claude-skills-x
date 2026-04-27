@@ -2,54 +2,44 @@
 
 Current versions of all skills. Agents can fetch this file from `https://raw.githubusercontent.com/aaron-he-zhu/seo-geo-claude-skills/main/VERSIONS.md` once per session to check for updates.
 
-**Versioning**: Skill versions (`metadata.version` in SKILL.md) track skill content changes independently. Plugin version (in `plugin.json`) tracks manifest and infrastructure changes.
+**Versioning**: v9.5.0 is a consolidated release. Skill `version` and `metadata.version` values are aligned to the plugin version so external marketplaces can publish one clean post-v9.0.0 update.
 
 ## Skills
 
 | Skill | Category | Version | Last Updated |
 |-------|----------|---------|--------------|
-| keyword-research | research | 9.1.0 | 2026-04-23 |
-| competitor-analysis | research | 9.1.0 | 2026-04-23 |
-| serp-analysis | research | 9.1.0 | 2026-04-23 |
-| content-gap-analysis | research | 9.1.0 | 2026-04-23 |
-| seo-content-writer | build | 9.1.0 | 2026-04-23 |
-| geo-content-optimizer | build | 9.1.0 | 2026-04-23 |
-| meta-tags-optimizer | build | 9.1.0 | 2026-04-23 |
-| schema-markup-generator | build | 9.1.0 | 2026-04-23 |
-| on-page-seo-auditor | optimize | 9.1.0 | 2026-04-23 |
-| technical-seo-checker | optimize | 9.1.0 | 2026-04-23 |
-| internal-linking-optimizer | optimize | 9.1.0 | 2026-04-23 |
-| content-refresher | optimize | 9.1.0 | 2026-04-23 |
-| rank-tracker | monitor | 9.1.0 | 2026-04-23 |
-| backlink-analyzer | monitor | 9.1.0 | 2026-04-23 |
-| performance-reporter | monitor | 9.1.0 | 2026-04-23 |
-| alert-manager | monitor | 9.1.0 | 2026-04-23 |
-| content-quality-auditor | cross-cutting | 9.1.0 | 2026-04-23 |
-| domain-authority-auditor | cross-cutting | 9.1.0 | 2026-04-23 |
-| entity-optimizer | cross-cutting | 9.1.0 | 2026-04-23 |
-| memory-management | cross-cutting | 9.1.0 | 2026-04-23 |
+| keyword-research | research | 9.5.0 | 2026-04-26 |
+| competitor-analysis | research | 9.5.0 | 2026-04-26 |
+| serp-analysis | research | 9.5.0 | 2026-04-25 |
+| content-gap-analysis | research | 9.5.0 | 2026-04-25 |
+| seo-content-writer | build | 9.5.0 | 2026-04-26 |
+| geo-content-optimizer | build | 9.5.0 | 2026-04-26 |
+| meta-tags-optimizer | build | 9.5.0 | 2026-04-25 |
+| schema-markup-generator | build | 9.5.0 | 2026-04-26 |
+| on-page-seo-auditor | optimize | 9.5.0 | 2026-04-26 |
+| technical-seo-checker | optimize | 9.5.0 | 2026-04-26 |
+| internal-linking-optimizer | optimize | 9.5.0 | 2026-04-26 |
+| content-refresher | optimize | 9.5.0 | 2026-04-26 |
+| rank-tracker | monitor | 9.5.0 | 2026-04-25 |
+| backlink-analyzer | monitor | 9.5.0 | 2026-04-25 |
+| performance-reporter | monitor | 9.5.0 | 2026-04-26 |
+| alert-manager | monitor | 9.5.0 | 2026-04-25 |
+| content-quality-auditor | cross-cutting | 9.5.0 | 2026-04-25 |
+| domain-authority-auditor | cross-cutting | 9.5.0 | 2026-04-25 |
+| entity-optimizer | cross-cutting | 9.5.0 | 2026-04-25 |
+| memory-management | cross-cutting | 9.5.0 | 2026-04-25 |
 
 ## Changelog
 
-### v9.1.0 — Library-wide compression (2026-04-23)
+### v9.5.0 — Consolidated post-v9.0.0 release (2026-04-26)
 
-Library-wide compression (-34%, 37,129 → 24,587 lines). All 20 skills and 15 commands preserved, no breaking changes to skill I/O contracts, triggers, or execution logic.
+Single public release consolidating all work after v9.0.0 into one clean update.
 
-**What changed**: removed redundant boilerplate from SKILL.md files (When This Must Trigger, Validation Checkpoints, verbose Data Sources), compressed generic reference files (robots-txt, http-status-codes, KPI definitions) to SEO-essential content, trimmed command output format decorations, consolidated root documentation (AGENTS.md, GLOSSARY→README, 4 multilingual READMEs removed), and pruned low-value trigger variants (misspellings, duplicates).
+**What changed**: neutralized the prompt-injection false positive in `/seo:geo-drift-check`; replaced the Windows-incompatible marketplace symlink with a real mirror file; added `allowed-tools` to `/seo:contract-lint` from PR #10; compressed regular skill shells, commands, root docs, and high-volume reference packs while preserving execution contracts; added `scripts/validate-slimming-guardrails.sh`; strengthened `validate-skill.sh` for shared-section checks and auditor runbook hash validation; updated release workflow checks; aligned cross-agent manifests, marketplace files, badges, CITATION, and all skill versions to 9.5.0; and fixed issue #14 by replacing interactive Stop hooks with an allow-only JSON Stop guard.
 
-**What did NOT change**: Instructions sections, Skill Contract (Reads/Writes/Promotes), Quick Start sections, CORE-EEAT benchmark, CITE domain rating, auditor runbooks, instructions-detail files, example reports, hooks behavior, plugin/marketplace manifests.
+**Guardrails kept**: all 20 skills and 15 commands remain. Discovery aliases, CORE-EEAT, CITE, auditor runbook semantics, memory/entity contracts, schema placeholders, technical audit fields, reporting benchmarks, data freshness requirements, CTA logic, intent mapping, anchor distribution thresholds, KPI formulas, WCAG checks, rich-result policy checks, and backlink disavow safety rules are preserved.
 
-**Token impact**: ~33% fewer tokens per skill activation; ~38% fewer tokens for technical-seo-checker reference loading.
-
----
-
-### v9.0.1 — Prompt-injection false positive fix (2026-04-18)
-
-Patch release addressing a ClawHub OpenClaw scan that flagged the published v9.0.0 as **Suspicious (medium confidence)**. The scanner correctly matched a prompt-injection literal in `commands/geo-drift-check.md:48` — the literal was defensive example text warning the model to distrust AI-engine output, but the quoted phrase itself was indistinguishable from a real injection attempt under regex scanning.
-
-**Change**: rewrote the warning to describe the injection category without embedding a literal override-style directive. No behavioral change to any skill or command; the defensive intent is preserved.
-
-**Files touched**: `commands/geo-drift-check.md` (line 48). All plugin manifests bumped to 9.0.1 for republish; skill-level `metadata.version` values unchanged because no skill content was modified.
+**External credit**: PR #10 from @xiaolai identified the missing `allowed-tools` declaration for `/seo:contract-lint`; the consolidated git commit carries a `Co-authored-by` trailer for that contribution.
 
 ### v9.0.0 — Quality Pass + Multi-Agent Compatibility (2026-04-17)
 

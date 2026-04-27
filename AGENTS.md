@@ -8,23 +8,9 @@ Guidelines for AI agents working in this repository. For full runtime context, s
 - **Repository**: https://github.com/aaron-he-zhu/seo-geo-claude-skills
 - **Author**: Aaron He Zhu | **License**: Apache 2.0
 - **Specs**: [Agent Skills](https://agentskills.io/specification.md) · [ClawHub](https://github.com/openclaw/clawhub/blob/main/docs/skill-format.md) · [Vercel Labs](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md)
+Content-only repository (no executable code). Primary directories: `research/`, `build/`, `optimize/`, `monitor/`, `cross-cutting/`, `commands/`, `references/`.
 
-Content-only repository (no executable code). Structure: `research/`, `build/`, `optimize/`, `monitor/`, `cross-cutting/` phases plus `commands/`, `references/`, `scripts/`.
-
-## Installation
-
-| Your tool | Install command |
-|-----------|----------------|
-| **Claude Code** | `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` |
-| **OpenClaw** | `clawhub install aaron-he-zhu/<skill>` · [bundle](https://clawhub.ai/plugins/aaron-seo-geo) |
-| **Gemini CLI** | `gemini extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
-| **Qwen Code** | `qwen extensions install https://github.com/aaron-he-zhu/seo-geo-claude-skills` |
-| **Amp** | `amp skill add aaron-he-zhu/seo-geo-claude-skills` |
-| **Kimi Code CLI** | `kimi plugin install https://github.com/aaron-he-zhu/seo-geo-claude-skills.git` |
-| **CodeBuddy** | in-app: `/plugin marketplace add aaron-he-zhu/seo-geo-claude-skills` then `/plugin install aaron-seo-geo` |
-| **Cursor / Codex / Windsurf / Cline / Copilot / [35+ more](https://github.com/vercel-labs/skills#supported-agents)** | `npx skills add aaron-he-zhu/seo-geo-claude-skills` |
-
-**Git Submodule**: `git submodule add https://github.com/aaron-he-zhu/seo-geo-claude-skills.git .claude/skills/seo-geo`
+Install instructions live in [README.md](README.md). Keep this file focused on authoring and maintenance rules.
 
 ## Skill Format Specifications
 
@@ -33,6 +19,7 @@ Content-only repository (no executable code). Structure: `research/`, `build/`, 
 | Field | Required | Rules |
 |-------|----------|-------|
 | `name` | Yes | 1-64 chars, lowercase a-z, numbers, hyphens. Must match directory name. Satisfies ClawHub slug `^[a-z0-9][a-z0-9-]*$`. |
+| `version` | Yes | Semver string. Must match `metadata.version` and the row in `VERSIONS.md`. |
 | `description` | Yes | 1-1024 chars. Include: what it does, trigger phrases, scope boundaries. Optimized for `npx skills find`. |
 
 ### Optional Frontmatter
@@ -42,7 +29,7 @@ Content-only repository (no executable code). Structure: `research/`, `build/`, 
 | `license` | License name (default: Apache-2.0) |
 | `compatibility` | Platform list |
 | `allowed-tools` | Pre-approved tools (e.g., `WebFetch`) |
-| `metadata.author/version/geo-relevance/tags/triggers` | Discovery and categorization |
+| `metadata.author/version/geo-relevance/tags/triggers` | Discovery and categorization. `metadata.version` must match top-level `version`. |
 | `metadata.openclaw` | ClawHub runtime declarations (only if hard dependency exists) |
 | `when_to_use` | Trigger scenarios for auto-invocation (underscores, not hyphens) |
 | `argument-hint` | Argument format hint in command picker |
@@ -70,9 +57,9 @@ See [CLAUDE.md § Inter-Skill Handoff](CLAUDE.md). Key fields: objective, findin
 
 - **Branch naming**: `feature/skill-name`, `fix/skill-name`, `docs/description`
 - **Conventional Commits**: `feat:`, `fix:`, `docs:`
-- **After skill changes**: update 5 tracking files (VERSIONS.md, plugin.json, marketplace.json, README.md, CLAUDE.md)
-- **Keep SKILL.md under 350 lines** — use `references/` for detail
-- **Validate**: `./scripts/validate-skill.sh <category>/<skill-name>`
+- **After skill changes**: update tracking files (VERSIONS.md, plugin.json, marketplace.json, README.md, CLAUDE.md). For release bumps, also sync CITATION, localized README badges, Gemini/Qwen/CodeBuddy manifests, and marketplace mirrors.
+- **Keep regular SKILL.md under 350 lines** — use `references/` for detail. Auditor-class skills with `runbook-sync` markers may inline the protocol runbook up to ~750 lines.
+- **Validate**: `./scripts/validate-skill.sh <category>/<skill-name>` and `./scripts/validate-slimming-guardrails.sh` before release/slimming PRs.
 
 ## Writing Style
 

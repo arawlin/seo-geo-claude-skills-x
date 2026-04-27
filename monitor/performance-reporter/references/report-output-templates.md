@@ -1,291 +1,217 @@
 # Performance Report Output Templates
 
-Output templates for SEO performance reporting.
+Compact starter blocks for SEO/GEO reporting. Use the same shape throughout the report: **metric table -> what changed -> why it matters -> next action**.
 
----
+## Shared Conventions
+
+| Item | Rule |
+|------|------|
+| Status | `On track`, `Watch`, `Off track`, or `N/A` |
+| Delta | Show both absolute and percentage change when possible |
+| Audience | Executive = trends + actions; Technical = causes + owners |
+| Missing inputs | Mark the section `Not yet evaluated` and point to the next-best skill |
 
 ## 1. Report Configuration
 
 ```markdown
 ## Report Configuration
-
-**Domain**: [domain] | **Period**: [start] to [end] | **Comparison**: [previous period]
-**Type**: [Monthly/Quarterly/Annual] | **Audience**: [Executive/Technical/Client]
-**Focus**: [Rankings/Traffic/Content/Backlinks/GEO]
+**Domain**: [domain]
+**Period**: [start] to [end]
+**Comparison**: [previous period]
+**Data Freshness**: [timestamp or source date for each imported data set]
+**Type**: [Monthly/Quarterly/Annual]
+**Audience**: [Executive/Technical/Client]
+**Focus**: [Traffic/Rankings/Content/Backlinks/GEO]
 ```
-
----
 
 ## 2. Executive Summary
 
 ```markdown
-# SEO Performance Report
-
+# SEO & GEO Performance Report
 **Domain**: [domain] | **Period**: [date range] | **Prepared**: [date]
 
 ## Executive Summary
+**Overall performance**: [Excellent/Good/Needs Attention/Critical]
 
-### Overall Performance: [Excellent/Good/Needs Attention/Critical]
+**Wins**
+- [win]
+- [win]
 
-**Wins**:
-- [e.g., "Organic traffic increased 25%"]
-- [e.g., "3 new #1 rankings achieved"]
+**Watch areas**
+- [risk]
 
-**Watch Areas**:
-- [e.g., "Mobile rankings declining slightly"]
+**Action required**
+- [action]
 
-**Action Required**:
-- [e.g., "Technical SEO audit needed"]
-
-### Key Metrics
-
-| Metric | This Period | Last Period | Change | Target | Status |
-|--------|-------------|-------------|--------|--------|--------|
+| Metric | Current | Previous | Change | Target | Status |
+|--------|---------|----------|--------|--------|--------|
 | Organic Traffic | [X] | [Y] | [+/-Z%] | [T] | [status] |
 | Keywords Top 10 | [X] | [Y] | [+/-Z] | [T] | [status] |
 | Organic Conversions | [X] | [Y] | [+/-Z%] | [T] | [status] |
-| Domain Authority | [X] | [Y] | [+/-Z] | [T] | [status] |
+| Domain Authority / CITE | [X] | [Y] | [+/-Z] | [T] | [status] |
 | AI Citations | [X] | [Y] | [+/-Z%] | [T] | [status] |
 
-### SEO ROI
-
-**Investment**: $[X] | **Organic Revenue**: $[Y] | **ROI**: [Z]%
+**SEO ROI**: $[investment] -> $[organic revenue] -> [ROI]%
 ```
-
----
 
 ## 3. Organic Traffic Analysis
 
 ```markdown
-## Organic Traffic Analysis
+## Organic Traffic
 
-### Overview
-
-| Metric | This Period | vs Last Period | vs Last Year |
-|--------|-------------|----------------|--------------|
+| Metric | Current | vs Last Period | vs Last Year |
+|--------|---------|----------------|--------------|
 | Sessions | [X] | [+/-Y%] | [+/-Z%] |
 | Users | [X] | [+/-Y%] | [+/-Z%] |
 | Pageviews | [X] | [+/-Y%] | [+/-Z%] |
 | Bounce Rate | [X]% | [+/-Y%] | [+/-Z%] |
 
-### Traffic by Source
+| Slice | Value | Change | Notes |
+|-------|-------|--------|-------|
+| Organic search | [X] | [+/-Y%] | [notes] |
+| Top pages | [X] | [+/-Y%] | [notes] |
+| Device split | [desktop/mobile] | [+/-Y%] | [notes] |
 
-| Channel | Sessions | % of Total | Change |
-|---------|----------|------------|--------|
-| Organic Search | [X] | [Y]% | [+/-Z%] |
-| Direct | [X] | [Y]% | [+/-Z%] |
-| Referral | [X] | [Y]% | [+/-Z%] |
-| Social | [X] | [Y]% | [+/-Z%] |
-
-### Top Pages
-
-| Page | Sessions | Change | Conversions |
-|------|----------|--------|-------------|
-| [Page 1] | [X] | [+/-Y%] | [Z] |
-| [Page 2] | [X] | [+/-Y%] | [Z] |
-
-### By Device
-
-| Device | Sessions | Change | Conv. Rate |
-|--------|----------|--------|------------|
-| Desktop | [X] ([Y]%) | [+/-Z%] | [%] |
-| Mobile | [X] ([Y]%) | [+/-Z%] | [%] |
+**Why it moved**: [summary]
+**Next action**: [action]
 ```
-
----
 
 ## 4. Keyword Rankings
 
 ```markdown
-## Keyword Ranking Performance
-
-### Rankings Distribution
+## Keyword Rankings
 
 | Position Range | Keywords | Change | Traffic Impact |
 |----------------|----------|--------|----------------|
-| Position 1 | [X] | [+/-Y] | [Z] sessions |
-| Position 2-3 | [X] | [+/-Y] | [Z] sessions |
-| Position 4-10 | [X] | [+/-Y] | [Z] sessions |
-| Position 11-20 | [X] | [+/-Y] | [Z] sessions |
-| Position 21-50 | [X] | [+/-Y] | [Z] sessions |
+| 1 | [X] | [+/-Y] | [impact] |
+| 2-3 | [X] | [+/-Y] | [impact] |
+| 4-10 | [X] | [+/-Y] | [impact] |
+| 11-20 | [X] | [+/-Y] | [impact] |
 
-### Top Improvements
+**Top improvements**
+- [keyword] -> [previous] to [current]
 
-| Keyword | Previous | Current | Change | Traffic |
-|---------|----------|---------|--------|---------|
-| [kw 1] | [X] | [Y] | +[Z] | [sessions] |
+**Declines**
+- [keyword] -> [previous] to [current] -> [action]
 
-### Declines
-
-| Keyword | Previous | Current | Change | Action |
-|---------|----------|---------|--------|--------|
-| [kw 1] | [X] | [Y] | -[Z] | [action] |
-
-### SERP Features
-
-| Feature | Won | Lost | Opportunities |
-|---------|-----|------|---------------|
-| Featured Snippets | [X] | [Y] | [Z] |
-| People Also Ask | [X] | [Y] | [Z] |
+**SERP feature notes**: [featured snippets / PAA / AI Overviews]
 ```
 
----
-
-## 5. GEO/AI Visibility
+## 5. GEO / AI Visibility
 
 ```markdown
-## GEO (AI Visibility) Performance
+## GEO (AI Visibility)
 
-### AI Citation Overview
+| Metric | Current | Previous | Change |
+|--------|---------|----------|--------|
+| Queries with AI answer | [X]/[Y] | [X]/[Y] | [+/-Z] |
+| Your AI citations | [X] | [Y] | [+/-Z%] |
+| Citation rate | [X]% | [Y]% | [+/-Z%] |
 
-| Metric | This Period | Last Period | Change |
-|--------|-------------|-------------|--------|
-| Keywords with AI Overview | [X]/[Y] | [X]/[Y] | [+/-Z] |
-| Your AI Citations | [X] | [Y] | [+/-Z%] |
-| Citation Rate | [X]% | [Y]% | [+/-Z%] |
+**Wins**
+- [query] -> cited page -> [impact]
 
-### GEO Wins
-
-| Query | Citation Status | Source Page | Impact |
-|-------|-----------------|-------------|--------|
-| [query] | New citation | [page] | High visibility |
-
-### GEO Gaps
-
-| Query | AI Overview | You Cited? | Action |
-|-------|-------------|------------|--------|
-| [query] | Yes | No | [action] |
+**Gaps**
+- [query] -> not cited -> [action]
 ```
-
----
 
 ## 6. Domain Authority (CITE Score)
 
 ```markdown
 ## Domain Authority (CITE Score)
 
-| Metric | This Period | Last Period | Change |
-|--------|-------------|-------------|--------|
+| Metric | Current | Previous | Change |
+|--------|---------|----------|--------|
 | CITE Score | [X]/100 | [Y]/100 | [+/-Z] |
-| C -- Citation | [X]/100 | [Y]/100 | [+/-Z] |
-| I -- Identity | [X]/100 | [Y]/100 | [+/-Z] |
-| T -- Trust | [X]/100 | [Y]/100 | [+/-Z] |
-| E -- Eminence | [X]/100 | [Y]/100 | [+/-Z] |
+| C | [X] | [Y] | [+/-Z] |
+| I | [X] | [Y] | [+/-Z] |
+| T | [X] | [Y] | [+/-Z] |
+| E | [X] | [Y] | [+/-Z] |
 
-**Veto Status**: No triggers / [item] triggered
-
-_If no previous CITE audit exists, note "Not yet evaluated -- run domain-authority-auditor for baseline" and skip._
+**Veto status**: [none / item triggered]
 ```
 
----
+If no baseline exists, write `Not yet evaluated — run domain-authority-auditor for baseline`.
 
 ## 7. Content Quality (CORE-EEAT Score)
 
 ```markdown
-## Content Quality (CORE-EEAT Score)
+## Content Quality (CORE-EEAT)
 
 | Metric | Value |
 |--------|-------|
-| Pages Audited | [count] |
-| Average CORE-EEAT Score | [score]/100 ([rating]) |
-| Average GEO Score (CORE) | [score]/100 |
-| Average SEO Score (EEAT) | [score]/100 |
-| Veto Items Triggered | [count] ([item IDs]) |
-
-### Dimension Averages
+| Pages audited | [count] |
+| Average CORE-EEAT | [score]/100 |
+| Average GEO Score | [score]/100 |
+| Average SEO Score | [score]/100 |
+| Veto items triggered | [count / IDs] |
 
 | Dimension | Score | Trend |
 |-----------|-------|-------|
-| C -- Contextual Clarity | [score] | [up/down/stable] |
-| O -- Organization | [score] | [up/down/stable] |
-| R -- Referenceability | [score] | [up/down/stable] |
-| E -- Exclusivity | [score] | [up/down/stable] |
-| Exp -- Experience | [score] | [up/down/stable] |
-| Ept -- Expertise | [score] | [up/down/stable] |
-| A -- Authority | [score] | [up/down/stable] |
-| T -- Trust | [score] | [up/down/stable] |
-
-_If no audit exists, note "Run `/seo:audit-page` on key landing pages for baseline" and skip._
+| C | [score] | [trend] |
+| O | [score] | [trend] |
+| R | [score] | [trend] |
+| E | [score] | [trend] |
+| Exp | [score] | [trend] |
+| Ept | [score] | [trend] |
+| A | [score] | [trend] |
+| T | [score] | [trend] |
 ```
 
----
+If no audit exists, write `Not yet evaluated — run /seo:audit-page on key pages for baseline`.
 
 ## 8. Backlink Performance
 
 ```markdown
-## Backlink Performance
+## Backlinks
 
-| Metric | This Period | Last Period | Change |
-|--------|-------------|-------------|--------|
+| Metric | Current | Previous | Change |
+|--------|---------|----------|--------|
 | Total Backlinks | [X] | [Y] | [+/-Z] |
 | Referring Domains | [X] | [Y] | [+/-Z] |
-| Domain Authority | [X] | [Y] | [+/-Z] |
+| Avg Authority | [X] | [Y] | [+/-Z] |
 
-### Notable New Links
-
-| Source | DA | Type | Value |
-|--------|-----|------|-------|
-| [domain] | [DA] | [type] | High |
+**Notable new links**
+- [domain] -> [type/value]
 ```
-
----
 
 ## 9. Content Performance
 
 ```markdown
 ## Content Performance
 
-| Metric | This Period | Last Period | Target |
-|--------|-------------|-------------|--------|
+| Metric | Current | Previous | Target |
+|--------|---------|----------|--------|
 | New articles | [X] | [Y] | [Z] |
 | Content updates | [X] | [Y] | [Z] |
 
-### Top Performing
+**Top performers**
+- [content] -> [traffic / conversions / rankings]
 
-| Content | Traffic | Rankings | Conversions |
-|---------|---------|----------|-------------|
-| [Title] | [X] | [Y] kw | [Z] |
-
-### Needing Attention
-
-| Content | Issue | Traffic Change | Action |
-|---------|-------|----------------|--------|
-| [Title] | [issue] | -[X]% | [action] |
+**Needs attention**
+- [content] -> [issue] -> [action]
 ```
-
----
 
 ## 10. Recommendations
 
 ```markdown
 ## Recommendations & Next Steps
 
-### Immediate (This Week)
+| Horizon | Priority | Action | Expected Impact | Owner |
+|---------|----------|--------|-----------------|-------|
+| This week | High | [Action] | [Impact] | [Owner] |
+| This month | Medium | [Action] | [Impact] | [Owner] |
+| Next quarter | Medium | [Action] | [Impact] | [Owner] |
 
-| Priority | Action | Expected Impact | Owner |
-|----------|--------|-----------------|-------|
-| High | [Action] | [Impact] | [Owner] |
-
-### Short-term (This Month)
-
-| Priority | Action | Expected Impact | Owner |
-|----------|--------|-----------------|-------|
-| Medium | [Action] | [Impact] | [Owner] |
-
-### Goals for Next Period
-
-| Metric | Current | Target | Action |
-|--------|---------|--------|--------|
+| Goal | Current | Next Target | Action |
+|------|---------|-------------|--------|
 | Organic Traffic | [X] | [Y] | [action] |
 | Keywords Top 10 | [X] | [Y] | [action] |
 | AI Citations | [X] | [Y] | [action] |
 ```
 
----
-
 ## 11. Full Report Structure
 
-Compile sections 2-10 above under: `# [Company] SEO & GEO Performance Report -- [Month/Quarter] [Year]`
+Compile sections 2-10 under `# [Company] SEO & GEO Performance Report — [Month/Quarter] [Year]`.
 
-**Appendix data sources**: Analytics, Search Console, SEO tool, AI monitor
-**Glossary**: GEO = Generative Engine Optimization, DA = Domain Authority
+**Appendix**: data sources, methodology, glossary, and any missing-input notes.

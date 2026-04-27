@@ -1,8 +1,15 @@
 # Schema.org JSON-LD Templates
 
-Copy-ready structured data templates. Replace [bracketed values] with actual content.
+Compact starter blocks. Replace placeholders, remove unused fields, and validate before ship.
 
-## FAQPage Schema
+## Shared Rules
+
+- Use absolute URLs and values that match visible page content.
+- Use ISO 8601 for dates and durations.
+- Omit empty optional fields instead of leaving placeholders live.
+- Only emit `aggregateRating` or `review` when the values come from visible, verifiable user reviews.
+
+## FAQPage
 
 ```json
 {
@@ -11,10 +18,10 @@ Copy-ready structured data templates. Replace [bracketed values] with actual con
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "[Question text - must match visible page content]",
+      "name": "[Question text]",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "[Complete answer text]"
+        "text": "[Answer text]"
       }
     },
     {
@@ -29,9 +36,7 @@ Copy-ready structured data templates. Replace [bracketed values] with actual con
 }
 ```
 
----
-
-## HowTo Schema
+## HowTo
 
 ```json
 {
@@ -39,25 +44,12 @@ Copy-ready structured data templates. Replace [bracketed values] with actual con
   "@type": "HowTo",
   "name": "[How-to title]",
   "description": "[Brief description]",
-  "image": {
-    "@type": "ImageObject",
-    "url": "[Main image URL]",
-    "height": "[height]",
-    "width": "[width]"
-  },
-  "totalTime": "PT[X]H[Y]M",
-  "estimatedCost": {
-    "@type": "MonetaryAmount",
-    "currency": "USD",
-    "value": "[cost or 0]"
-  },
+  "totalTime": "PT[hours]H[minutes]M",
   "supply": [
-    { "@type": "HowToSupply", "name": "[Supply item 1]" },
-    { "@type": "HowToSupply", "name": "[Supply item 2]" }
+    { "@type": "HowToSupply", "name": "[Supply item]" }
   ],
   "tool": [
-    { "@type": "HowToTool", "name": "[Tool 1]" },
-    { "@type": "HowToTool", "name": "[Tool 2]" }
+    { "@type": "HowToTool", "name": "[Tool]" }
   ],
   "step": [
     {
@@ -65,8 +57,7 @@ Copy-ready structured data templates. Replace [bracketed values] with actual con
       "position": 1,
       "name": "[Step 1 title]",
       "text": "[Step 1 instructions]",
-      "url": "[Page URL]#step1",
-      "image": "[Step 1 image URL]"
+      "url": "[Page URL]#step1"
     },
     {
       "@type": "HowToStep",
@@ -79,151 +70,127 @@ Copy-ready structured data templates. Replace [bracketed values] with actual con
 }
 ```
 
-**Time format**: PT[X]H[Y]M (e.g., PT1H30M = 1 hour 30 minutes)
+## Article / BlogPosting
 
----
-
-## Article / BlogPosting Schema
-
-Use `Article`, `BlogPosting`, `NewsArticle`, or `TechArticle` as @type.
+Use `Article`, `BlogPosting`, `NewsArticle`, or `TechArticle` as `@type`.
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "[Title - max 110 chars]",
-  "description": "[Summary or excerpt]",
-  "image": ["[Image URL - 1200px wide]", "[4:3 ratio]", "[16:9 ratio]"],
-  "datePublished": "[ISO 8601: 2024-01-15T08:00:00+00:00]",
-  "dateModified": "[ISO 8601 date]",
+  "headline": "[Title]",
+  "description": "[Summary]",
+  "image": ["[Image URL]"],
+  "datePublished": "[ISO 8601 publish date-time]",
+  "dateModified": "[ISO 8601 modified date-time]",
   "author": {
     "@type": "Person",
-    "name": "[Author Name]",
-    "url": "[Author profile URL]"
+    "name": "[Author Name]"
   },
   "publisher": {
     "@type": "Organization",
     "name": "[Publisher Name]",
     "logo": {
       "@type": "ImageObject",
-      "url": "[Logo URL - max 600x60px]"
+      "url": "[Logo URL]"
     }
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "[Canonical URL]"
-  },
-  "wordCount": "[word count]"
+  }
 }
 ```
 
----
+## Product
 
-## Product Schema
+Use `aggregateRating` and `review` only when counts and values match visible, verified user reviews.
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": "[Product Name]",
-  "image": ["[Image URL 1]", "[Image URL 2]"],
+  "image": ["[Image URL]"],
   "description": "[Product description]",
   "sku": "[SKU]",
-  "brand": { "@type": "Brand", "name": "[Brand Name]" },
+  "brand": {
+    "@type": "Brand",
+    "name": "[Brand Name]"
+  },
   "offers": {
     "@type": "Offer",
     "url": "[Product page URL]",
-    "priceCurrency": "USD",
-    "price": "[29.99]",
-    "priceValidUntil": "[2024-12-31]",
-    "availability": "https://schema.org/InStock",
-    "seller": { "@type": "Organization", "name": "[Seller Name]" }
-  },
-```
-
-> **Review compliance**: `ratingValue`/`reviewCount` MUST reflect actual user reviews per Google Rich Results Policy and FTC rules (16 CFR 465, ~$53K/violation). Confirm: (1) reviews from verified users, (2) counts match site-visible reviews, (3) no review withholding. Add provenance comment in JSON-LD.
-
-```json
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "[4.5]",
-    "reviewCount": "[89]",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
-  "review": [
-    {
-      "@type": "Review",
-      "reviewRating": { "@type": "Rating", "ratingValue": "[5]", "bestRating": "5" },
-      "author": { "@type": "Person", "name": "[Reviewer Name]" },
-      "reviewBody": "[Review text]",
-      "datePublished": "[2024-01-15]"
-    }
-  ]
+    "priceCurrency": "[ISO 4217 currency code]",
+    "price": "[price]",
+    "availability": "https://schema.org/[InStock/OutOfStock/PreOrder]"
+  }
 }
 ```
 
-**Availability options**: `InStock`, `OutOfStock`, `PreOrder`, `Discontinued`, `LimitedAvailability`, `SoldOut`
+**Optional review extension**: add this only when the page shows visible, verifiable user reviews that match the numbers you publish.
 
----
+```json
+"aggregateRating": {
+  "@type": "AggregateRating",
+  "ratingValue": "[rating value]",
+  "reviewCount": "[review count]",
+  "bestRating": "5",
+  "worstRating": "1"
+},
+"review": [
+  {
+    "@type": "Review",
+    "author": {
+      "@type": "Person",
+      "name": "[Reviewer Name]"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "[rating value]",
+      "bestRating": "5"
+    },
+    "reviewBody": "[Review text]",
+    "datePublished": "[ISO 8601 review date]"
+  }
+]
+```
 
-## LocalBusiness Schema
+## LocalBusiness
 
-Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `HealthAndBeautyBusiness`, `LegalService`, etc.
+Use a more specific subtype when possible: `Restaurant`, `Store`, `LegalService`, `AutoRepair`, and so on.
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "[Business Name]",
-  "image": "[Business image URL]",
   "@id": "[Business page URL]",
+  "name": "[Business Name]",
   "url": "[Website URL]",
-  "telephone": "[+1-555-555-5555]",
-  "priceRange": "[$$$]",
+  "telephone": "[phone number]",
+  "priceRange": "[price range]",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "[Street]",
     "addressLocality": "[City]",
     "addressRegion": "[State]",
     "postalCode": "[ZIP]",
-    "addressCountry": "US"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": "[40.7128]",
-    "longitude": "[-74.0060]"
+    "addressCountry": "[ISO country code]"
   },
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "09:00",
-      "closes": "17:00"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": "Saturday",
-      "opens": "10:00",
-      "closes": "15:00"
+      "dayOfWeek": ["[DayOfWeek]"],
+      "opens": "[HH:MM]",
+      "closes": "[HH:MM]"
     }
-  ],
-```
-
-> **Review compliance**: Same rules as Product schema above apply.
-
-```json
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "[4.5]",
-    "reviewCount": "[123]"
-  }
+  ]
 }
 ```
 
----
+**Optional review extension**: reuse the Product review fragment above when the business page qualifies for star-rating markup.
 
-## Organization Schema
+## Organization
 
 ```json
 {
@@ -231,31 +198,18 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "Organization",
   "name": "[Organization Name]",
   "url": "[Website URL]",
-  "logo": "[Logo URL - 112x112px+]",
+  "logo": "[Logo URL]",
   "description": "[Company description]",
-  "sameAs": ["[Facebook]", "[Twitter]", "[LinkedIn]", "[Instagram]", "[YouTube]"],
+  "sameAs": ["[LinkedIn URL]", "[YouTube URL]"],
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "[Phone]",
-    "contactType": "customer service",
-    "email": "[Email]",
-    "availableLanguage": ["English"],
-    "areaServed": "US"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "[Street]",
-    "addressLocality": "[City]",
-    "addressRegion": "[State]",
-    "postalCode": "[ZIP]",
-    "addressCountry": "US"
+    "contactType": "[contact type]"
   }
 }
 ```
 
----
-
-## BreadcrumbList Schema
+## BreadcrumbList
 
 ```json
 {
@@ -269,9 +223,7 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
 }
 ```
 
----
-
-## VideoObject Schema
+## VideoObject
 
 ```json
 {
@@ -279,22 +231,14 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "VideoObject",
   "name": "[Video title]",
   "description": "[Description]",
-  "thumbnailUrl": "[Thumbnail URL - min 160x90px]",
-  "uploadDate": "[ISO 8601 date]",
-  "duration": "PT[X]M[Y]S",
-  "contentUrl": "[Video file URL]",
-  "embedUrl": "[Embed URL]",
-  "interactionStatistic": {
-    "@type": "InteractionCounter",
-    "interactionType": { "@type": "WatchAction" },
-    "userInteractionCount": "[view count]"
-  }
+  "thumbnailUrl": "[Thumbnail URL]",
+  "uploadDate": "[ISO 8601 upload date]",
+  "duration": "PT[minutes]M[seconds]S",
+  "embedUrl": "[Embed URL]"
 }
 ```
 
----
-
-## Event Schema
+## Event
 
 ```json
 {
@@ -302,11 +246,9 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "Event",
   "name": "[Event Name]",
   "description": "[Description]",
-  "image": "[Event image URL]",
-  "startDate": "[ISO 8601: 2024-06-15T19:00:00-05:00]",
-  "endDate": "[ISO 8601 date]",
-  "eventStatus": "https://schema.org/EventScheduled",
-  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "startDate": "[ISO 8601 event start date-time]",
+  "eventStatus": "https://schema.org/[EventScheduled/EventCancelled/EventPostponed]",
+  "eventAttendanceMode": "https://schema.org/[OfflineEventAttendanceMode/OnlineEventAttendanceMode/MixedEventAttendanceMode]",
   "location": {
     "@type": "Place",
     "name": "[Venue]",
@@ -316,27 +258,17 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
       "addressLocality": "[City]",
       "addressRegion": "[State]",
       "postalCode": "[ZIP]",
-      "addressCountry": "US"
+      "addressCountry": "[ISO country code]"
     }
   },
-  "offers": {
-    "@type": "Offer",
-    "url": "[Ticket URL]",
-    "price": "[price]",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock",
-    "validFrom": "[Sale start date]"
-  },
-  "organizer": { "@type": "Organization", "name": "[Organizer]", "url": "[URL]" }
+  "organizer": {
+    "@type": "Organization",
+    "name": "[Organizer Name]"
+  }
 }
 ```
 
-**Status**: `EventScheduled`, `EventCancelled`, `EventPostponed`, `EventRescheduled`, `EventMovedOnline`
-**Attendance**: `OfflineEventAttendanceMode`, `OnlineEventAttendanceMode`, `MixedEventAttendanceMode`
-
----
-
-## Course Schema
+## Course
 
 ```json
 {
@@ -344,20 +276,20 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "Course",
   "name": "[Course Name]",
   "description": "[Description]",
-  "provider": { "@type": "Organization", "name": "[Provider]", "sameAs": "[URL]" },
-  "offers": { "@type": "Offer", "category": "Paid", "price": "[price]", "priceCurrency": "USD" },
+  "provider": {
+    "@type": "Organization",
+    "name": "[Provider Name]",
+    "sameAs": "[Provider URL]"
+  },
   "hasCourseInstance": {
     "@type": "CourseInstance",
-    "courseMode": "online",
-    "courseWorkload": "PT[X]H",
-    "instructor": { "@type": "Person", "name": "[Instructor]" }
+    "courseMode": "[online/onsite/blended]",
+    "courseWorkload": "PT[hours]H"
   }
 }
 ```
 
----
-
-## Recipe Schema
+## Recipe
 
 ```json
 {
@@ -365,37 +297,25 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "Recipe",
   "name": "[Recipe name]",
   "image": "[Image URL]",
-  "author": { "@type": "Person", "name": "[Author]" },
-  "datePublished": "[ISO 8601 date]",
+  "author": {
+    "@type": "Person",
+    "name": "[Author]"
+  },
   "description": "[Description]",
-  "prepTime": "PT[X]M",
-  "cookTime": "PT[X]M",
-  "totalTime": "PT[X]M",
-  "recipeYield": "[e.g., 4 servings]",
-  "recipeCategory": "[e.g., Dinner]",
-  "recipeCuisine": "[e.g., Italian]",
-  "nutrition": { "@type": "NutritionInformation", "calories": "[cal/serving]" },
-  "recipeIngredient": ["[Ingredient 1 with qty]", "[Ingredient 2]", "[Ingredient 3]"],
+  "prepTime": "PT[minutes]M",
+  "cookTime": "PT[minutes]M",
+  "recipeYield": "[4 servings]",
+  "recipeIngredient": ["[Ingredient 1]", "[Ingredient 2]"],
   "recipeInstructions": [
     { "@type": "HowToStep", "text": "[Step 1]" },
     { "@type": "HowToStep", "text": "[Step 2]" }
-  ],
-```
-
-> **Review compliance**: Same rules as Product schema above apply.
-
-```json
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "[4.5]",
-    "reviewCount": "[count]"
-  }
+  ]
 }
 ```
 
----
+**Optional review extension**: reuse the Product review fragment above when the recipe page includes visible, eligible user ratings.
 
-## SoftwareApplication Schema
+## SoftwareApplication
 
 ```json
 {
@@ -403,33 +323,26 @@ Use specific subtypes when applicable: `Restaurant`, `Store`, `AutoRepair`, `Hea
   "@type": "SoftwareApplication",
   "name": "[Software name]",
   "operatingSystem": "[Windows, macOS, iOS, Android, Web]",
-  "applicationCategory": "BusinessApplication",
-  "offers": { "@type": "Offer", "price": "[price or 0]", "priceCurrency": "USD" },
-```
-
-> **Review compliance**: Same rules as Product schema above apply.
-
-```json
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "[4.5]",
-    "reviewCount": "[count]"
+  "applicationCategory": "[Schema.org application category]",
+  "offers": {
+    "@type": "Offer",
+    "price": "[price or 0]",
+    "priceCurrency": "[ISO 4217 currency code]"
   },
   "softwareVersion": "[version]",
-  "downloadUrl": "[URL]"
+  "downloadUrl": "[Download URL]"
 }
 ```
 
----
+**Optional review extension**: reuse the Product review fragment above when the software page qualifies for review rich results.
 
-## Multiple Schemas (Combined Array)
+## Combined Array
 
-Wrap multiple schemas in a JSON array inside a single `<script type="application/ld+json">` tag. Each object gets its own `@context`.
+Place multiple complete objects inside one array in a single `<script type="application/ld+json">` block when a page needs more than one schema type.
 
----
+## Preflight Checklist
 
-## Implementation Notes
-
-- Validate: validator.schema.org and search.google.com/test/rich-results
-- Use absolute URLs; dates in ISO 8601; no trailing commas
-- Schema must match visible page content
+- Validate with `validator.schema.org` and Google's Rich Results Test.
+- Use truthful review data only; if unsure, omit review properties.
+- Keep URLs canonical and accessible.
+- Remove trailing commas and placeholder text before publishing.

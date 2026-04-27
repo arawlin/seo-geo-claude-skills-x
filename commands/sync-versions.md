@@ -40,9 +40,9 @@ Run after editing `.claude-plugin/plugin.json` `version` field. Idempotent: no-o
 
 3. **Idempotence**: skip paths already equal to `$V`. If `--dry-run`, report only.
 
-4. **Summary report** example (9.0.0 -> 9.1.0):
+4. **Summary report** example (9.0.0 -> 9.5.0):
    ```
-   Sync versions -> 9.1.0
+   Sync versions -> 9.5.0
      marketplace.json: metadata.version ok (was 9.0.0)
      gemini-extension.json: version ok (was 9.0.0)
      qwen-extension.json: version: already in sync

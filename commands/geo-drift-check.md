@@ -60,7 +60,7 @@ Aggregate (N=12): MAE 8.2 (<15 ok) | Direction: +3.1 avg | Best tracker: R (r=0.
 
 ## Experimental status
 
-Marked **experimental in v9.0.0**. Requires at least one AI engine MCP or user availability for manual paste. **Sunset clause**: if by v9.3 fewer than 10 URLs have T+90 measurements, either deprecate or restructure. Decision recorded in `memory/decisions.md`.
+Marked **experimental in v9.0.0**. Requires at least one AI engine MCP or user availability for manual paste. **Sunset clause**: if fewer than 10 URLs have T+90 measurements at review time, either deprecate or restructure. Decision recorded in `memory/decisions.md`.
 
 ## Related
 

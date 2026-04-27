@@ -44,7 +44,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Artifact Gate (v7.1.0+). ONLY applies when written file has `class: auditor-output` frontmatter OR is under `memory/audits/**/*.md`. Do NOT match on prose mentions of cap_applied/raw_overall_score/final_overall_score in body text (common in docs/references/examples). If neither condition met, produce NO output — complete silence. When an auditor artifact IS detected, re-validate against 7-item Artifact Gate (auditor-runbook.md §4): (1) valid status enum, (2) key_findings array with title+severity+evidence, (3) cap_applied set, (4) raw_overall_score present, (5) final_overall_score present unless BLOCKED, (6) evidence_summary non-empty, (7) recommended_next_skill present. Clean-context check — do not trust self-check. On failure: report 'Artifact Gate failure: [check]', recommend re-run. Do not silently fix."
+            "prompt": "Artifact Gate (v7.1.0+). ONLY applies when written file has `class: auditor-output` frontmatter. Do NOT infer auditor status from `memory/audits/**` path alone, because optimize-layer audit summaries also live there and must not emit cap fields. Do NOT match on prose mentions of cap_applied/raw_overall_score/final_overall_score in body text (common in docs/references/examples). If the frontmatter marker is absent, produce NO output — complete silence. When an auditor artifact IS detected, re-validate against 7-item Artifact Gate (auditor-runbook.md §4): (1) valid status enum, (2) key_findings array with title+severity+evidence, (3) cap_applied set, (4) raw_overall_score present, (5) final_overall_score present unless BLOCKED, (6) evidence_summary non-empty, (7) recommended_next_skill present. Clean-context check — do not trust self-check. On failure: report 'Artifact Gate failure: [check]', recommend re-run. Do not silently fix."
           },
           {
             "type": "prompt",
@@ -78,15 +78,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Before ending: (1) If any veto issue found (CORE-EEAT T04/C01/R10 or CITE T03/T05/T09), append to memory/hot-cache.md without asking: YYYY-MM-DD | VETO | <item-id> | <description>. (2) If session produced reusable SEO/GEO findings, ask: 'Save these results for future sessions?' If yes, write dated summary to appropriate memory/ path (YYYY-MM-DD-<topic>.md)."
-          },
-          {
-            "type": "prompt",
-            "prompt": "Wiki wrap-up: (1) If memory/wiki/index.md exists and WARM files were written this session, append changelog: '| YYYY-MM-DD HH:MM | +N new, ~N updated |'. Keep only 5 most recent entries. (2) If memory/wiki/log.md exists, append session entry: '## [YYYY-MM-DD HH:MM] session | <project>' with skills used, WARM files written, wiki pages updated. If log.md >500 lines, move oldest to memory/wiki/log-archive/YYYY.md. If memory/wiki/ absent, skip silently."
-          },
-          {
-            "type": "prompt",
-            "prompt": "Auditor archiving (v7.1.0+). ONLY applies when content-quality-auditor or domain-authority-auditor produced a handoff with `class: auditor-output` frontmatter or under `memory/audits/**/*.md` this session. Do NOT match prose mentions of cap_applied/raw_overall_score/final_overall_score in docs/examples. If no artifact detected, produce no output. When detected, silently append archive block to memory/audits/YYYY-MM.md per format in memory-management/references/examples.md. Create monthly file with '# Audit Archive — YYYY-MM' header if absent. No user confirmation needed."
+            "prompt": "Stop guard. Hook input: $ARGUMENTS. Respond only with JSON: {\"ok\": true}. Always allow stop, including when stop_hook_active is true. Stop hook never initiates memory writes. Never ask the user to save optional session findings, never request wiki changelogs or auditor archives, and never instruct Claude to perform follow-up writes from this hook. Optional or required memory writes must happen during the active turn via explicit user request, auditor save confirmation, or memory-management invocation, not from Stop."
           }
         ]
       }

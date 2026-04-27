@@ -34,7 +34,7 @@ By default, this library:
 ### In scope for security review
 - Memory poisoning across sessions (malicious content written to `memory/` affecting future sessions)
 - WebFetch-injected instructions (prompt injection via target page HTML/meta)
-- Cross-session trust boundary (Stop hook auto-writes memory on user "save" confirmation — verify before approving)
+- Cross-session trust boundary (memory writes require an explicit user request, memory-management invocation, or auditor save confirmation; Stop only performs a guarded allow-only completion check and never initiates writes)
 
 See [SECURITY.md](SECURITY.md) for responsible disclosure.
 
@@ -53,4 +53,4 @@ For privacy-related questions: **hello@zhuhe.io**
 
 This privacy policy may be updated as the project evolves. Changes will be documented in commit history.
 
-*Last updated: 2026-04-17*
+*Last updated: 2026-04-26*

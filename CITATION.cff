@@ -9,8 +9,8 @@ authors:
     email: hello@zhuhe.io
 repository-code: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
 license: Apache-2.0
-version: "9.0.1"
-date-released: "2026-04-18"
+version: "9.5.0"
+date-released: "2026-04-26"
 keywords:
   - seo
   - geo

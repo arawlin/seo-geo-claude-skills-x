@@ -48,12 +48,15 @@ The `name` field must match the directory name exactly.
 
 ### 4. Write effective instructions
 
-Include: When to Use, What It Does, How to Use, Data Sources (`~~placeholders`), Instructions, Validation Checkpoints, Example, Related Skills. Keep under 350 lines; put detailed references in `references/` subdirectory.
+Use the compact shared skeleton from `references/skill-contract.md`: `Quick Start`, `Skill Contract`, `Handoff Summary`, `Data Sources`, `Instructions`, `Reference Materials`, and `Next Best Skill`. Optional sections such as `What This Skill Does`, `Example`, `Tips for Success`, `Save Results`, and `Validation Checkpoints` are welcome when they improve execution quality. Keep regular skills under 350 lines; put detailed references in `references/` subdirectory.
+
+Auditor-class skills are the exception: they may inline the authoritative auditor runbook with `runbook-sync` markers and a ~750-line ceiling.
 
 ### 5. Validate
 
 ```bash
 ./scripts/validate-skill.sh <category>/<skill-name>
+./scripts/validate-slimming-guardrails.sh
 ```
 
 ### 6. Update tracking files
@@ -65,22 +68,27 @@ After adding or updating a skill, keep these 5 files in sync:
 - `README.md` — skills table
 - `CLAUDE.md` — category table
 
+For release bumps, also sync `CITATION.cff`, README badges, localized README badges, Gemini/Qwen/CodeBuddy manifests, and both marketplace files. `/seo:sync-versions` helps, but `./scripts/validate-slimming-guardrails.sh` is the release gate that confirms the full surface.
+
 ## Improving Existing Skills
 
-Keep changes focused. Bump `metadata.version`. Update `VERSIONS.md`. Put new reference docs in the skill's `references/` subdirectory.
+Keep changes focused. Bump both top-level `version` and `metadata.version` together. Update `VERSIONS.md`. Put new reference docs in the skill's `references/` subdirectory.
 
 ## Quality Checklist
 
 Before submitting a PR:
 
 - [ ] `name` matches directory name (satisfies ClawHub slug `^[a-z0-9][a-z0-9-]*$`)
+- [ ] Top-level `version` is present and matches `metadata.version` plus `VERSIONS.md`
 - [ ] `description` includes trigger phrases AND scope boundaries (≤1024 chars)
 - [ ] SKILL.md body under 350 lines; detail in `references/`
+- [ ] Shared compact section contract present (`validate-skill.sh` checks this)
 - [ ] Validator passes: `./scripts/validate-skill.sh <category>/<skill-name>`
+- [ ] Slimming/release guardrails pass: `./scripts/validate-slimming-guardrails.sh`
 - [ ] Uses `~~placeholder` pattern for tool references
 - [ ] `allowed-tools: WebFetch` added if skill fetches live URLs
 - [ ] Includes validation checkpoints and at least one example
-- [ ] All 5 tracking files updated; plugin.json and marketplace.json arrays identical
+- [ ] All tracking and release files updated; plugin.json and marketplace.json arrays identical
 - [ ] `.claude-plugin/marketplace.json` byte-identical to repo-root copy
 
 ## Submitting

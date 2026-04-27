@@ -3,7 +3,7 @@
 **20 skills. 15 commands. Rank in search. Get cited by AI.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-9.1.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.5.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/aaron-he-zhu/seo-geo-claude-skills)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/commits/main)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-purple)](https://claude.ai/download)
@@ -69,7 +69,7 @@ After install: `Research keywords for [your topic]` or `/seo:audit-page <URL>`. 
 
 ## Operating Model
 
-Every skill follows one contract: trigger, quick start, skill contract, handoff summary, next best skill. Four cross-cutting skills form the protocol layer: `content-quality-auditor` (publish gate), `domain-authority-auditor` (trust gate), `entity-optimizer` (entity profile), `memory-management` (memory loop). Prompt-based hooks automate session start/end and post-write audit recommendations. Three-tier memory (HOT/WARM/COLD) persists context across sessions. Shared refs: [skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md) · [state-model.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/state-model.md).
+Every skill follows one contract: trigger, quick start, skill contract, handoff summary, next best skill. Four cross-cutting skills form the protocol layer: `content-quality-auditor` (publish gate), `domain-authority-auditor` (trust gate), `entity-optimizer` (entity profile), `memory-management` (memory loop). Prompt-based hooks load session context, refresh post-write indexes, recommend audits, and run a guarded allow-only Stop check when Claude finishes a response. Three-tier memory (HOT/WARM/COLD) persists context across sessions. High-volume `references/` packs use compact starter templates to keep activation weight lower. Shared refs: [skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md) · [state-model.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/state-model.md).
 
 ### Where to Begin
 
@@ -125,16 +125,16 @@ Every skill follows one contract: trigger, quick start, skill contract, handoff 
 |-------|-------------|
 | [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) | Audit on-page elements with a scored report and fix recommendations |
 | [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md) | Check crawlability, indexing, Core Web Vitals, and site architecture |
-| [internal-linking-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/internal-linking-optimizer/SKILL.md) | Optimize internal link structure for better crawling and authority flow |
-| [content-refresher](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/content-refresher/SKILL.md) | Update outdated content to recover or improve rankings |
+| [internal-linking-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/internal-linking-optimizer/SKILL.md) | Optimize internal links, orphan pages, crawl depth, architecture, and authority flow |
+| [content-refresher](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/content-refresher/SKILL.md) | Refresh outdated or declining content with current stats, GEO updates, and republishing strategy |
 
 ### Monitor — track performance and catch issues early
 
 | Skill | What it does |
 |-------|-------------|
 | [rank-tracker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/rank-tracker/SKILL.md) | Track keyword positions over time in both SERP and AI responses |
-| [backlink-analyzer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/backlink-analyzer/SKILL.md) | Analyze backlink profile, find opportunities, detect toxic links |
-| [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) | Generate SEO/GEO performance reports for stakeholders |
+| [backlink-analyzer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/backlink-analyzer/SKILL.md) | Analyze backlink quality, toxic-link risk, competitor gaps, and link opportunities |
+| [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) | Generate stakeholder SEO/GEO reports covering traffic, rankings, authority, conversions, and AI visibility |
 | [alert-manager](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/alert-manager/SKILL.md) | Set up alerts for ranking drops, traffic changes, and technical issues |
 
 ### Cross-cutting — protocol layer across all phases
@@ -174,7 +174,7 @@ One-shot tasks with explicit input and structured output.
 | `/seo:contract-lint` | Auditor Runbook drift detection, handoff schema check (v7.1.0+) |
 | `/seo:p2-review` | Evaluate v7.1.0 deferred items; tombstone review (2026-07-10) |
 | `/seo:sync-versions` | Propagate version from plugin.json to all cross-agent manifests (v9.0+) |
-| `/seo:validate-library` | Library-level quality gate: descriptions, YAML order, triggers (v9.0+) |
+| `/seo:validate-library` | Library-level quality gate: descriptions, YAML order, triggers, release guardrails (v9.0+) |
 
 Command files: [commands/](https://github.com/aaron-he-zhu/seo-geo-claude-skills/tree/main/commands/)
 
@@ -218,55 +218,7 @@ When a skill points to its `Next Best Skill`, pass: objective, key findings, evi
 | [core-eeat-benchmark.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/core-eeat-benchmark.md) | 80 | content-quality-auditor, seo-content-writer, geo-content-optimizer, content-refresher, on-page-seo-auditor |
 | [cite-domain-rating.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/cite-domain-rating.md) | 40 | domain-authority-auditor, backlink-analyzer, competitor-analysis, performance-reporter |
 
-<details>
-<summary>Finding the right skill (40-entry search index)</summary>
-
-| You're looking for... | Use this skill |
-|----------------------|---------------|
-| Find keywords / topic ideas / what to write about | [keyword-research](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/keyword-research/SKILL.md) |
-| Search volume / long-tail keywords / ranking opportunities | [keyword-research](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/keyword-research/SKILL.md) |
-| Analyze competitors / competitive intelligence | [competitor-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/competitor-analysis/SKILL.md) |
-| Competitor keywords / competitor backlinks / benchmarking | [competitor-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/competitor-analysis/SKILL.md) |
-| SERP analysis / featured snippets / what ranks for X | [serp-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/serp-analysis/SKILL.md) |
-| AI overviews / SERP features / why does this page rank | [serp-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/serp-analysis/SKILL.md) |
-| Content gaps / untapped topics / content opportunities | [content-gap-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/content-gap-analysis/SKILL.md) |
-| Competitor content analysis / content strategy gaps | [content-gap-analysis](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/content-gap-analysis/SKILL.md) |
-| Write a blog post / article / content creation | [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md) |
-| SEO copywriting / draft optimized content | [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md) |
-| Optimize for AI / get cited by ChatGPT | [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md) |
-| GEO optimization / appear in AI answers / LLM citations | [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md) |
-| Title tag / meta description / improve CTR | [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md) |
-| Open Graph / Twitter cards / social preview | [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md) |
-| Schema markup / JSON-LD / rich snippets | [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md) |
-| FAQ schema / How-To schema / product markup | [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md) |
-| On-page SEO audit / SEO score | [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) |
-| Header tags / image optimization / check my page | [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) |
-| Technical SEO / page speed / Core Web Vitals | [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md) |
-| Crawl issues / indexing problems / mobile-friendly | [technical-seo-checker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/technical-seo-checker/SKILL.md) |
-| Internal links / site architecture / link structure | [internal-linking-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/internal-linking-optimizer/SKILL.md) |
-| Page authority distribution / content silos | [internal-linking-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/internal-linking-optimizer/SKILL.md) |
-| Update old content / content decay / refresh | [content-refresher](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/content-refresher/SKILL.md) |
-| Declining rankings / revive old blog posts | [content-refresher](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/content-refresher/SKILL.md) |
-| Track rankings / keyword positions | [rank-tracker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/rank-tracker/SKILL.md) |
-| SERP monitoring / ranking trends | [rank-tracker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/rank-tracker/SKILL.md) |
-| Analyze backlinks / link profile / toxic links | [backlink-analyzer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/backlink-analyzer/SKILL.md) |
-| Link building / off-page SEO | [backlink-analyzer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/backlink-analyzer/SKILL.md) |
-| SEO report / performance report / traffic report | [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) |
-| SEO dashboard / report to stakeholders | [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md) |
-| SEO alerts / monitor rankings / notifications | [alert-manager](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/alert-manager/SKILL.md) |
-| Traffic alerts / watch competitor changes | [alert-manager](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/alert-manager/SKILL.md) |
-| Content quality audit / EEAT score | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) |
-| CORE-EEAT audit / content assessment | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) |
-| Domain authority audit / domain trust | [domain-authority-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/domain-authority-auditor/SKILL.md) |
-| CITE audit / domain rating | [domain-authority-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/domain-authority-auditor/SKILL.md) |
-| Entity optimization / knowledge graph | [entity-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/entity-optimizer/SKILL.md) |
-| Brand entity / entity disambiguation | [entity-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/entity-optimizer/SKILL.md) |
-| Remember project context / track campaign | [memory-management](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/memory-management/SKILL.md) |
-| Store keyword data / save progress | [memory-management](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/memory-management/SKILL.md) |
-
-</details>
-
-Browse all 20 skills: [GitHub](https://github.com/aaron-he-zhu/seo-geo-claude-skills) · [ClawHub](https://clawhub.ai/u/aaron-he-zhu) · [skills.sh](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)
+Need help choosing? Use the phase tables above, browse [skills.sh](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills), or run `npx skills find seo` / `npx skills find geo`.
 
 ## Contributing
 
@@ -291,25 +243,15 @@ See [CONTRIBUTING.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob
 
 **GEO (Generative Engine Optimization)** — Structuring content so AI assistants (ChatGPT, Perplexity, Google AI Overviews) cite it in their answers.
 
-**CORE-EEAT** — 80-item content quality framework scored across 8 dimensions. `GEO Score = CORE avg`, `SEO Score = EEAT avg`. See [references/core-eeat-benchmark.md](references/core-eeat-benchmark.md).
+**CORE-EEAT / CITE** — Content-level and domain-level scoring frameworks. See [core-eeat-benchmark.md](references/core-eeat-benchmark.md) and [cite-domain-rating.md](references/cite-domain-rating.md).
 
-**CITE** — 40-item domain authority framework scored across 4 dimensions (Credibility, Infrastructure, Trust, Endorsement). See [references/cite-domain-rating.md](references/cite-domain-rating.md).
+**Veto item / cap** — A failed critical check can block approval or cap the final score even when the overall total looks strong. See [auditor-runbook.md](references/auditor-runbook.md).
 
-**Veto item** — A single scoring item that blocks publication or authority approval regardless of overall score when failed. CORE-EEAT has three (T04, C01, R10); CITE has three (T03, T05, T09).
+**Protocol layer** — Four cross-cutting skills that manage quality, trust, entity truth, and memory: `content-quality-auditor`, `domain-authority-auditor`, `entity-optimizer`, `memory-management`.
 
-**Cap (Critical Fail Cap)** — A ceiling applied to the final score when certain items fail, limiting the top score until the issue is fixed. See [references/contract-fail-caps.md](references/contract-fail-caps.md).
+**HOT / WARM / COLD** — Three memory tiers: auto-loaded context, on-demand working memory, and archive. See [state-model.md](references/state-model.md).
 
-**Gate verdict** — The auditor's ship/no-ship decision: `SHIP`, `FIX_BEFORE_SHIP`, or `BLOCK`. Driven by veto items, caps, and score thresholds. See [references/auditor-runbook.md](references/auditor-runbook.md).
-
-**Protocol layer** — Four cross-cutting skills enforcing quality: `content-quality-auditor` (publish gate), `domain-authority-auditor` (trust gate), `entity-optimizer` (entity profile), `memory-management` (memory loop).
-
-**HOT / WARM / COLD tiers** — Three-temperature memory model. HOT is auto-loaded (80 lines, 25KB cap). WARM is on-demand. COLD is archival. See [references/state-model.md](references/state-model.md).
-
-**Handoff summary** — Structured packet one skill passes to the next: objective, findings, evidence, open loops, keyword, content type, completion status, scores, priority items, URL.
-
-**Skill vs. command** — A *skill* auto-activates from user prompts. A *command* is invoked explicitly with `/seo:<name>`.
-
-**Tier 1 / 2 / 3 integration** — Tier 1: zero dependencies (every skill works standalone). Tier 2: MCP connectors for richer data. Tier 3: full toolchain with webhooks and sync. See [CONNECTORS.md](CONNECTORS.md).
+**Skill vs. command** — A skill auto-activates from intent; a command is invoked explicitly with `/seo:<name>`.
 
 </details>
 
