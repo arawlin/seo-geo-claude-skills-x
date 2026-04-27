@@ -127,6 +127,7 @@ Use the helper directly:
 ```
 
 The script normalizes line endings to LF and returns a SHA-256 hex digest.
+Use the article Markdown file directly as the `--content-file` input.
 
 ---
 

@@ -4,9 +4,10 @@ set -euo pipefail
 
 usage() {
     cat <<'EOF'
-Usage: ./scripts/generate-content-hash.sh --title "..." --description "..." (--content "..." | --content-file path)
+Usage: ./scripts/generate-content-hash.sh --title "..." --description "..." --content-file path/to/article.md
 
 Generate a stable SHA-256 content hash from title, description, and content.
+Pass the article Markdown file directly with --content-file.
 The script normalizes CRLF to LF before hashing and prints only the hex digest.
 EOF
 }
@@ -31,21 +32,15 @@ emit_field() {
 }
 
 emit_content_field() {
-    local inline_content="$1"
-    local file_path="$2"
+    local file_path="$1"
 
     printf 'content<<EOF\n'
-    if [ -n "$file_path" ]; then
-        normalize_stream < "$file_path"
-    else
-        printf '%s' "$inline_content" | normalize_stream
-    fi
+    normalize_stream < "$file_path"
     printf '\nEOF\n'
 }
 
 title=""
 description=""
-content=""
 content_file=""
 
 while [ "$#" -gt 0 ]; do
@@ -58,11 +53,6 @@ while [ "$#" -gt 0 ]; do
         --description)
             [ "$#" -ge 2 ] || die "Missing value for --description"
             description="$2"
-            shift 2
-            ;;
-        --content)
-            [ "$#" -ge 2 ] || die "Missing value for --content"
-            content="$2"
             shift 2
             ;;
         --content-file)
@@ -82,16 +72,9 @@ done
 
 [ -n "$title" ] || die "--title is required"
 [ -n "$description" ] || die "--description is required"
+[ -n "$content_file" ] || die "--content-file is required"
 
-if [ -n "$content" ] && [ -n "$content_file" ]; then
-    die "Use either --content or --content-file, not both"
-fi
-
-if [ -z "$content" ] && [ -z "$content_file" ]; then
-    die "One of --content or --content-file is required"
-fi
-
-if [ -n "$content_file" ] && [ ! -f "$content_file" ]; then
+if [ ! -f "$content_file" ]; then
     echo "Content file not found: $content_file" >&2
     exit 1
 fi
@@ -99,5 +82,5 @@ fi
 {
     emit_field "title" "$title"
     emit_field "description" "$description"
-    emit_content_field "$content" "$content_file"
+    emit_content_field "$content_file"
 } | shasum -a 256 | awk '{ print $1 }'
