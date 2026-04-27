@@ -37,7 +37,7 @@ The workflow targets a fixed Strapi setup with these entry points:
 | `Article.icon` | Cover image media | Mapped from `cover_image` when present |
 | `Article.previews` | Preview media list | Mapped from `preview_images[]` when present |
 | `seo.metaImage` / `seo.openGraph.ogImage` | SEO image media | Mapped from `og_image` when present |
-| `source.contentHash` | Content fingerprint | Generate with `./scripts/generate-content-hash.sh` from normalized `title`, `description`, and final Markdown `content` |
+| `source.contentHash` | Content fingerprint | Generate with `./scripts/generate-content-hash.sh` from `title`, `description`, and the original article Markdown file as-is |
 | `source.origin` | Source channel | Example: `workspace-file` |
 | `source.referer` | Source file hint | Example: workspace-relative article path |
 | `category` | Many-to-one relation | Used for taxonomy only; not used in rewritten internal article URLs |
@@ -109,11 +109,11 @@ Sidecar schema can be supplied explicitly by the user or auto-discovered next to
 
 ## Content Hash Rule
 
-Generate `source.contentHash` from exactly these three fields after normalization is complete:
+Generate `source.contentHash` from exactly these three fields with no preprocessing on the Markdown file:
 
 - `title`
 - `description`
-- final rewritten Markdown `content`
+- original article Markdown file (`.md`) bytes
 
 Do not include taxonomy IDs, image document IDs, or merged `seo.structuredData` in the hash input.
 
@@ -123,11 +123,11 @@ Use the helper directly:
 ./scripts/generate-content-hash.sh \
   --title "$TITLE" \
   --description "$DESCRIPTION" \
-  --content-file "$REWRITTEN_MARKDOWN_FILE"
+  --content-file "$ARTICLE_MARKDOWN_FILE"
 ```
 
-The script normalizes line endings to LF and returns a SHA-256 hex digest.
 Use the article Markdown file directly as the `--content-file` input.
+The script reads file bytes as-is and returns a SHA-256 hex digest.
 
 ---
 

@@ -4,11 +4,11 @@ set -euo pipefail
 
 usage() {
     cat <<'EOF'
-Usage: ./scripts/generate-content-hash.sh --title "..." --description "..." --content-file path/to/article.md
+Usage: ./scripts/generate-content-hash.sh --title "..." --description "..." --content-file <article-markdown-file>
 
 Generate a stable SHA-256 content hash from title, description, and content.
 Pass the article Markdown file directly with --content-file.
-The script normalizes CRLF to LF before hashing and prints only the hex digest.
+The script reads file bytes as-is and prints only the hex digest.
 EOF
 }
 
@@ -16,27 +16,6 @@ die() {
     echo "$1" >&2
     usage >&2
     exit 1
-}
-
-normalize_stream() {
-    awk 'BEGIN { RS = "\0"; ORS = "" } { gsub(/\r\n/, "\n"); gsub(/\r/, "\n"); print }'
-}
-
-emit_field() {
-    local key="$1"
-    local value="$2"
-
-    printf '%s<<EOF\n' "$key"
-    printf '%s' "$value" | normalize_stream
-    printf '\nEOF\n'
-}
-
-emit_content_field() {
-    local file_path="$1"
-
-    printf 'content<<EOF\n'
-    normalize_stream < "$file_path"
-    printf '\nEOF\n'
 }
 
 title=""
@@ -80,7 +59,7 @@ if [ ! -f "$content_file" ]; then
 fi
 
 {
-    emit_field "title" "$title"
-    emit_field "description" "$description"
-    emit_content_field "$content_file"
+    # Use explicit separators so title/description boundaries are deterministic.
+    printf 'title\0%s\0description\0%s\0content\0' "$title" "$description"
+    cat -- "$content_file"
 } | shasum -a 256 | awk '{ print $1 }'
