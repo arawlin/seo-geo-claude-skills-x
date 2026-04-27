@@ -95,7 +95,7 @@ and ask before updating the existing entry
 
 ## Available Scripts
 
-- `scripts/generate-content-hash.sh` — Generate `source.contentHash` from `title`, `description`, and the original Markdown file bytes
+- `scripts/generate-content-hash.sh` — Script under this `strapi-cms-publisher` skill directory; generates `source.contentHash` from `title`, `description`, and the original Markdown file bytes
 
 ## Instructions
 
@@ -103,7 +103,7 @@ When a user requests Strapi publishing, run these eight steps in order:
 
 1. **Confirm Publish Scope** — gather article path(s), optional sidecar schema path(s), Strapi server alias, batch vs. single-entry mode, and whether updates or taxonomy creation are allowed after review.
 2. **Parse the Article Bundle** — read frontmatter using the fixed contract, read Markdown body, extract every `<script type="application/ld+json">` block, load any sidecar JSON-LD files, and remove extracted script blocks from the Markdown that will be sent to `Article.content`.
-3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Compute `source.contentHash` by running `scripts/generate-content-hash.sh` with `title`, `description`, and the original article Markdown file path as `--content-file`, without preprocessing the file content. Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
+3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Compute `source.contentHash` by running `scripts/generate-content-hash.sh` from this skill directory, with `title`, `description`, and the original article Markdown file path as `--content-file`, without preprocessing the file content. Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
 
    ```bash
    scripts/generate-content-hash.sh \
@@ -144,6 +144,7 @@ On user confirmation, save a dated summary to `memory/content/YYYY-MM-DD-<topic>
 
 - [Publish Workflow](./references/publish-workflow.md) — Fixed endpoint map, field mapping, schema merge rules, internal-link algorithm, media upload notes, and confirmation matrix
 - [Frontmatter Contract](./references/frontmatter-contract.md) — Fixed field names for category, tags, image inputs, and SEO overrides
+- [Content Hash Script](./scripts/generate-content-hash.sh) — Local script in this skill directory (`scripts/`) for generating `source.contentHash`
 
 ## Next Best Skill
 
