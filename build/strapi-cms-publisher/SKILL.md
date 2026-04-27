@@ -99,7 +99,7 @@ When a user requests Strapi publishing, run these eight steps in order:
 
 1. **Confirm Publish Scope** — gather article path(s), optional sidecar schema path(s), Strapi server alias, batch vs. single-entry mode, and whether updates or taxonomy creation are allowed after review.
 2. **Parse the Article Bundle** — read frontmatter using the fixed contract, read Markdown body, extract every `<script type="application/ld+json">` block, load any sidecar JSON-LD files, and remove extracted script blocks from the Markdown that will be sent to `Article.content`.
-3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
+3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Compute `source.contentHash` by calling `./scripts/generate-content-hash.sh` with the final `title`, `description`, and rewritten Markdown `content`. Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
 4. **Rewrite Internal Links and Images** — convert local article links into `/article/{articleSlug}` form directly from the linked filename, preserve anchors, upload local and remote images to Strapi media, and replace Markdown image URLs with the returned media URLs. Do not spend runtime budget checking whether the linked article already exists in Strapi before rewriting the URL.
 5. **Resolve Taxonomy and Article State** — use `/api/categories`, `/api/tags`, and `/api/articles` directly to look up existing category, tag, and article records before writing. Stage missing categories and tags for creation, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
 6. **Present a Single Confirmation Summary** — show article creates, article updates, pending category creates, pending tag creates, media uploads, and unresolved references. No write operation is allowed before explicit user approval.
@@ -114,7 +114,7 @@ When a user requests Strapi publishing, run these eight steps in order:
 
 **Output** (abbreviated):
 - Dry-run summary: 1 article update or create candidate, 1 category lookup, 5 tag lookups, 0-1 tag creates, N image uploads, 2 internal link rewrites
-- Payload plan: `title`, `description`, Markdown `content`, merged `seo.structuredData`, `slug.label`, `source.contentHash`, taxonomy document IDs
+- Payload plan: `title`, `description`, Markdown `content`, merged `seo.structuredData`, `slug.label`, `source.contentHash` from `./scripts/generate-content-hash.sh`, taxonomy document IDs
 - Confirmation gate: one approval covering tag/category creates, article write, and media uploads
 - Read-back result: saved draft `documentId`, preserved Markdown, uploaded media URLs substituted, unresolved links listed if any
 
