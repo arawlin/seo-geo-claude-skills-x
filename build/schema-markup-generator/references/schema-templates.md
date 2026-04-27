@@ -251,7 +251,7 @@ Use a more specific subtype when possible: `Restaurant`, `Store`, `LegalService`
   "eventAttendanceMode": "https://schema.org/[OfflineEventAttendanceMode/OnlineEventAttendanceMode/MixedEventAttendanceMode]",
   "location": {
     "@type": "Place",
-    "name": "[Venue]",
+    "name": "[Venue Name]",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "[Street]",

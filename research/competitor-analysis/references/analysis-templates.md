@@ -1,4 +1,4 @@
-# Competitor Analysis -- Analysis Templates
+# Competitor Analysis — Analysis Templates
 
 Compact templates for the competitor-analysis workflow.
 
@@ -58,12 +58,10 @@ Compact templates for the competitor-analysis workflow.
 **Quality Mix**: High [X]% | Medium [X]% | Low [X]%
 **Link Acquisition Patterns**: Guest posts [X]% | Editorial [X]% | Resource pages [X]% | Directories [X]%
 
-**Top Linking Domains**:
 | Domain | DR | Link Type | Target Page |
 |--------|----|-----------|-------------|
 | [domain] | [DR] | [type] | [page] |
 
-**Linkable Assets**:
 | Asset | Type | Backlinks | Why It Works |
 |-------|------|-----------|--------------|
 | [asset] | [type] | [X] | [reason] |

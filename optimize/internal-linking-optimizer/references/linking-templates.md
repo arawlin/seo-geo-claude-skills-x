@@ -93,7 +93,6 @@ CORE-EEAT alignment: R08 Internal Link Graph.
 
 ```markdown
 # Internal Linking Optimization Plan
-**Site**: [domain] | **Analysis Date**: [date]
 
 **Site**: [domain] | **Analysis date**: [date]
 
