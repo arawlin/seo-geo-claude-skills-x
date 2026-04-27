@@ -4,7 +4,7 @@ set -euo pipefail
 
 usage() {
     cat <<'EOF'
-Usage: ./scripts/generate-content-hash.sh --title "..." --description "..." --content-file <article-markdown-file>
+Usage: scripts/generate-content-hash.sh --title "..." --description "..." --content-file <article-markdown-file>
 
 Generate a stable SHA-256 content hash from title, description, and content.
 Pass the article Markdown file directly with --content-file.

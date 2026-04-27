@@ -37,7 +37,7 @@ The workflow targets a fixed Strapi setup with these entry points:
 | `Article.icon` | Cover image media | Mapped from `cover_image` when present |
 | `Article.previews` | Preview media list | Mapped from `preview_images[]` when present |
 | `seo.metaImage` / `seo.openGraph.ogImage` | SEO image media | Mapped from `og_image` when present |
-| `source.contentHash` | Content fingerprint | Generate with `./scripts/generate-content-hash.sh` from `title`, `description`, and the original article Markdown file as-is |
+| `source.contentHash` | Content fingerprint | Generate with `scripts/generate-content-hash.sh` from `title`, `description`, and the original article Markdown file as-is |
 | `source.origin` | Source channel | Example: `workspace-file` |
 | `source.referer` | Source file hint | Example: workspace-relative article path |
 | `category` | Many-to-one relation | Used for taxonomy only; not used in rewritten internal article URLs |
@@ -120,7 +120,7 @@ Do not include taxonomy IDs, image document IDs, or merged `seo.structuredData` 
 Use the helper directly:
 
 ```bash
-./scripts/generate-content-hash.sh \
+scripts/generate-content-hash.sh \
   --title "$TITLE" \
   --description "$DESCRIPTION" \
   --content-file "$ARTICLE_MARKDOWN_FILE"
