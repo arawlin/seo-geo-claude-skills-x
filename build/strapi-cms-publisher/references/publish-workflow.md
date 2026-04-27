@@ -126,6 +126,7 @@ scripts/generate-content-hash.sh \
   --content-file "$ARTICLE_MARKDOWN_FILE"
 ```
 
+Script paths in this workflow are relative to the `strapi-cms-publisher` skill root.
 Use the article Markdown file directly as the `--content-file` input.
 The script reads file bytes as-is and returns a SHA-256 hex digest.
 
