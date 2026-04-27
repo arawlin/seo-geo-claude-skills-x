@@ -19,60 +19,19 @@ parameters:
 
 # Wiki Lint Command
 
-> Wiki health check for the [SEO & GEO Skills Library](https://github.com/aaron-he-zhu/seo-geo-claude-skills). Design archive: [references/proposal-wiki-layer-v3.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/proposal-wiki-layer-v3.md)
+Check project wiki and WARM memory health.
 
-Scans `memory/wiki/` compiled pages and `memory/` WARM files for inconsistencies.
+## Route
 
-## Usage
+Use [memory-management](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/memory-management/SKILL.md) and [state-model.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/state-model.md).
 
-```
-/seo:wiki-lint
-/seo:wiki-lint --project acme-campaign-q2
-/seo:wiki-lint --fix
-/seo:wiki-lint --retire-preview
-```
+## Steps
 
-## Workflow
+1. Load active project or all `memory/wiki/*/index.md` files.
+2. Detect contradictions, orphan pages, stale claims, missing pages, and source hash mismatches.
+3. With `--retire-preview`, list WARM files fully covered by compiled wiki pages.
+4. Apply only HIGH-confidence fixes when `--fix` is set; otherwise report.
 
-1. Glob `memory/wiki/*.md` (filter by `--project` if set)
-2. Build WARM index: read `memory/*.md` (excluding `wiki/`), map entity → path + hash
-3. Contradiction scan: compare claim values across pages/WARM for same entity
-4. Stale claim scan: recompute `shasum -a 256` vs `sources.hash` in each wiki page
-5. Orphan detection: build inbound-link index, flag pages with zero inlinks
-6. Missing page detection: flag entities mentioned 3+ times with no dedicated page
-7. Cross-reference gaps: flag page pairs sharing topics without reciprocal links
-8. HOT drift: compare `memory/hot-cache.md` values against wiki pages
-9. Hash recheck: re-run step 4 to catch mid-scan file changes
-10. Report: output structured results, append to `memory/wiki/log.md`
+## Output
 
-## Checks Performed
-
-| Check | Description | Auto-fixable |
-|-------|-------------|-------------|
-| **Contradiction** | Two wiki/WARM files assert conflicting facts about same entity | HIGH only (time-series: use latest + changelog) |
-| **Stale claim** | Wiki page cites WARM file whose source hash changed | Yes (re-compile) |
-| **Orphan page** | Wiki page with zero inbound links | No (suggest deletion/linking) |
-| **Missing page** | Entity mentioned 3+ times but has no page | No (suggest creation) |
-| **Missing cross-ref** | Two pages discuss same topic without linking | Yes (add link) |
-| **HOT drift** | hot-cache.md references entity whose wiki page changed | No (suggest HOT update) |
-| **Hash mismatch** | Compiled page `sources.hash` differs from current WARM content | Yes (re-compile) |
-
-## Contradiction Resolution
-
-- **HIGH**: Time-series data -- auto-use latest value, preserve older as changelog.
-- **MEDIUM**: Ambiguous evidence -- LLM proposes, marked `[待确认]` until user confirms.
-- **LOW**: Insufficient evidence -- flagged for user, not auto-resolved even with `--fix`.
-
-## Output Format
-
-```markdown
-## Wiki Lint Report -- [project] (YYYY-MM-DD)
-
-### Contradictions (N) / Stale Claims (N) / Orphan Pages (N) / Missing Pages (N) / Missing Cross-Refs (N) / HOT Drift (N) / Hash Mismatches (N)
-[Each section with relevant table columns]
-
-### Summary
-Total checks: N | Issues: N | Auto-fixed: N | Requires user action: N
-```
-
-Results appended to `memory/wiki/log.md`.
+Health score, contradictions, stale items, orphan pages, fixable items, retire-preview list, and save target.

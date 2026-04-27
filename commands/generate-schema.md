@@ -10,54 +10,25 @@ parameters:
     description: "Schema type: FAQ, HowTo, Article, Product, LocalBusiness, Organization, Breadcrumb, Review, Event, Video"
   - name: source
     type: string
-    required: false
-    description: URL, pasted content, or description of the content
+    required: true
+    description: URL, pasted visible content, Q&A list, or product/business facts used as evidence
 ---
 
 # Generate Schema Command
 
-Generates valid **Schema.org JSON-LD** structured data markup to enhance search visibility and enable rich results.
+Generate Schema.org JSON-LD for visible page content.
 
-## Usage
+## Route
 
-```
-/seo:generate-schema FAQ for our pricing page Q&As
-/seo:generate-schema Product for [product details]
-/seo:generate-schema Article for https://example.com/blog-post
-/seo:generate-schema LocalBusiness for our main location page
-```
+Use [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md).
 
-**Arguments:** Schema type (required): FAQ, HowTo, Article, Product, LocalBusiness, Organization, Breadcrumb, Review, Event, Video. Content source: URL, pasted content, or description.
+## Steps
 
-## Workflow
+1. Identify content type and eligible schema.
+2. Require visible evidence for every property.
+3. For publish-ready JSON-LD, omit missing or unverifiable dates, prices, durations, ratings, and review counts; list needed facts outside the JSON-LD instead.
+4. Use placeholders only in clearly labeled draft templates, then validate rich-result policy constraints before output.
 
-1. **Identify Schema Requirements** -- Parse schema type, fetch URL if provided, determine if secondary types benefit (e.g., Article + FAQ).
-2. **Generate Schema Markup** -- Invoke `schema-markup-generator`. Select most specific type, collect required + recommended properties, generate valid JSON-LD, validate against Google rich result requirements.
-3. **Compile Output** -- Markup with validation results and implementation instructions.
+## Output
 
-## Output Format
-
-```markdown
-## SCHEMA.ORG MARKUP GENERATOR
-
-**Schema Type**: [SchemaType] | **Rich Result Eligible**: [Yes/No]
-
-### Generated Markup
-[Complete JSON-LD markup]
-
-### Validation Results
-JSON syntax, required properties, data types, Google requirements.
-
-### Implementation Instructions
-1. Add JSON-LD to page `<head>` in a `<script type="application/ld+json">` tag
-2. Test: https://search.google.com/test/rich-results
-3. Submit URL in Search Console; allow 2-4 weeks for rich results
-```
-
-## Tips
-
-Combine multiple schemas when appropriate (Article + FAQ, Product + Review). Do not mark up invisible content. Update schema when content changes.
-
-## Related Skills
-
-- [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md)
+Schema type, eligibility notes, JSON-LD block, validation checklist, implementation location, and monitoring notes.

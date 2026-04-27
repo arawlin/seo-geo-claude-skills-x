@@ -16,61 +16,20 @@ parameters:
 
 # Audit Page Command
 
-> Content quality scoring based on [CORE-EEAT Content Benchmark](https://github.com/aaron-he-zhu/core-eeat-content-benchmark). Full reference: [references/core-eeat-benchmark.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/core-eeat-benchmark.md)
+Run on-page SEO plus CORE-EEAT content quality audit for a URL or pasted content.
 
-A combined **on-page SEO** + **CORE-EEAT content quality** audit. For full site-wide technical SEO, use `/seo:check-technical`.
+## Route
 
-## Usage
+Use [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md), then [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md) for ranking-diagnosis, content-quality, trust, or publish-verdict work.
 
-```
-/seo:audit-page https://example.com/blog-post
-/seo:audit-page [paste content here] targeting "keyword"
-/seo:audit-page https://example.com/landing-page keyword="primary keyword"
-```
+## Steps
 
-**Arguments:** URL or pasted content (required) + optional `keyword="target keyword"` (recommended for relevance scoring).
+1. Fetch or parse the source; if fetch is unavailable, ask for page copy, title/meta, H1-H2, URL, target keyword, and competitors.
+2. If keyword is missing, infer likely targets from title/H1/body, mark confidence, and continue `DONE_WITH_CONCERNS`.
+3. Audit title, meta, headings, content quality, images, links, schema, accessibility, and intent fit.
+4. Run CORE-EEAT quick scan; run the full content-quality auditor when ranking/content/trust diagnosis needs it.
+5. Produce score, fixes, evidence, and handoff.
 
-## Workflow
+## Output
 
-1. **Run On-Page SEO Audit** -- Invoke `on-page-seo-auditor`. Scores 8 areas (Title, Meta Description, Headers, Content, Keywords, Links, Images, Technical).
-2. **Run CORE-EEAT Content Quality Audit** -- Invoke `content-quality-auditor`. Veto check first, then score all 80 items across 8 dimensions. Calculate GEO Score (CORE) and SEO Score (EEAT).
-3. **Compile Output** -- Merge both results. Generate priority-ranked action list by severity.
-
-## Output Format
-
-```markdown
-## ON-PAGE SEO AUDIT: [Page Title or URL]
-
-**Overall Score**: XX/100
-
-### Section Scores
-8 area scores with bar charts.
-
-### Priority Action List
-CRITICAL / IMPORTANT / MINOR items with specific fixes.
-
-### Concrete Action Checklist
-[ ] Action items.
-
-## CORE-EEAT CONTENT QUALITY
-
-**Content Type**: [type] | **Veto Status**: Pass/Fail | **Weighted Score**: XX/100 ([rating])
-**GEO Score (CORE)**: XX/100 | **SEO Score (EEAT)**: XX/100
-
-Dimension Scores: Contextual Clarity, Organization, Referenceability, Exclusivity, Experience, Expertise, Authority, Trust -- each XX/100.
-
-Top 5 Content Quality Improvements: [Issue] -- [specific action].
-
-### Detailed Findings
-Section-by-section breakdown in plain language. Internal item IDs emitted only in YAML handoff at `memory/audits/` per Runbook §5.
-
-NOTE: For technical SEO (speed, crawl, HTTPS), run `/seo:check-technical`.
-```
-
-## Tips
-
-Provide target keyword for relevance scoring. Some EEAT items (A01, A05, A07) require site-level data -- mark "N/A" if not observable. Run monthly on key pages.
-
-## Related Skills
-
-- [on-page-seo-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/optimize/on-page-seo-auditor/SKILL.md) | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md)
+URL/source, keyword, section scores, CORE-EEAT quick scan, critical issues, prioritized fixes, and next best skill.

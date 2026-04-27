@@ -4,7 +4,7 @@
 > **Release**: v7.1.0
 > **Last updated**: 2026-04-11
 > **Changes since 1.0**: Example 1 arithmetic corrected to integer; added cross-version rerun rule (§5); added BLOCKED-path escape hatch (§5); clarified open_loops scope (§5); dual-hash sync markers (§6).
-> **Next scheduled review**: 2026-07-10 (tied to P2 trigger evaluation)
+> **Next scheduled review**: when 30+ real multi-veto audits exist, using `/seo:run-evals` plus maintainer calibration review
 
 This file is the single source of truth for auditor-class skill output behavior. It is inlined into:
 - [cross-cutting/content-quality-auditor/SKILL.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md)
@@ -168,7 +168,7 @@ Handoff:
       evidence: "..."
 ```
 
-**Why BLOCKED, not "capped at 40"**: the 40-tier cap number is unvalidated. Blocking forces manual review, which is more honest than publishing an eyeballed number. Calibration trigger: 30+ real multi-veto audits in `memory/audits/`. Review date: 2026-07-10 via `/seo:p2-review`.
+**Why BLOCKED, not "capped at 40"**: the 40-tier cap number is unvalidated. Blocking forces manual review, which is more honest than publishing an eyeballed number. Calibration trigger: 30+ real multi-veto audits in `memory/audits/`, reviewed through `/seo:run-evals` plus maintainer calibration.
 
 **Note on dimension vs count**: the 2+ veto threshold counts **total veto failures across all dimensions**, not per-dimension. Example 3 shows T04 (Trust dim) + R10 (Referenceability dim) on different dimensions, but T03 + T09 both on the Trust dimension would also trigger BLOCKED. The veto count is dimension-agnostic.
 
