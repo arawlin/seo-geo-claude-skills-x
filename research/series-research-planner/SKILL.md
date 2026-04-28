@@ -179,6 +179,6 @@ Run this phase once per series.
 
 ## Next Best Skill
 
-Primary: [article-batch-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/article-batch-generator/SKILL.md)
+Primary: `article-batch-generator`
 — use when `<topic_dir>/research/00-series-plan.json` is complete. Stop if the
 plan status is `NEEDS_INPUT` or `BLOCKED`.

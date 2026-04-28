@@ -159,6 +159,6 @@ After all article audits are complete:
 
 ## Next Best Skill
 
-Primary: [series-finalizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/series-finalizer/SKILL.md)
+Primary: `series-finalizer`
 — use when all article files exist and the batch summary is complete. Stop if
 article generation is still `BLOCKED` or the plan is incomplete.

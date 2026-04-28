@@ -125,9 +125,9 @@ and add:
 
 ## Reference Materials
 
-- [series-research-planner](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/series-research-planner/SKILL.md)
-- [article-batch-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/article-batch-generator/SKILL.md)
-- [series-finalizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/series-finalizer/SKILL.md)
+- `series-research-planner`
+- `article-batch-generator`
+- `series-finalizer`
 - [skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md)
 
 ## Next Best Skill
