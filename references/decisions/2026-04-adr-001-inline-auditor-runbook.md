@@ -29,7 +29,7 @@ The panel rejected several v1 assumptions:
 4. **60/40 cap numbers are eyeballed.** The plan offered 70/50 and 65/45 as alternatives, revealing no principled basis.
 5. **Failure Modes Catalog is likely to become a tombstone.** Manual curation with no named owner, no cadence, predictable drift by month 3.
 
-Round 1 produced v2. v2 kept Critical Fail Cap, Guardrail Negatives, and the inline strategy; deferred Gap Typology and Failure Modes to P2 observation; killed Blind Pass and Evidence Layering entirely.
+Round 1 produced v2. v2 kept Critical Fail Cap, Guardrail Negatives, and the inline strategy; deferred Gap Typology and Failure Modes to observation; killed Blind Pass and Evidence Layering entirely.
 
 ### Round 2 review (5 agents: Continuity / Red Team / DevEx / Migration / Doc Quality)
 
@@ -87,7 +87,7 @@ Ship v7.1.0 as the auditor-runbook inline strategy with the following elements:
 
 ## Review triggers
 
-- **2026-07-10**: `/seo:p2-review` command evaluates P2 observation items. Items with unmet triggers auto-close; items with met triggers are proposed for v7.3.
+- **Auditor calibration trigger**: `/seo:run-evals` plus maintainer review evaluates deferred observation items when real audit evidence exists. Items with unmet triggers stay closed; items with met triggers are proposed for a future release.
 - **First `/seo:contract-lint` drift report**: audit the inlined copies, update the sync procedure if drift was preventable.
 - **Any edit to `references/auditor-runbook.md`**: re-run the sync procedure, recompute sha256 in both inlined copies, and verify `commands/contract-lint.md` still matches §6 Lint Coverage Manifest.
 - **If the 350-line exception proves abusive**: revisit the inlining strategy and consider whether an alternative (e.g., a build-time preprocessor that assembles SKILL.md at publish time) would preserve execution fidelity without the bloat. As of v7.1.0, no preprocessor infrastructure exists in ClawHub or Claude Code.

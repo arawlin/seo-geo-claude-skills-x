@@ -1,7 +1,7 @@
 ---
 name: write-content
 description: Write SEO and GEO optimized content from a topic and target keyword
-argument-hint: "<topic> keyword=\"<target keyword>\" type=\"<content type>\""
+argument-hint: "<topic> keyword=\"<target keyword>\" type=\"<content type>\" [engine/audience/entity]"
 parameters:
   - name: topic
     type: string
@@ -15,57 +15,28 @@ parameters:
     type: string
     required: false
     description: "Content type (default: blog post). Options: blog post, how-to guide, comparison, listicle, landing page, ultimate guide"
+  - name: engine
+    type: string
+    required: false
+    description: Target AI/search surface, such as ChatGPT, Perplexity, AI Overviews, Gemini, or Google
 ---
 
 # Write Content Command
 
-Writes search-engine-optimized content, then applies a GEO optimization pass for AI citability. Delivers final content with SEO metadata and quality scores.
+Write SEO and GEO optimized content from topic and target keyword.
 
-## Usage
+## Route
 
-```
-/seo:write-content "email marketing for SaaS" keyword="saas email marketing" type="how-to guide"
-/seo:write-content "cloud hosting comparison" keyword="best cloud hosting"
-```
+Use [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md), then [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md).
 
-**Arguments:** Topic (required) + `keyword=` (required) + optional `type=` (default: blog post; options: blog post, how-to guide, comparison, listicle, landing page, ultimate guide).
+## Steps
 
-## Workflow
+1. If the request combines research and writing, run keyword-research first and select the priority keyword.
+2. Confirm topic, keyword, content type, audience, intent, CTA, entity/brand context, AI engine, and constraints.
+3. Build outline, title, meta description, and section plan.
+4. Draft content with keyword placement, snippets, links, FAQ, and evidence.
+5. Add GEO citability blocks and final self-check.
 
-1. **Run SEO Content Writer** -- Invoke `seo-content-writer`: SERP analysis, keyword map, title options, meta description, SEO headers, full draft, featured snippet optimization, link recommendations, SEO review, CORE-EEAT self-check.
-2. **Run GEO Content Optimizer** -- Pass draft to `geo-content-optimizer`: clear definitions, quotable statements with data, authority signals, AI-friendly structure, factual density, schema-ready FAQ.
-3. **Compile Final Output**.
+## Output
 
-## Output Format
-
-```markdown
-# [Final Optimized Title]
-
-**Meta Description**: "[description]" ([X] chars)
-**Primary Keyword**: [keyword] | **Content Type**: [type]
-
----
-[Full written content with GEO enhancements]
----
-
-## SEO Metadata
-| Element | Value |
-Title Tag, Meta Description, URL Slug, Keywords, Word Count.
-
-## CORE Self-Check Scores
-| Dimension | Score | Key Notes |
-C / O / R / E dimensions with GEO Score avg.
-
-## GEO Optimization Notes
-| GEO Factor | Score (1-10) | Notes |
-Definitions, Quotable statements, Factual density, Citations, Q&A, Authority.
-**GEO Readiness**: X/10
-```
-
-## Tips
-
-Specify content type explicitly (affects CORE-EEAT weights). Run `/seo:keyword-research` first for competitive keywords. After publishing, run `/seo:audit-page` to verify.
-
-## Related Skills
-
-- [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md) | [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md) | [keyword-research](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/research/keyword-research/SKILL.md) | [content-quality-auditor](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/SKILL.md)
+Final content, title/meta, outline, SEO notes, GEO notes, unresolved assumptions, and quality handoff.

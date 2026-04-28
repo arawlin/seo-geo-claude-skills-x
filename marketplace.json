@@ -6,15 +6,15 @@
   },
   "metadata": {
     "description": "SEO & GEO skill operating system with a shared contract, protocol-layer gates, and reusable state handoffs",
-    "version": "9.5.0",
+    "version": "9.9.5",
     "repository": "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
   },
   "plugins": [
     {
       "name": "aaron-seo-geo",
       "source": "./",
-      "description": "20 SEO/GEO skills and 15 commands on one shared contract for keyword research, content creation, technical audits, schema markup, monitoring, quality gates, entity truth, and campaign memory.",
-      "version": "9.5.0",
+      "description": "20 SEO/GEO skills and 17 commands on one shared contract for keyword research, content creation, technical audits, schema markup, monitoring, quality gates, entity truth, and campaign memory.",
+      "version": "9.9.5",
       "category": "marketing",
       "tags": [
         "seo",

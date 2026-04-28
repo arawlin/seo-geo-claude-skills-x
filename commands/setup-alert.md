@@ -23,49 +23,19 @@ parameters:
 
 # Setup Alert Command
 
-Configures proactive **monitoring alerts for critical SEO and GEO metrics**, defines intelligent thresholds, and establishes response playbooks.
+Configure alerts for SEO/GEO monitoring.
 
-## Usage
+## Route
 
-```
-/seo:setup-alert ranking-drop threshold=-5 keywords="primary keywords"
-/seo:setup-alert traffic-change threshold=-20%
-/seo:setup-alert core-web-vitals threshold=poor
-/seo:setup-alert all-critical
-```
+Use [alert-manager](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/alert-manager/SKILL.md).
 
-**Arguments:** Alert type (required): ranking-drop, traffic-change, indexing-issue, backlink-change, geo-visibility, core-web-vitals, technical-error, conversion-rate, all-critical. Optional: `threshold=`, `keywords=`, `pages=`, `severity=`, `notification=email|slack|sms`.
+## Steps
 
-## Workflow
+1. Select alert type, threshold, scope, and severity.
+2. Define data source, cadence, trigger logic, and notification owner.
+3. Add escalation and false-positive handling.
+4. Save configuration when requested.
 
-1. **Parse Alert Configuration** -- Identify type(s). `all-critical` sets up standard package (ranking drop, traffic change, indexing issue, CWV, backlink loss).
-2. **Configure Alerts** -- Invoke `alert-manager`. Define thresholds, severity levels, notification frequency, trigger conditions, false positive filters, response playbooks.
-3. **Compile Output**.
+## Output
 
-## Output Format
-
-```markdown
-## ALERT CONFIGURATION SUMMARY
-
-Successfully configured [X] alert(s).
-
-### Active Alerts
-Per alert: Type, Severity, Threshold, Scope, Notification, Status.
-
-### Notification Settings
-Recipients, channels, routing rules per severity level.
-
-### Response Playbooks
-Per alert type: immediate actions, investigation steps, recovery, escalation.
-
-### Testing & Validation
-Test triggers, review playbooks, schedule threshold review.
-```
-
-## Tips
-
-Start with loose thresholds and tighten over time. Use digest notifications for non-critical alerts (daily/weekly). Review alert effectiveness monthly.
-
-## Related Skills
-
-- [alert-manager](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/alert-manager/SKILL.md) | [rank-tracker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/rank-tracker/SKILL.md)
+Alert name, metric, threshold, cadence, source, severity, owner, and response playbook.

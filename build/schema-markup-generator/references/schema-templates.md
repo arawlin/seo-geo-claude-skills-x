@@ -4,10 +4,11 @@ Compact starter blocks. Replace placeholders, remove unused fields, and validate
 
 ## Shared Rules
 
-- Use absolute URLs and values that match visible page content.
+- Match visible page content exactly; omit fields that are not visible or verified.
+- Use absolute canonical URLs.
 - Use ISO 8601 for dates and durations.
-- Omit empty optional fields instead of leaving placeholders live.
-- Only emit `aggregateRating` or `review` when the values come from visible, verifiable user reviews.
+- Remove placeholders before publishing.
+- Only emit `aggregateRating` or `review` when visible, verifiable user reviews support the exact values.
 
 ## FAQPage
 
@@ -18,19 +19,13 @@ Compact starter blocks. Replace placeholders, remove unused fields, and validate
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "[Question text]",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "[Answer text]"
-      }
+      "name": "[Question text 1]",
+      "acceptedAnswer": { "@type": "Answer", "text": "[Answer text 1]" }
     },
     {
       "@type": "Question",
-      "name": "[Question 2]",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "[Answer 2]"
-      }
+      "name": "[Question text 2]",
+      "acceptedAnswer": { "@type": "Answer", "text": "[Answer text 2]" }
     }
   ]
 }
@@ -45,28 +40,9 @@ Compact starter blocks. Replace placeholders, remove unused fields, and validate
   "name": "[How-to title]",
   "description": "[Brief description]",
   "totalTime": "PT[hours]H[minutes]M",
-  "supply": [
-    { "@type": "HowToSupply", "name": "[Supply item]" }
-  ],
-  "tool": [
-    { "@type": "HowToTool", "name": "[Tool]" }
-  ],
-  "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "[Step 1 title]",
-      "text": "[Step 1 instructions]",
-      "url": "[Page URL]#step1"
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "[Step 2 title]",
-      "text": "[Step 2 instructions]",
-      "url": "[Page URL]#step2"
-    }
-  ]
+  "supply": [{ "@type": "HowToSupply", "name": "[Supply item]" }],
+  "tool": [{ "@type": "HowToTool", "name": "[Tool]" }],
+  "step": [{ "@type": "HowToStep", "position": 1, "name": "[Step title]", "text": "[Instructions]", "url": "[Page URL]#step1" }]
 }
 ```
 
@@ -83,28 +59,16 @@ Use `Article`, `BlogPosting`, `NewsArticle`, or `TechArticle` as `@type`.
   "image": ["[Image URL]"],
   "datePublished": "[ISO 8601 publish date-time]",
   "dateModified": "[ISO 8601 modified date-time]",
-  "author": {
-    "@type": "Person",
-    "name": "[Author Name]"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "[Publisher Name]",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "[Logo URL]"
-    }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "[Canonical URL]"
-  }
+  "author": { "@type": "Person", "name": "[Author Name]" },
+  "publisher": { "@type": "Organization", "name": "[Publisher Name]", "logo": { "@type": "ImageObject", "url": "[Logo URL]" } },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "[Canonical URL]" }
 }
 ```
 
 ## Product
 
 Use `aggregateRating` and `review` only when counts and values match visible, verified user reviews.
+Use `price`, `priceCurrency`, and `availability` only when the page shows current purchasable offer details.
 
 ```json
 {
@@ -114,10 +78,7 @@ Use `aggregateRating` and `review` only when counts and values match visible, ve
   "image": ["[Image URL]"],
   "description": "[Product description]",
   "sku": "[SKU]",
-  "brand": {
-    "@type": "Brand",
-    "name": "[Brand Name]"
-  },
+  "brand": { "@type": "Brand", "name": "[Brand Name]" },
   "offers": {
     "@type": "Offer",
     "url": "[Product page URL]",
@@ -128,7 +89,7 @@ Use `aggregateRating` and `review` only when counts and values match visible, ve
 }
 ```
 
-**Optional review extension**: add this only when the page shows visible, verifiable user reviews that match the numbers you publish.
+**Optional review extension**: add only when the page shows visible, verifiable user reviews that match the numbers.
 
 ```json
 "aggregateRating": {
@@ -138,57 +99,47 @@ Use `aggregateRating` and `review` only when counts and values match visible, ve
   "bestRating": "5",
   "worstRating": "1"
 },
-"review": [
-  {
-    "@type": "Review",
-    "author": {
-      "@type": "Person",
-      "name": "[Reviewer Name]"
-    },
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": "[rating value]",
-      "bestRating": "5"
-    },
-    "reviewBody": "[Review text]",
-    "datePublished": "[ISO 8601 review date]"
-  }
-]
+"review": [{
+  "@type": "Review",
+  "author": { "@type": "Person", "name": "[Reviewer Name]" },
+  "reviewRating": { "@type": "Rating", "ratingValue": "[rating value]", "bestRating": "5" },
+  "reviewBody": "[Review text]",
+  "datePublished": "[ISO 8601 review date]"
+}]
 ```
 
 ## LocalBusiness
 
-Use a more specific subtype when possible: `Restaurant`, `Store`, `LegalService`, `AutoRepair`, and so on.
+Use a specific subtype when possible, such as `Restaurant`, `Store`, `LegalService`, `Dentist`, or `AutoRepair`. Include `@id`, name, URL, phone, address, opening hours, and price range only when visible. **Optional review extension**: reuse the Product review fragment only when local-business reviews are visible, verifiable, and policy-eligible.
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "[Business page URL]",
+  "@id": "[Business canonical URL]#localbusiness",
   "name": "[Business Name]",
-  "url": "[Website URL]",
-  "telephone": "[phone number]",
-  "priceRange": "[price range]",
+  "url": "[Business canonical URL]",
+  "image": ["[Business image URL]"],
+  "telephone": "[Phone]",
+  "priceRange": "[Visible price range]",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "[Street]",
+    "streetAddress": "[Street address]",
     "addressLocality": "[City]",
-    "addressRegion": "[State]",
-    "postalCode": "[ZIP]",
-    "addressCountry": "[ISO country code]"
+    "addressRegion": "[Region]",
+    "postalCode": "[Postal code]",
+    "addressCountry": "[Country code]"
   },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["[DayOfWeek]"],
-      "opens": "[HH:MM]",
-      "closes": "[HH:MM]"
-    }
-  ]
+  "geo": { "@type": "GeoCoordinates", "latitude": "[latitude]", "longitude": "[longitude]" },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["[DayOfWeek]"],
+    "opens": "[HH:MM]",
+    "closes": "[HH:MM]"
+  }],
+  "sameAs": ["[Profile URL]"]
 }
 ```
-
-**Optional review extension**: reuse the Product review fragment above when the business page qualifies for star-rating markup.
 
 ## Organization
 
@@ -201,11 +152,7 @@ Use a more specific subtype when possible: `Restaurant`, `Store`, `LegalService`
   "logo": "[Logo URL]",
   "description": "[Company description]",
   "sameAs": ["[LinkedIn URL]", "[YouTube URL]"],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "[Phone]",
-    "contactType": "[contact type]"
-  }
+  "contactPoint": { "@type": "ContactPoint", "telephone": "[Phone]", "contactType": "[contact type]" }
 }
 ```
 
@@ -223,126 +170,23 @@ Use a more specific subtype when possible: `Restaurant`, `Store`, `LegalService`
 }
 ```
 
-## VideoObject
+## Other Types Matrix
 
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "VideoObject",
-  "name": "[Video title]",
-  "description": "[Description]",
-  "thumbnailUrl": "[Thumbnail URL]",
-  "uploadDate": "[ISO 8601 upload date]",
-  "duration": "PT[minutes]M[seconds]S",
-  "embedUrl": "[Embed URL]"
-}
-```
-
-## Event
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": "[Event Name]",
-  "description": "[Description]",
-  "startDate": "[ISO 8601 event start date-time]",
-  "eventStatus": "https://schema.org/[EventScheduled/EventCancelled/EventPostponed]",
-  "eventAttendanceMode": "https://schema.org/[OfflineEventAttendanceMode/OnlineEventAttendanceMode/MixedEventAttendanceMode]",
-  "location": {
-    "@type": "Place",
-    "name": "[Venue Name]",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "[Street]",
-      "addressLocality": "[City]",
-      "addressRegion": "[State]",
-      "postalCode": "[ZIP]",
-      "addressCountry": "[ISO country code]"
-    }
-  },
-  "organizer": {
-    "@type": "Organization",
-    "name": "[Organizer Name]"
-  }
-}
-```
-
-## Course
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Course",
-  "name": "[Course Name]",
-  "description": "[Description]",
-  "provider": {
-    "@type": "Organization",
-    "name": "[Provider Name]",
-    "sameAs": "[Provider URL]"
-  },
-  "hasCourseInstance": {
-    "@type": "CourseInstance",
-    "courseMode": "[online/onsite/blended]",
-    "courseWorkload": "PT[hours]H"
-  }
-}
-```
-
-## Recipe
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Recipe",
-  "name": "[Recipe name]",
-  "image": "[Image URL]",
-  "author": {
-    "@type": "Person",
-    "name": "[Author]"
-  },
-  "description": "[Description]",
-  "prepTime": "PT[minutes]M",
-  "cookTime": "PT[minutes]M",
-  "recipeYield": "[4 servings]",
-  "recipeIngredient": ["[Ingredient 1]", "[Ingredient 2]"],
-  "recipeInstructions": [
-    { "@type": "HowToStep", "text": "[Step 1]" },
-    { "@type": "HowToStep", "text": "[Step 2]" }
-  ]
-}
-```
-
-**Optional review extension**: reuse the Product review fragment above when the recipe page includes visible, eligible user ratings.
-
-## SoftwareApplication
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "[Software name]",
-  "operatingSystem": "[Windows, macOS, iOS, Android, Web]",
-  "applicationCategory": "[Schema.org application category]",
-  "offers": {
-    "@type": "Offer",
-    "price": "[price or 0]",
-    "priceCurrency": "[ISO 4217 currency code]"
-  },
-  "softwareVersion": "[version]",
-  "downloadUrl": "[Download URL]"
-}
-```
-
-**Optional review extension**: reuse the Product review fragment above when the software page qualifies for review rich results.
+| Type | Required starter fields | Notes |
+|------|-------------------------|-------|
+| VideoObject | name, description, thumbnailUrl, uploadDate, duration, embedUrl | Use visible video metadata |
+| Event | name, description, startDate, status, attendance mode, location, organizer | Keep status current |
+| Course | name, description, provider, course instance | Use CourseInstance for mode/workload |
+| Recipe | name, image, author, description, times, yield, ingredients, instructions | Optional review extension only when visible |
+| SoftwareApplication | name, operatingSystem, applicationCategory, offers, version, downloadUrl | Price can be `[price or 0]` only when visible |
 
 ## Combined Array
 
-Place multiple complete objects inside one array in a single `<script type="application/ld+json">` block when a page needs more than one schema type.
+Place multiple complete objects inside one array in a single `<script type="application/ld+json">` block when the page needs more than one schema type.
 
 ## Preflight Checklist
 
-- Validate with `validator.schema.org` and Google's Rich Results Test.
+- Validate with `validator.schema.org` and Google Rich Results Test.
 - Use truthful review data only; if unsure, omit review properties.
 - Keep URLs canonical and accessible.
 - Remove trailing commas and placeholder text before publishing.

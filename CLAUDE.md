@@ -1,6 +1,6 @@
 # SEO & GEO Skills Library — Claude Code Context
 
-This plugin provides **20 skills and 15 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`. Current bundle version: `9.5.0` (see [VERSIONS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)).
+This plugin provides **20 skills and 17 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`. Current bundle version: `9.9.5` (see [VERSIONS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)).
 
 ## Skills by Phase
 
@@ -29,14 +29,16 @@ This plugin provides **20 skills and 15 commands** for Search Engine Optimizatio
 /seo:geo-drift-check — (experimental, v9.0+) Validate GEO Score against actual AI-engine citations
 ```
 
-**Maintenance commands (5)** — for library maintainers / power users. Safe to ignore for daily use:
+**Maintenance commands (7)** — for library maintainers / power users. Safe to ignore for daily use:
 
 ```
 /seo:wiki-lint          — Wiki health check: contradictions, orphans, stale claims
 /seo:contract-lint      — Auditor Runbook drift detection, handoff schema check, jargon leak scan (v7.1.0+)
-/seo:p2-review          — Evaluate v7.1.0 deferred items against trigger conditions; tombstone review (2026-07-10)
+/seo:run-evals          — Run lightweight skill eval cases and emit validation_results for evolution review
 /seo:sync-versions      — Propagate canonical version from .claude-plugin/plugin.json to all cross-agent manifests (v9.0+, replaces scripts/sync-versions.py)
 /seo:validate-library   — Library-level quality gate: description budgets, YAML field order, language coverage, duplicate triggers, release guardrails (v9.0+, replaces scripts/validate-descriptions.py)
+/seo:evolve-skill       — Generate evidence-backed skill evolution proposals; proposal-only, no edits
+/seo:skillify           — Audit proposed or changed skills for completeness, routing, eval coverage, and release impact; proposal-only, no edits
 ```
 
 ## Quality Frameworks
@@ -103,9 +105,10 @@ Skills are published **individually** (not as a single plugin package). Each `<c
 # Publish one skill
 /usr/local/bin/clawhub publish <category>/<slug> --version X.Y.Z --changelog "text" --tags latest --no-input
 
-# Publish all 20 skills (batch)
+# Publish all discovered skills (batch)
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
-for dir in research/keyword-research research/competitor-analysis research/serp-analysis research/content-gap-analysis build/seo-content-writer build/geo-content-optimizer build/meta-tags-optimizer build/schema-markup-generator optimize/on-page-seo-auditor optimize/technical-seo-checker optimize/internal-linking-optimizer optimize/content-refresher monitor/rank-tracker monitor/backlink-analyzer monitor/performance-reporter monitor/alert-manager cross-cutting/content-quality-auditor cross-cutting/domain-authority-auditor cross-cutting/entity-optimizer cross-cutting/memory-management; do
+find research build optimize monitor cross-cutting -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort | while read -r file; do
+  dir="$(dirname "$file")"
   clawhub publish "$dir" --version X.Y.Z --changelog "text" --tags latest --no-input
 done
 ```

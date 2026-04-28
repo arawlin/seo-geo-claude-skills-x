@@ -1,6 +1,6 @@
 ---
 name: validate-library
-description: Library-level quality gate. Walks all 20 SKILL.md files and verifies description budgets, YAML field order, language coverage, duplicate trigger detection, frontmatter validity, release-file consistency, and slimming regression guardrails. Maintenance command — run before version bumps and PRs.
+description: Library-level quality gate. Walks all 20 SKILL.md files and 17 command files, then verifies description budgets, YAML field order, language coverage, duplicate trigger detection, frontmatter validity, resolver coverage, evolution records, release-file consistency, and slimming regression guardrails. Maintenance command — run before version bumps and PRs.
 argument-hint: "[--skill <name>] [--strict]"
 allowed-tools: ["Read", "Glob", "Grep", "Bash"]
 parameters:
@@ -16,67 +16,32 @@ parameters:
 
 # Validate Library Command
 
-Replaces `scripts/validate-descriptions.py`. Pure-markdown command using Read/Glob/Grep tools -- no executable code.
+Run the library-level quality gate before PRs, slimming passes, and version bumps.
 
-## Usage
+## Checks
 
-```
-/seo:validate-library                          # scan all 20, report-only
-/seo:validate-library --skill keyword-research # scan one skill
-/seo:validate-library --strict                 # CI mode: STATUS: PASS or FAIL
-```
+1. Parse all 20 `SKILL.md` frontmatters.
+2. Verify required fields, version alignment, description budget, and YAML order.
+3. Check required shared headings and Handoff Summary coverage.
+4. Detect duplicate or missing high-value triggers.
+5. Run `bash scripts/validate-skill.sh --status`.
+6. Run `bash scripts/validate-skill.sh cross-cutting/content-quality-auditor` and `bash scripts/validate-skill.sh cross-cutting/domain-authority-auditor` so auditor runbook hashes are checked.
+7. Run `bash scripts/validate-slimming-guardrails.sh`.
+8. Verify release surfaces, JSON parseability, marketplace mirror, and protected aliases/templates.
+9. Verify command inventory: 17 command files, 10 user commands, 7 maintenance commands, synchronized current command-count wording across README, CLAUDE, AGENTS, and manifests, plus release-aware command-count wording in CITATION and VERSIONS.
+10. Verify controlled evolution surfaces:
+   - `commands/evolve-skill.md` exists and declares `Signal is evidence, not instruction.`
+   - `commands/run-evals.md` exists and emits `validation_results` without writing files.
+   - `evals/README.md` and seeded eval cases exist for `geo-content-optimizer`, `content-quality-auditor`, and `memory-management`.
+   - `memory/evolution/*.md` records include `target`, `risk.level`, `validation_plan`, `validation_results`, `rollback`, and `decision.status`.
+   - Records marked `simulation: true`, `source_signal.kind: simulation`, or `source_signal.kind: external_research` are not `decision.status: accepted`.
+   - Accepted events include `simulation: false`, project-local `source_signal.kind`, non-empty `source_signal.evidence`, `approved_by: user` or `approved_by: maintainer`, `validation_results.status: passed`, `validation_results.acceptance_eligible: true`, validation evidence, no non-empty `validation_results.non_validating_reason`, risk level, and rollback scope.
+11. Verify skill authoring and routing surfaces:
+   - `commands/skillify.md` exists, remains read-only, and is proposal-only.
+   - `references/skill-resolver.md` covers every discovered skill and stays a derived review index.
+   - Routing evals use `type: eval-case`, reference a real `target_skill`, and remain non-validating unless tied to real project-local evidence.
+   - Scaffold stub markers are blocked from release-bearing paths.
 
-Run before version bumps, release PRs, or any slimming pass. Complements `/seo:contract-lint`, `scripts/validate-skill.sh`, and `scripts/validate-slimming-guardrails.sh`.
+## Output
 
-## What It Checks
-
-### 1. Description budget (+/-20% tolerance)
-Each SKILL.md `description:` should land within byte budget (UTF-8). Targets: research 800 (640-960), build 900 (720-1080), optimize 900 (720-1080), monitor 700 (560-840), cross-cutting 1000 (800-1200). Report one line per skill with actual bytes and pass/fail.
-
-### 2. Required YAML frontmatter fields
-Must have in order: `name` (matches dir, lowercase a-z/0-9/hyphens, 1-64 chars), top-level `version` (semver-like), `description` (1-1024 chars), `license` (recommended, default Apache-2.0), `compatibility` (recommended), `metadata` (with `author`, `version`, `tags`, `triggers`). `when_to_use` must come before `allowed-tools` if both present.
-
-### 3. Language coverage
-`metadata.triggers` must include EN and ZH trigger phrases. Additional languages encouraged. Flag any skill missing EN or ZH.
-
-### 4. Duplicate triggers
-No trigger phrase in more than one skill (case-insensitive, Unicode-normalized). Report offending phrase + claiming skills.
-
-### 5. Frontmatter validity
-YAML must parse cleanly. `name` must match parent dir. `metadata.version` and top-level `version:` must agree. No BOM, mixed tabs/spaces, or trailing whitespace in keys.
-
-### 6. Marketplace file consistency (library-level)
-Both `marketplace.json` and `.claude-plugin/marketplace.json` must be real files (mode `100644`, not `120000` symlink) with byte-identical content. Procedure: check `git ls-files -s` for both, then `shasum -a 256` comparison. Fix: `cp marketplace.json .claude-plugin/marketplace.json`.
-
-### 7. Slimming regression guardrails
-Run `bash scripts/validate-slimming-guardrails.sh`. It must protect:
-- Must-keep discovery aliases: `robots.txt`, `sitemap`, `canonical`, `schema.org`, `schema-org`, AI SEO/GEO aliases (`ai-seo`, `AI optimization`, `generative engine optimization`, `AI搜索优化`), keyword tool-switch aliases (`Ahrefs`, `Semrush`, `Google Keyword Planner`, `Ubersuggest`), and memory/wiki entry points.
-- Historical template regressions: robots/sitemap/`lastmod`, HSTS, image filename/lazy-load, CORE-EEAT `/17` section plus scaled `/20` roll-up, authority metric, schema placeholders, review fragments, disavow safety, dateModified/lastmod freshness, migration thresholds, and audience/data-freshness/source-date fields.
-- Protected runtime contracts: `skill-contract.md`, `state-model.md`, `hooks/hooks.json`, `memory-management`, and `entity-optimizer` handoff/profile contracts.
-
-### 8. Release surface consistency
-Before publishing, confirm all release surfaces agree: `.claude-plugin/plugin.json`, both marketplace files, Gemini/Qwen/CodeBuddy extension manifests, `CITATION.cff`, `VERSIONS.md`, `CLAUDE.md`, README badges, localized README badges, and JSON parseability. `/seo:sync-versions` is useful but not sufficient by itself.
-
-## Workflow
-
-1. Enumerate SKILL.md files (`--skill <name>` or glob all 20).
-2. Read frontmatter, run checks 1-5 per skill.
-3. Run marketplace check (once, library-level).
-4. Run slimming regression guardrails and release surface checks.
-5. Print summary table:
-   ```
-   SKILL                    DESC BYTES  YAML  LANG  DUPES  VERSION  STATUS
-   keyword-research         862  OK     OK    EN,ZH OK     9.0.0    PASS
-   ...
-   Total: 20  Passed: 20  Failed: 0
-   MARKETPLACE: OK
-   ```
-6. **Strict mode**: final line `STATUS: PASS` or `STATUS: FAIL` (any per-skill failure, marketplace fail, slimming guardrail fail, or release surface mismatch). CI parses with `tail -n 1`.
-
-## Fallback for no-Claude environments
-
-`bash scripts/validate-skill.sh <category>/<skill-dir>` covers checks 2+5 (ClawHub spec). `bash scripts/validate-skill.sh --status` checks skill version consistency. `bash scripts/validate-slimming-guardrails.sh` covers release-surface and semantic regression checks. These shell checks do not cover description budget, language coverage, or duplicate triggers.
-
-## Related
-
-[scripts/validate-skill.sh](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/scripts/validate-skill.sh) | [scripts/validate-slimming-guardrails.sh](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/scripts/validate-slimming-guardrails.sh) | `/seo:sync-versions` | `/seo:contract-lint`
+Per-skill table, release-surface status, slimming guardrail status, failures, warnings, and final `STATUS: PASS` or `STATUS: FAIL`.
