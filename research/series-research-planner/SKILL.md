@@ -1,15 +1,15 @@
 ---
 name: series-research-planner
 description: 'Use when the user asks to "plan a content series", "turn one topic into many articles", or "map a topic cluster before writing". Creates a normalized series research brief and article plan by chaining keyword research, SERP review, competitor review, and content gap analysis. For single-keyword research, see keyword-research. 系列研究规划/专题选题规划'
-version: "9.2.0"
+version: "9.2.1"
 license: Apache-2.0
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
 homepage: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
 when_to_use: "Use when planning a multi-article topic cluster from one seed topic. Also when the user wants a pillar-plus-cluster plan, article backlog, or reusable series brief before drafting."
-argument-hint: "<topic> [articles=\"6\"] [language=\"en\"] [audience=\"...\"] [output_dir=\"...\"]"
+argument-hint: "<topic> [articles=\"6\"] [language=\"en\"] [audience=\"...\"] [topics_root=\"./topics\"]"
 metadata:
   author: aaron-he-zhu
-  version: "9.2.0"
+  version: "9.2.1"
   geo-relevance: "medium"
   tags:
     - seo
@@ -62,8 +62,8 @@ Create a pillar-and-cluster research plan for [topic] targeting [audience]
 
 Expected output:
 
-- `00-series-research.md`
-- `00-series-plan.json`
+- `<topic_dir>/research/00-series-research.md`
+- `<topic_dir>/research/00-series-plan.json`
 - one short handoff summary for `article-batch-generator`
 
 ## Skill Contract
@@ -73,8 +73,9 @@ and a short handoff summary ready for the drafting stage.
 
 - **Reads**: topic, market, language, audience, business goals, competitor
   inputs, and available tool data.
-- **Writes**: `00-series-research.md`, `00-series-plan.json`, and a brief stage
-  summary with blockers and assumptions.
+- **Writes**: `<topic_dir>/research/00-series-research.md`,
+  `<topic_dir>/research/00-series-plan.json`, and a brief stage summary with
+  blockers and assumptions.
 - **Promotes**: validated keyword clusters, article priorities, and unresolved
   research gaps into the series plan artifacts, not into project memory.
 - **Next handoff**: use `article-batch-generator` when the series plan is
@@ -86,7 +87,8 @@ Emit the standard shape from
 [skill-contract.md §Handoff Summary Format](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md)
 and add:
 
-- **Series Plan Path**: path to `00-series-plan.json`
+- **Series Plan Path**: path to `<topic_dir>/research/00-series-plan.json`
+- **Topic Directory**: path to the resolved topic root
 - **Article Count**: number of planned articles
 
 ## Instructions
@@ -94,9 +96,16 @@ and add:
 Run this phase once per series.
 
 1. **Normalize scope**
-   - Confirm topic, language, market, audience, article count, and output
-     directory.
-   - If output directory is missing, declare `NEEDS_INPUT`.
+   - Confirm topic, language, market, audience, article count, and the topics
+     root directory.
+   - Default `topics_root` to `./topics` when the user does not specify one.
+   - Normalize `topic` into `topic_slug` and derive:
+     - `topic_dir = <topics_root>/<topic-slug>/`
+     - `research_dir = <topic_dir>/research/`
+     - `articles_dir = <topic_dir>/articles/`
+     - `delivery_dir = <topic_dir>/delivery/`
+   - When `topics_root` stays at the default `./topics`, the resolved layout is
+     `topics/<topic-slug>/research|articles|delivery`.
 
 2. **Run keyword and intent discovery**
    - Invoke `keyword-research` for the seed topic.
@@ -119,19 +128,23 @@ Run this phase once per series.
    - Convert keyword, SERP, and competitor signals into a final article list.
    - Keep the list ordered by priority, not by brainstorm order.
 
-6. **Write `00-series-research.md`**
+6. **Write `<topic_dir>/research/00-series-research.md`**
    - Include: executive summary, pillar topic, top clusters, competitor notes,
-     and the logic behind the chosen article order.
+      and the logic behind the chosen article order.
 
-7. **Write `00-series-plan.json`**
+7. **Write `<topic_dir>/research/00-series-plan.json`**
    - Use a stable shape with these fields:
-     - `topic`
-     - `language`
-     - `audience`
-     - `site_url`
-     - `output_dir`
-     - `pillar`
-     - `articles[]`
+      - `topic`
+      - `topic_slug`
+      - `language`
+      - `audience`
+      - `site_url`
+      - `topic_dir`
+      - `research_dir`
+      - `articles_dir`
+      - `delivery_dir`
+      - `pillar`
+      - `articles[]`
    - Each article must include:
      - `order`
      - `slug`
@@ -150,7 +163,7 @@ Run this phase once per series.
 
 ## Validation Checkpoints
 
-- [ ] `00-series-plan.json` exists and every article has a unique `slug`
+- [ ] `<topic_dir>/research/00-series-plan.json` exists and every article has a unique `slug`
 - [ ] The plan contains one pillar topic and at least one supporting article
 - [ ] Every article includes a primary keyword, angle, and target word count
 - [ ] The plan names data sources or states clearly when inputs were user-provided
@@ -167,5 +180,5 @@ Run this phase once per series.
 ## Next Best Skill
 
 Primary: [article-batch-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/article-batch-generator/SKILL.md)
-— use when `00-series-plan.json` is complete. Stop if the plan status is
-`NEEDS_INPUT` or `BLOCKED`.
+— use when `<topic_dir>/research/00-series-plan.json` is complete. Stop if the
+plan status is `NEEDS_INPUT` or `BLOCKED`.

@@ -1,15 +1,15 @@
 ---
 name: article-batch-generator
 description: 'Use when the user asks to "generate a full article series", "draft every article from a series plan", or "batch write articles into a directory". Produces article files from a normalized series plan by chaining writing, GEO optimization, metadata, schema, internal linking, and final content audit. For one article only, see seo-content-writer. 批量文章生成/系列文章批处理'
-version: "9.2.0"
+version: "9.2.1"
 license: Apache-2.0
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
 homepage: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
 when_to_use: "Use when turning a completed series plan into drafted article files. Also when the user wants all article assets written to a directory with shared internal links and final quality checks."
-argument-hint: "<series-plan.json> [output_dir=\"...\"]"
+argument-hint: "<topic_dir/research/00-series-plan.json>"
 metadata:
   author: aaron-he-zhu
-  version: "9.2.0"
+  version: "9.2.1"
   geo-relevance: "high"
   tags:
     - seo
@@ -41,7 +41,7 @@ internal linking, and finishes with per-article quality gates.
 Use this skill after research is complete and a series plan already exists:
 
 - The article list is approved and drafting should start
-- All article files need to land in one output directory
+- All article files need to land under one topic directory
 - Internal links must be planned across the full set, not one article at a time
 - Each article needs a final `content-quality-auditor` pass before handoff
 
@@ -50,28 +50,29 @@ Use this skill after research is complete and a series plan already exists:
 Start with one of these prompts:
 
 ```text
-Generate all articles from ./content/topic/00-series-plan.json
+Generate all articles from ./topics/my-topic/research/00-series-plan.json
 ```
 
 ```text
-Draft a 5-article series into ./content/topic/articles
+Draft a 5-article series from ./topics/my-topic/research/00-series-plan.json
 ```
 
 Expected output:
 
-- `articles/NN-slug.md` for each planned article
+- `<topic_dir>/articles/NN-slug.md` for each planned article
 - updated internal links across the batch
-- one batch summary for `series-finalizer`
+- `<topic_dir>/delivery/50-batch-summary.md`
 
 ## Skill Contract
 
 **Expected output**: a batch of article files with metadata, schema,
 cross-links, and final audit status.
 
-- **Reads**: `00-series-plan.json`, article requirements, stage blockers, and
-  any existing draft files in the target directory.
-- **Writes**: `articles/NN-slug.md`, a batch status summary, and any draft audit
-  notes required by the finalizer.
+- **Reads**: `<topic_dir>/research/00-series-plan.json`, article requirements,
+  stage blockers, and any existing draft files in `<topic_dir>/articles/`.
+- **Writes**: `<topic_dir>/articles/NN-slug.md`,
+  `<topic_dir>/delivery/50-batch-summary.md`, and any draft audit notes
+  required by the finalizer.
 - **Promotes**: validated cross-link relationships, final audit states, and
   missing assets into batch outputs, not memory.
 - **Next handoff**: use `series-finalizer` when all article files and audits are
@@ -92,13 +93,13 @@ Run this phase in three blocks.
 
 ### Block A — Per-article drafting
 
-For each article in `00-series-plan.json`:
+For each article in the series plan:
 
 1. Invoke `seo-content-writer`.
 2. Invoke `geo-content-optimizer`.
 3. Invoke `meta-tags-optimizer`.
 4. Invoke `schema-markup-generator`.
-5. Save the result as `articles/NN-slug.md`.
+5. Save the result as `<topic_dir>/articles/NN-slug.md`.
 
 Each article file must include:
 
@@ -129,15 +130,23 @@ For each article after linking updates:
 2. If the verdict is `FIX` and the issue is resolvable in one pass, revise once
    and rerun the audit.
 3. If the article still fails after one revision, mark the file
-   `DONE_WITH_CONCERNS` and surface the blocker in the batch summary.
+     `DONE_WITH_CONCERNS` and surface the blocker in the batch summary.
+
+### Block D — Batch summary
+
+After all article audits are complete:
+
+1. Write `<topic_dir>/delivery/50-batch-summary.md`.
+2. Include article paths, audit statuses, unresolved blockers, and the final
+   link inventory.
 
 ## Validation Checkpoints
 
-- [ ] Every article in `00-series-plan.json` has a corresponding `articles/NN-slug.md`
+- [ ] Every article in `<topic_dir>/research/00-series-plan.json` has a corresponding `<topic_dir>/articles/NN-slug.md`
 - [ ] `internal-linking-optimizer` ran after all drafts existed
 - [ ] Every article includes title, meta description, schema, and audit summary
 - [ ] Final status for each article is `DONE` or `DONE_WITH_CONCERNS`
-- [ ] Batch summary lists any unresolved blockers clearly
+- [ ] `<topic_dir>/delivery/50-batch-summary.md` lists any unresolved blockers clearly
 
 ## Reference Materials
 
