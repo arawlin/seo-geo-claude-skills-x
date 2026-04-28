@@ -1,6 +1,6 @@
 # SEO & GEO Skills Library — Claude Code Context
 
-This plugin provides **20 skills and 16 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`. Current bundle version: `9.9.0` (see [VERSIONS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)).
+This plugin provides **20 skills and 17 commands** for Search Engine Optimization (SEO) and Generative Engine Optimization (GEO). All 20 skills follow one shared contract: trigger, quick start, skill contract, handoff summary, and next best skill. Skills are auto-loaded by context; commands are invoked with `/seo:`. Current bundle version: `9.9.5` (see [VERSIONS.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)).
 
 ## Skills by Phase
 
@@ -29,7 +29,7 @@ This plugin provides **20 skills and 16 commands** for Search Engine Optimizatio
 /seo:geo-drift-check — (experimental, v9.0+) Validate GEO Score against actual AI-engine citations
 ```
 
-**Maintenance commands (6)** — for library maintainers / power users. Safe to ignore for daily use:
+**Maintenance commands (7)** — for library maintainers / power users. Safe to ignore for daily use:
 
 ```
 /seo:wiki-lint          — Wiki health check: contradictions, orphans, stale claims
@@ -38,6 +38,7 @@ This plugin provides **20 skills and 16 commands** for Search Engine Optimizatio
 /seo:sync-versions      — Propagate canonical version from .claude-plugin/plugin.json to all cross-agent manifests (v9.0+, replaces scripts/sync-versions.py)
 /seo:validate-library   — Library-level quality gate: description budgets, YAML field order, language coverage, duplicate triggers, release guardrails (v9.0+, replaces scripts/validate-descriptions.py)
 /seo:evolve-skill       — Generate evidence-backed skill evolution proposals; proposal-only, no edits
+/seo:skillify           — Audit proposed or changed skills for completeness, routing, eval coverage, and release impact; proposal-only, no edits
 ```
 
 ## Quality Frameworks

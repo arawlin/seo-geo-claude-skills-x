@@ -8,7 +8,7 @@
 
 Continue the upgrade as a maintainer workflow, not as an autonomous product feature. Simulated evals, external evidence, and simulated EvolutionEvents are allowed as scaffold, but they are not production evidence.
 
-The current repo docs, manifests, and CITATION describe the 9.9.0 16-command state; only the v9.5.0 changelog remains the historical 15-command record.
+The current repo docs, manifests, and CITATION describe the 9.9.5 17-command state; the v9.9.0 changelog remains the historical 16-command controlled-evolution record and v9.5.0 remains the historical 15-command record.
 
 ## Target
 
@@ -58,8 +58,8 @@ Required rules:
 Before calling the workflow ready:
 
 1. Run repository validation, strict auditor validations, guardrails, JSON parsing, shell syntax checks, and diff whitespace checks.
-2. Confirm command count is 16 and the retired review command appears only in historical notes.
-3. Confirm marketplace mirrors and localized docs match the 9.9.0 state.
+2. Confirm command count is 17 and the retired review command appears only in historical notes.
+3. Confirm marketplace mirrors and localized docs match the 9.9.5 state.
 4. Confirm `/seo:evolve-skill` remains read-only.
 5. Run `/seo:run-evals` for targeted seeded or real cases before treating eval output as validation_results.
 6. Confirm simulated evals and external research cannot satisfy acceptance gates.

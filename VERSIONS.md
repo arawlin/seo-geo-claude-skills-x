@@ -2,38 +2,48 @@
 
 Current versions for the plugin and all 20 skills. Agents can fetch this file from `https://raw.githubusercontent.com/aaron-he-zhu/seo-geo-claude-skills/main/VERSIONS.md` once per session.
 
-**Current release**: `9.9.0` (2026-04-27). Skill `version`, `metadata.version`, plugin manifests, marketplace files, badges, and `CITATION.cff` are aligned to the same public version.
+**Current release**: `9.9.5` (2026-04-28). Skill `version`, `metadata.version`, plugin manifests, marketplace files, badges, and `CITATION.cff` are aligned to the same public version.
 
 ## Skills
 
 | Skill | Category | Version | Last Updated |
 |-------|----------|---------|--------------|
-| keyword-research | research | 9.9.0 | 2026-04-27 |
-| competitor-analysis | research | 9.9.0 | 2026-04-27 |
-| serp-analysis | research | 9.9.0 | 2026-04-27 |
-| content-gap-analysis | research | 9.9.0 | 2026-04-27 |
-| seo-content-writer | build | 9.9.0 | 2026-04-27 |
-| geo-content-optimizer | build | 9.9.0 | 2026-04-27 |
-| meta-tags-optimizer | build | 9.9.0 | 2026-04-27 |
-| schema-markup-generator | build | 9.9.0 | 2026-04-27 |
-| on-page-seo-auditor | optimize | 9.9.0 | 2026-04-27 |
-| technical-seo-checker | optimize | 9.9.0 | 2026-04-27 |
-| internal-linking-optimizer | optimize | 9.9.0 | 2026-04-27 |
-| content-refresher | optimize | 9.9.0 | 2026-04-27 |
-| rank-tracker | monitor | 9.9.0 | 2026-04-27 |
-| backlink-analyzer | monitor | 9.9.0 | 2026-04-27 |
-| performance-reporter | monitor | 9.9.0 | 2026-04-27 |
-| alert-manager | monitor | 9.9.0 | 2026-04-27 |
-| content-quality-auditor | cross-cutting | 9.9.0 | 2026-04-27 |
-| domain-authority-auditor | cross-cutting | 9.9.0 | 2026-04-27 |
-| entity-optimizer | cross-cutting | 9.9.0 | 2026-04-27 |
-| memory-management | cross-cutting | 9.9.0 | 2026-04-27 |
+| keyword-research | research | 9.9.5 | 2026-04-28 |
+| competitor-analysis | research | 9.9.5 | 2026-04-28 |
+| serp-analysis | research | 9.9.5 | 2026-04-28 |
+| content-gap-analysis | research | 9.9.5 | 2026-04-28 |
+| seo-content-writer | build | 9.9.5 | 2026-04-28 |
+| geo-content-optimizer | build | 9.9.5 | 2026-04-28 |
+| meta-tags-optimizer | build | 9.9.5 | 2026-04-28 |
+| schema-markup-generator | build | 9.9.5 | 2026-04-28 |
+| on-page-seo-auditor | optimize | 9.9.5 | 2026-04-28 |
+| technical-seo-checker | optimize | 9.9.5 | 2026-04-28 |
+| internal-linking-optimizer | optimize | 9.9.5 | 2026-04-28 |
+| content-refresher | optimize | 9.9.5 | 2026-04-28 |
+| rank-tracker | monitor | 9.9.5 | 2026-04-28 |
+| backlink-analyzer | monitor | 9.9.5 | 2026-04-28 |
+| performance-reporter | monitor | 9.9.5 | 2026-04-28 |
+| alert-manager | monitor | 9.9.5 | 2026-04-28 |
+| content-quality-auditor | cross-cutting | 9.9.5 | 2026-04-28 |
+| domain-authority-auditor | cross-cutting | 9.9.5 | 2026-04-28 |
+| entity-optimizer | cross-cutting | 9.9.5 | 2026-04-28 |
+| memory-management | cross-cutting | 9.9.5 | 2026-04-28 |
 
 ## Changelog
 
 ### Unreleased
 
 No unreleased changes.
+
+### v9.9.5 - Skill authoring and routing resolver (2026-04-28)
+
+Adds a read-only skill authoring workflow and explicit routing review surfaces while preserving the content-only operating model.
+
+**Added**: `/seo:skillify` as a read-only skill authoring audit; `references/skill-resolver.md` as a derived routing review index; compatible routing eval seed cases inside target skill eval files; routing coverage documentation in `/seo:validate-library`; and strict guardrails for resolver coverage, routing eval target validity, command inventory, and scaffold stub leakage.
+
+**Changed**: synchronized the command inventory from 16 to 17 commands across README, CLAUDE, AGENTS, CITATION, plugin manifests, marketplace mirrors, Gemini/Qwen/CodeBuddy manifests, and guardrails. Skill `version` and `metadata.version` fields are aligned to 9.9.5.
+
+**Protected**: all 20 skills and 17 commands remain. Routing evals stay inside existing `eval-case` files and simulated cases remain non-validating until tied to project-local evidence.
 
 ### v9.9.0 - Simulation-complete controlled evolution candidate (2026-04-27)
 

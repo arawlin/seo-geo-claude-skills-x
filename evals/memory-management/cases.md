@@ -17,3 +17,15 @@ Simulated seed cases for provenance, project isolation, HOT/WARM/COLD hygiene, a
 ```yaml
 {id: memory-management-sim-004, type: eval-case, status: simulated, target_skill: memory-management, scenario: "Unreviewed EvolutionEvent proposes a skill change.", input_summary: "Save this evolution event based on one simulated case.", expected_behavior: ["Save as proposed evidence only when explicitly requested.", "Do not add it to memory/decisions.md.", "Require validation before accepted status."], failure_modes: ["Treats proposed event as approved.", "Lets proposed event drive auditor verdicts.", "Omits approval and validation requirements."], evolution_use: "Use when changing evolution memory handling."}
 ```
+
+```yaml
+{id: routing-memory-management-sim-001, type: eval-case, status: simulated, target_skill: memory-management, scenario: "User asks the agent to remember campaign context.", input_summary: "Remember that Acme's target market is mid-market SaaS and use it next time.", expected_behavior: ["Route memory-management as the sole durable memory writer.", "Do not let downstream SEO skills write durable memory directly.", "Ask for confirmation when approval or project scope is ambiguous."], failure_modes: ["Stores durable memory from another skill.", "Drops project isolation.", "Treats inferred context as approved."], evolution_use: "Use when changing memory routing or sole-writer behavior."}
+```
+
+```yaml
+{id: routing-memory-management-sim-002, type: eval-case, status: simulated, target_skill: memory-management, scenario: "User asks to improve a skill from feedback.", input_summary: "This skill missed the handoff; remember that and update the library next time.", expected_behavior: ["Route durable evolution evidence through memory-management only when explicitly requested.", "Recommend /seo:evolve-skill for the proposed skill change.", "Keep simulated or inferred evidence non-accepted."], failure_modes: ["Writes accepted evolution memory directly.", "Bypasses evolve-skill.", "Treats user complaint as validated implementation."], evolution_use: "Use when changing evolution memory and skill improvement routing."}
+```
+
+```yaml
+{id: routing-memory-management-sim-003, type: eval-case, status: simulated, target_skill: memory-management, scenario: "User asks what project knowledge is active.", input_summary: "What do you remember about this SEO project?", expected_behavior: ["Route memory-management as primary.", "Summarize HOT/WARM/COLD context without mixing projects.", "Return NEEDS_INPUT if active project is unclear."], failure_modes: ["Routes to performance reporting.", "Leaks another project's context.", "Invents memory not present in files."], evolution_use: "Use when changing project-context lookup routing."}
+```

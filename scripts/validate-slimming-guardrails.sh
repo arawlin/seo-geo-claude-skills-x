@@ -202,6 +202,7 @@ require_command_inventory_exact() {
     report.md \
     run-evals.md \
     setup-alert.md \
+    skillify.md \
     sync-versions.md \
     validate-library.md \
     wiki-lint.md \
@@ -319,7 +320,7 @@ require "yaml"
 root = ENV.fetch("ROOT")
 count = 0
 Dir[File.join(root, "evals", "*", "cases.md")].sort.each do |path|
-  File.read(path).scan(/^```([^\n]*)\n(.*?)^```\s*$/m) do |info, body|
+  File.read(path).scan(/^[ \t]{0,3}```([^\n]*)\n(.*?)^[ \t]{0,3}```\s*$/m) do |info, body|
     next unless info.strip.downcase.match?(/\Ayaml\z/)
     data = YAML.safe_load(body, aliases: false)
     count += 1 if data.is_a?(Hash) && data["type"] == "eval-case"
@@ -335,6 +336,47 @@ RUBY
     fi
   else
     fail "$label (cannot parse eval cases)"
+  fi
+}
+
+require_routing_eval_targets() {
+  local min_count="$1"
+  local label="$2"
+  local count
+
+  if ! command -v ruby >/dev/null 2>&1; then
+    fail "$label (ruby is required for routing eval parsing)"
+    return
+  fi
+
+  if count="$(ROOT="$ROOT" ruby <<'RUBY'
+require "yaml"
+
+root = ENV.fetch("ROOT")
+skills = Dir[File.join(root, "{research,build,optimize,monitor,cross-cutting}", "*", "SKILL.md")]
+  .map { |path| File.basename(File.dirname(path)) }
+count = 0
+Dir[File.join(root, "evals", "*", "cases.md")].sort.each do |path|
+  File.read(path).scan(/^[ \t]{0,3}```([^\n]*)\n(.*?)^[ \t]{0,3}```\s*$/m) do |info, body|
+    next unless info.strip.downcase.match?(/\Ayml|yaml\z/)
+    data = YAML.safe_load(body, aliases: false)
+    next unless data.is_a?(Hash) && data["id"].to_s.start_with?("routing-")
+    raise "#{path}: routing case #{data["id"]} must use type: eval-case" unless data["type"] == "eval-case"
+    raise "#{path}: routing case #{data["id"]} target_skill must be an existing skill" unless skills.include?(data["target_skill"])
+    raise "#{path}: routing case #{data["id"]} expected_behavior must be a non-empty list" unless data["expected_behavior"].is_a?(Array) && data["expected_behavior"].any?
+    count += 1
+  end
+end
+puts count
+RUBY
+)"; then
+    if [ "${count:-0}" -ge "$min_count" ]; then
+      pass "$label"
+    else
+      fail "$label (expected >= $min_count routing eval cases, got ${count:-0})"
+    fi
+  else
+    fail "$label (cannot parse routing eval cases)"
   fi
 }
 
@@ -552,6 +594,91 @@ require_skill_inventory_text() {
   fi
 }
 
+require_resolver_coverage() {
+  local label="$1"
+
+  if [ ! -f "$ROOT/references/skill-resolver.md" ]; then
+    fail "$label (references/skill-resolver.md missing)"
+    return
+  fi
+
+  if ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+skill_paths = Dir[File.join(root, "{research,build,optimize,monitor,cross-cutting}", "*", "SKILL.md")].sort
+skills = skill_paths.map { |path| File.basename(File.dirname(path)) }
+resolver = File.read(File.join(root, "references", "skill-resolver.md"))
+
+rows = resolver.lines.map do |line|
+  next unless line.start_with?("| ")
+  fields = line.split("|").map(&:strip)
+  next if fields[1] == "User intent" || fields[1].start_with?("---")
+  next unless fields.length >= 8
+  {
+    primary: fields[3],
+    adjacent: fields[5].split(",").map(&:strip).reject(&:empty?)
+  }
+end.compact
+
+primary_counts = Hash.new(0)
+rows.each { |row| primary_counts[row[:primary]] += 1 }
+
+missing = skills.reject { |skill| primary_counts[skill] == 1 }
+extra_primary = primary_counts.keys.reject { |skill| skills.include?(skill) }
+bad_adjacent = rows.flat_map { |row| row[:adjacent] }.uniq.reject { |skill| skills.include?(skill) }
+
+next_best_missing = []
+skill_paths.each do |path|
+  skill = File.basename(File.dirname(path))
+  row = rows.find { |item| item[:primary] == skill }
+  next unless row
+  text = File.read(path)
+  section = text[/^## Next Best Skill\n(.*?)(?=^## |\z)/m, 1].to_s
+  next_best = section.scan(%r{/(?:research|build|optimize|monitor|cross-cutting)/([^/]+)/SKILL\.md}).flatten.uniq
+  missing_next = next_best - row[:adjacent]
+  next_best_missing << "#{skill}: #{missing_next.join(", ")}" if missing_next.any?
+end
+
+errors = []
+errors << "missing or duplicate primary route: #{missing.join(", ")}" if missing.any?
+errors << "unknown primary route: #{extra_primary.join(", ")}" if extra_primary.any?
+errors << "unknown adjacent skills: #{bad_adjacent.join(", ")}" if bad_adjacent.any?
+errors << "missing Next Best Skill links: #{next_best_missing.join("; ")}" if next_best_missing.any?
+
+if errors.any?
+  warn errors.join("\n")
+  exit 1
+end
+RUBY
+  then
+    pass "$label"
+  else
+    fail "$label"
+  fi
+}
+
+forbid_stub_sentinel_release_paths() {
+  local label="$1"
+  local hits=""
+  hits="$(
+    {
+      for dir in research build optimize monitor cross-cutting commands; do
+        [ -d "$ROOT/$dir" ] && grep -RIl -- "SEO_GEO_SKILL_STUB" "$ROOT/$dir" 2>/dev/null
+      done
+      for file in README.md docs/README.zh.md CLAUDE.md AGENTS.md CITATION.cff VERSIONS.md \
+        .claude-plugin/plugin.json marketplace.json .claude-plugin/marketplace.json \
+        .codebuddy-plugin/marketplace.json gemini-extension.json qwen-extension.json; do
+        [ -f "$ROOT/$file" ] && grep -Il -- "SEO_GEO_SKILL_STUB" "$ROOT/$file" 2>/dev/null
+      done
+    } | sed "s#^$ROOT/##" | sort -u
+  )"
+
+  if [ -z "$hits" ]; then
+    pass "$label"
+  else
+    fail "$label (found in: $hits)"
+  fi
+}
+
 echo ""
 echo "Slimming guardrails"
 echo "==================="
@@ -655,34 +782,37 @@ echo "Command inventory and controlled evolution"
 echo "------------------------------------------"
 
 command_count="$(find "$ROOT/commands" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')"
-require_equal "$command_count" "16" "commands directory contains 16 command files"
-require_command_inventory_exact "command filenames match expected 16-command inventory"
+require_equal "$command_count" "17" "commands directory contains 17 command files"
+require_command_inventory_exact "command filenames match expected 17-command inventory"
 require_command_section_text "README.md" "^User commands:" "^$" "README lists all user commands under user heading" audit-page check-technical generate-schema optimize-meta report audit-domain write-content keyword-research setup-alert geo-drift-check
-require_command_section_text "README.md" "^Maintenance commands:" "^$" "README lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill
+require_command_section_text "README.md" "^Maintenance commands:" "^$" "README lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill skillify
 require_command_section_text "docs/README.zh.md" "^用户命令：" "^$" "Chinese README lists all user commands under user heading" audit-page check-technical generate-schema optimize-meta report audit-domain write-content keyword-research setup-alert geo-drift-check
-require_command_section_text "docs/README.zh.md" "^维护命令：" "^$" "Chinese README lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill
+require_command_section_text "docs/README.zh.md" "^维护命令：" "^$" "Chinese README lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill skillify
 require_command_section_text "CLAUDE.md" "User commands" "Maintenance commands" "CLAUDE lists all user commands under user heading" audit-page check-technical generate-schema optimize-meta report audit-domain write-content keyword-research setup-alert geo-drift-check
-require_command_section_text "CLAUDE.md" "Maintenance commands" "^## " "CLAUDE lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill
+require_command_section_text "CLAUDE.md" "Maintenance commands" "^## " "CLAUDE lists all maintenance commands under maintenance heading" wiki-lint contract-lint run-evals sync-versions validate-library evolve-skill skillify
 require_command_frontmatter_yaml "command frontmatter YAML parses and has required fields"
-require_text "README.md" "16 commands" "README command count is current"
-require_text "docs/README.zh.md" "16 个命令" "Chinese README command count is current"
+require_text "README.md" "17 commands" "README command count is current"
+require_text "docs/README.zh.md" "17 个命令" "Chinese README command count is current"
 require_text "README.md" "Daily SEO/GEO work normally uses the user commands only." "README explains daily-user command boundary"
 require_text "docs/README.zh.md" "日常 SEO/GEO 工作通常只需要用户命令" "Chinese README explains daily-user command boundary"
-require_text "README.md" '`v9.9.0` is a simulation-complete controlled evolution candidate with 16 commands' "README explains 9.9.0 simulation-complete release boundary"
-require_text "docs/README.zh.md" '`v9.9.0` 是模拟充分的受控进化候选版，包含 16 个命令' "Chinese README explains 9.9.0 simulation-complete release boundary"
-require_text "CLAUDE.md" "20 skills and 16 commands" "CLAUDE command count is current"
-require_text "AGENTS.md" "20 SEO/GEO skills, 16 commands" "AGENTS command count is current"
-require_text "VERSIONS.md" "all 20 skills and 16 commands remain" "VERSIONS records v9.9.0 command count"
+require_text "README.md" '`v9.9.5` adds `/seo:skillify`' "README explains 9.9.5 skillify release boundary"
+require_text "docs/README.zh.md" '`v9.9.5` 新增 `/seo:skillify`' "Chinese README explains 9.9.5 skillify release boundary"
+require_text "CLAUDE.md" "20 skills and 17 commands" "CLAUDE command count is current"
+require_text "AGENTS.md" "20 SEO/GEO skills, 17 commands" "AGENTS command count is current"
+require_text "VERSIONS.md" "all 20 skills and 17 commands remain" "VERSIONS records v9.9.5 command count"
+require_text "VERSIONS.md" "all 20 skills and 16 commands remain" "VERSIONS keeps v9.9.0 historical command count"
 require_text "VERSIONS.md" "all 20 skills and 15 commands remain" "VERSIONS keeps v9.5.0 historical command count"
+require_text "VERSIONS.md" "/seo:skillify" "VERSIONS records v9.9.5 skillify release"
 require_text "VERSIONS.md" "/seo:run-evals" "VERSIONS records v9.9.0 run-evals release"
-require_text "CITATION.cff" "20 skills, 16 commands" "CITATION command count is current"
-require_text ".claude-plugin/plugin.json" "20 SEO/GEO skills and 16 commands" "plugin description command count is current"
-require_text "marketplace.json" "20 SEO/GEO skills and 16 commands" "root marketplace command count is current"
-require_text ".claude-plugin/marketplace.json" "20 SEO/GEO skills and 16 commands" "bundle marketplace command count is current"
-require_text ".codebuddy-plugin/marketplace.json" "20 SEO/GEO skills and 16 commands" "CodeBuddy marketplace command count is current"
-require_text "gemini-extension.json" "20 SEO/GEO skills and 16 commands" "Gemini extension command count is current"
+require_text "CITATION.cff" "20 skills, 17 commands" "CITATION command count is current"
+require_text ".claude-plugin/plugin.json" "20 SEO/GEO skills and 17 commands" "plugin description command count is current"
+require_text "marketplace.json" "20 SEO/GEO skills and 17 commands" "root marketplace command count is current"
+require_text ".claude-plugin/marketplace.json" "20 SEO/GEO skills and 17 commands" "bundle marketplace command count is current"
+require_text ".codebuddy-plugin/marketplace.json" "20 SEO/GEO skills and 17 commands" "CodeBuddy marketplace command count is current"
+require_text "gemini-extension.json" "20 SEO/GEO skills and 17 commands" "Gemini extension command count is current"
 require_file "commands/evolve-skill.md"
 require_file "commands/run-evals.md"
+require_file "commands/skillify.md"
 if [ -f "$ROOT/commands/p2-review.md" ]; then
   fail "p2-review command is retired"
 else
@@ -702,7 +832,10 @@ require_file "memory/evolution/README.md"
 require_file "memory/evolution/2026-04.md"
 require_frontmatter_text "commands/evolve-skill.md" 'allowed-tools: ["Read", "Glob", "Grep"]' "evolve-skill tool scope stays explicit"
 require_frontmatter_text "commands/run-evals.md" 'allowed-tools: ["Read", "Glob", "Grep"]' "run-evals tool scope stays read-only"
+require_frontmatter_text "commands/skillify.md" 'allowed-tools: ["Read", "Glob", "Grep"]' "skillify tool scope stays read-only"
+require_text "commands/skillify.md" "This command is read-only" "skillify stays proposal-only"
 forbid_regex "commands/evolve-skill.md" 'allowed-tools: .*Edit' "evolve-skill does not preapprove Edit"
+forbid_regex "commands/skillify.md" 'allowed-tools: .*Edit' "skillify does not preapprove Edit"
 forbid_regex "commands/evolve-skill.md" '--apply-draft' "evolve-skill does not expose apply-draft"
 forbid_regex_i "commands/evolve-skill.md" '(save|append|write|persist|modify|create|update|record|store)[^[:cntrl:]]*`?memory/evolution|memory/evolution[^[:cntrl:]]*(save|append|write|persist|modify|create|update|record|store)|save[[:space:]]+.*as[[:space:]]+a[[:space:]]+proposed[[:space:]]+record' "evolve-skill does not expose direct memory write path"
 forbid_normalized_memory_write_path "commands/evolve-skill.md" "evolve-skill normalized text does not expose memory/evolution write path"
@@ -717,6 +850,8 @@ require_text "commands/validate-library.md" "validation_results" "validate-libra
 require_text "commands/validate-library.md" 'no non-empty `validation_results.non_validating_reason`' "validate-library documents non-validating reason acceptance gate"
 require_text "commands/validate-library.md" "commands/run-evals.md" "validate-library documents eval runner"
 require_text "commands/validate-library.md" "cross-cutting/content-quality-auditor" "validate-library documents auditor hash validation"
+require_text "commands/validate-library.md" "skill authoring and routing surfaces" "validate-library documents routing checks"
+require_text "commands/validate-library.md" "commands/skillify.md" "validate-library documents skillify command"
 require_auditor_skill_validation "cross-cutting/content-quality-auditor" "content-quality-auditor full validation passes"
 require_auditor_skill_validation "cross-cutting/domain-authority-auditor" "domain-authority-auditor full validation passes"
 require_text "commands/contract-lint.md" "controlled evolution surfaces" "contract-lint documents evolution checks"
@@ -732,7 +867,7 @@ require_text "references/evolution-evidence-review.md" "Hermes+ controlled maint
 require_text "references/evolution-evidence-review.md" "External evidence is non-validating" "external evidence review keeps non-validating boundary"
 require_text "references/evolution-evidence-review.md" '`maintainer_observation` tied to a project-local artifact' "external evidence review separates maintainer observation from review approval"
 require_text "references/evolution-optimization-plan.md" "GO for experimental Hermes+ maintainer workflow" "optimization plan records Hermes+ GO scope"
-require_text "references/evolution-optimization-plan.md" "9.9.0 16-command state" "optimization plan records current 9.9.0 command state"
+require_text "references/evolution-optimization-plan.md" "9.9.5 17-command state" "optimization plan records current 9.9.5 command state"
 require_text "references/evolution-protocol.md" "validation_results" "evolution protocol defines validation_results"
 require_text "references/evolution-protocol.md" "external_research" "evolution protocol includes external research source kind"
 require_text "references/evolution-protocol.md" "empty string for validating runs" "evolution protocol avoids literal none for validating runs"
@@ -751,6 +886,10 @@ require_text "memory/evolution/README.md" "validation_results" "evolution memory
 require_text "memory/evolution/2026-04.md" "simulation: true" "simulated evolution events are labeled"
 require_text "memory/evolution/2026-04.md" "validation_results" "simulated evolution events include validation_results status"
 require_eval_case_count "16" "eval suite contains at least 16 simulated cases"
+require_file "references/skill-resolver.md"
+require_resolver_coverage "skill resolver covers every discovered skill"
+require_routing_eval_targets "10" "routing eval cases use real target skills"
+forbid_stub_sentinel_release_paths "scaffold stub sentinel is absent from release-bearing paths"
 require_text "evals/geo-content-optimizer/cases.md" "status: simulated" "GEO eval seed is labeled simulated"
 require_text "evals/content-quality-auditor/cases.md" "status: simulated" "auditor eval seed is labeled simulated"
 require_text "evals/content-quality-auditor/cases.md" "content-quality-auditor-sim-005" "auditor eval covers C01 title mismatch veto"

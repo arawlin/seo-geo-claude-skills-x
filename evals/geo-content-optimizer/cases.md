@@ -17,3 +17,19 @@ Simulated seed cases for GEO citation readiness. They are regression prompts, no
 ```yaml
 {id: geo-content-optimizer-sim-004, type: eval-case, status: simulated, target_skill: geo-content-optimizer, scenario: "Strong article lacks quotable answer-ready structure.", input_summary: "Evidence is strong but no definition block, comparison table, or concise answer.", expected_behavior: ["Recommend answer-ready structures with source support.", "Avoid generic filler.", "Tie blocks to sources or sections."], failure_modes: ["Adds unsupported template sections.", "Weakens source traceability.", "Ignores article intent."], evolution_use: "Use when changing GEO structure recommendations."}
 ```
+
+```yaml
+{id: routing-geo-content-optimizer-sim-001, type: eval-case, status: simulated, target_skill: geo-content-optimizer, scenario: "AI search is not citing a product page.", input_summary: "AI search is not citing our product page. Help me fix it.", expected_behavior: ["Route geo-content-optimizer as the primary page-level citation-readiness skill.", "Recommend entity-optimizer only when canonical identity or sameAs evidence is missing.", "Recommend domain-authority-auditor only when domain trust evidence is the limiting factor.", "Return NEEDS_INPUT when no page content, URL, entity details, or citation evidence is available."], failure_modes: ["Routes directly to generic content writing.", "Uses domain-authority-auditor before page-level GEO readiness.", "Treats all AI citation problems as entity problems."], evolution_use: "Use when changing GEO routing or AI citation handoffs."}
+```
+
+```yaml
+{id: routing-geo-content-optimizer-sim-002, type: eval-case, status: simulated, target_skill: geo-content-optimizer, scenario: "User asks for AI citation structure after keyword research.", input_summary: "We have target keywords but need the article to be answer-ready for ChatGPT and AI Overviews.", expected_behavior: ["Keep geo-content-optimizer as primary.", "Use keyword evidence as input instead of rerunning keyword-research.", "Recommend content-quality-auditor before publish."], failure_modes: ["Routes back to keyword-research.", "Skips citation-ready structure.", "Promises AI citations."], evolution_use: "Use when changing build-phase routing after keyword handoff."}
+```
+
+```yaml
+{id: routing-geo-content-optimizer-sim-003, type: eval-case, status: simulated, target_skill: geo-content-optimizer, scenario: "Entity ambiguity blocks GEO advice.", input_summary: "Optimize Atlas for AI citations, but no canonical website or company identity is provided.", expected_behavior: ["Flag entity ambiguity.", "Route geo-content-optimizer as blocked or NEEDS_INPUT for page advice.", "Recommend entity-optimizer as required upstream handoff."], failure_modes: ["Assumes the entity.", "Gives page-level GEO advice for the wrong brand.", "Skips identity handoff."], evolution_use: "Use when changing entity routing from GEO workflows."}
+```
+
+```yaml
+{id: routing-geo-content-optimizer-sim-004, type: eval-case, status: simulated, target_skill: geo-content-optimizer, scenario: "User asks whether GEO Score proves actual citations.", input_summary: "Our GEO Score is high; does that mean ChatGPT cites us now?", expected_behavior: ["Explain that GEO Score is readiness, not observed citation proof.", "Recommend geo-drift-check for measurement.", "Avoid rerouting to performance-reporter unless reporting data is requested."], failure_modes: ["Treats GEO Score as observed citation evidence.", "Skips measurement handoff.", "Routes to generic reporting too early."], evolution_use: "Use when changing GEO measurement and drift-check routing."}
+```

@@ -1,9 +1,9 @@
 # SEO & GEO Skills Library
 
-**20 skills. 16 commands. Rank in search. Get cited by AI.**
+**20 skills. 17 commands. Rank in search. Get cited by AI.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-9.9.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.9.5-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/aaron-he-zhu/seo-geo-claude-skills)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/commits/main)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-purple)](https://claude.ai/download)
@@ -70,11 +70,11 @@ Shared refs: [skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-
 
 User commands: `/seo:audit-page`, `/seo:check-technical`, `/seo:generate-schema`, `/seo:optimize-meta`, `/seo:report`, `/seo:audit-domain`, `/seo:write-content`, `/seo:keyword-research`, `/seo:setup-alert`, `/seo:geo-drift-check`.
 
-Maintenance commands: `/seo:wiki-lint`, `/seo:contract-lint`, `/seo:run-evals`, `/seo:sync-versions`, `/seo:validate-library`, `/seo:evolve-skill`.
+Maintenance commands: `/seo:wiki-lint`, `/seo:contract-lint`, `/seo:run-evals`, `/seo:sync-versions`, `/seo:validate-library`, `/seo:evolve-skill`, `/seo:skillify`.
 
-Daily SEO/GEO work normally uses the user commands only. Use `/seo:evolve-skill` when the skill library itself needs improvement, and use `/seo:run-evals` when reviewing that proposed improvement.
+Daily SEO/GEO work normally uses the user commands only. Use `/seo:skillify` when checking whether a proposed skill is complete and routable, use `/seo:evolve-skill` when the skill library itself needs improvement, and use `/seo:run-evals` when reviewing that proposed improvement.
 
-Release note: `v9.9.0` is a simulation-complete controlled evolution candidate with 16 commands. Simulated evidence remains non-validating until project-local signals are accepted.
+Release note: `v9.9.5` adds `/seo:skillify`, the derived skill resolver, compatible routing eval seeds, and 17-command guardrails. Simulated evidence remains non-validating until project-local signals are accepted.
 
 Command files: [commands/](https://github.com/aaron-he-zhu/seo-geo-claude-skills/tree/main/commands/).
 

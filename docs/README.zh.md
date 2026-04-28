@@ -1,9 +1,9 @@
 # SEO & GEO 技能库
 
-**20 个技能。16 个命令。搜索排名 + AI 引用。**
+**20 个技能。17 个命令。搜索排名 + AI 引用。**
 
 [![GitHub Stars](https://img.shields.io/github/stars/aaron-he-zhu/seo-geo-claude-skills?style=flat)](https://github.com/aaron-he-zhu/seo-geo-claude-skills)
-[![Version](https://img.shields.io/badge/version-9.9.0-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
+[![Version](https://img.shields.io/badge/version-9.9.5-orange)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/VERSIONS.md)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/LICENSE)
 
 [English](../README.md) | **中文**
@@ -46,11 +46,11 @@
 
 用户命令：`/seo:audit-page`, `/seo:check-technical`, `/seo:generate-schema`, `/seo:optimize-meta`, `/seo:report`, `/seo:audit-domain`, `/seo:write-content`, `/seo:keyword-research`, `/seo:setup-alert`, `/seo:geo-drift-check`。
 
-维护命令：`/seo:wiki-lint`, `/seo:contract-lint`, `/seo:run-evals`, `/seo:sync-versions`, `/seo:validate-library`, `/seo:evolve-skill`。
+维护命令：`/seo:wiki-lint`, `/seo:contract-lint`, `/seo:run-evals`, `/seo:sync-versions`, `/seo:validate-library`, `/seo:evolve-skill`, `/seo:skillify`。
 
-日常 SEO/GEO 工作通常只需要用户命令。只有在改进技能库本身时使用 `/seo:evolve-skill`，在评审这类改进时使用 `/seo:run-evals`。
+日常 SEO/GEO 工作通常只需要用户命令。检查拟新增技能是否完整、可路由时使用 `/seo:skillify`；改进技能库本身时使用 `/seo:evolve-skill`；评审这类改进时使用 `/seo:run-evals`。
 
-发布说明：`v9.9.0` 是模拟充分的受控进化候选版，包含 16 个命令。模拟证据仍然是非验证证据，直到出现可接受的项目本地信号。
+发布说明：`v9.9.5` 新增 `/seo:skillify`、派生技能路由索引、兼容的路由 eval 种子，以及 17 个命令的护栏。模拟证据仍然是非验证证据，直到出现可接受的项目本地信号。
 
 ## 运行模型
 
@@ -70,4 +70,4 @@
 
 贡献规则见 [CONTRIBUTING.md](../CONTRIBUTING.md)。版本见 [VERSIONS.md](../VERSIONS.md)。许可证：Apache License 2.0。
 
-*最后同步英文 README：v9.9.0*
+*最后同步英文 README：v9.9.5*

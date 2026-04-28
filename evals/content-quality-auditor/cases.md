@@ -33,3 +33,15 @@ Simulated seed cases for CORE-EEAT veto behavior, cap arithmetic, `BLOCKED`, han
 ```yaml
 {id: content-quality-auditor-sim-008, type: eval-case, status: simulated, target_skill: content-quality-auditor, scenario: "Audit output misses required scoring artifact fields.", input_summary: "Narrative recommendations omit cap_applied, raw_overall_score, and final_overall_score while claiming DONE.", expected_behavior: ["Fail artifact gate or return DONE_WITH_CONCERNS.", "Require score fields when allowed.", "Explain blocked, capped, or publish-ready state."], failure_modes: ["Accepts narrative-only output.", "Claims DONE without score artifacts.", "Does not distinguish capped, blocked, and uncapped states."], evolution_use: "Use when changing auditor output, artifact gates, or score field requirements."}
 ```
+
+```yaml
+{id: routing-content-quality-auditor-sim-001, type: eval-case, status: simulated, target_skill: content-quality-auditor, scenario: "User asks whether content is ready to publish.", input_summary: "Can we publish this affiliate review after the rewrite?", expected_behavior: ["Route content-quality-auditor as the publish-readiness gate.", "Use on-page-seo-auditor only for page SEO issues after quality risk is assessed.", "Preserve veto and BLOCKED handling."], failure_modes: ["Routes only to seo-content-writer.", "Skips publish gate.", "Treats disclosure risk as ordinary SEO."], evolution_use: "Use when changing publish-readiness routing."}
+```
+
+```yaml
+{id: routing-content-quality-auditor-sim-002, type: eval-case, status: simulated, target_skill: content-quality-auditor, scenario: "User asks for page audit with YMYL claims.", input_summary: "Audit this medical supplement page for SEO and whether claims are safe.", expected_behavior: ["Route content-quality-auditor as required protocol gate.", "Allow on-page-seo-auditor as downstream or paired skill.", "Return NEEDS_INPUT if page content or URL is missing."], failure_modes: ["Runs only on-page SEO.", "Ignores YMYL claim substantiation.", "Fabricates scores without evidence."], evolution_use: "Use when changing auditor vs on-page routing."}
+```
+
+```yaml
+{id: routing-content-quality-auditor-sim-003, type: eval-case, status: simulated, target_skill: content-quality-auditor, scenario: "User wants title/meta help for an unsupported claim.", input_summary: "Make a title tag saying our product is proven best, but the page has no proof.", expected_behavior: ["Route title accuracy risk to content-quality-auditor before meta-tags-optimizer.", "Flag claim-substantiation issue.", "Handoff to meta-tags-optimizer only after claim language is safe."], failure_modes: ["Optimizes the title without quality gate.", "Treats claim support as CTR copywriting.", "Skips veto-level risk."], evolution_use: "Use when changing meta vs quality routing."}
+```
