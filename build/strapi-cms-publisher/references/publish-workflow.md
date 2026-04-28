@@ -6,13 +6,13 @@ Detailed mapping and execution notes for the `strapi-cms-publisher` skill.
 
 ## Fixed REST Endpoints
 
-Use these endpoints directly on normal runs. Do not spend runtime budget rediscovering content types or components unless the user says the Strapi model changed.
+Use these endpoints directly on normal runs. This skill is already adapted to the current Strapi model, so do not spend runtime budget rediscovering content types or components unless the user explicitly says the model changed.
 
 | Purpose | Endpoint | Notes |
 |---------|----------|-------|
 | Article lookup and write | `/api/articles` | Query by `slug.label`, create drafts, update drafts |
-| Category lookup and create | `/api/categories` | Resolve or create category relations |
-| Tag lookup and create | `/api/tags` | Resolve or create tag relations |
+| Category lookup and create | `/api/categories` | Resolve category relations and create missing categories as drafts |
+| Tag lookup and create | `/api/tags` | Resolve tag relations and create missing tags as published entries |
 | Media upload | `/api/upload` | Upload local or downloaded remote images |
 
 These paths are fixed by the current Strapi structure and should be treated as the default execution contract for this skill.
@@ -193,7 +193,7 @@ If the connected upload tool only accepts URL-based ingestion rather than raw lo
 
 - Look up tags through `/api/tags` before writing the article.
 - Batch every missing tag into the review summary.
-- Create missing tags only after approval, then attach the returned `documentId` values to the article payload.
+- Create missing tags only after approval, create them as published entries rather than drafts, then attach the returned `documentId` values to the article payload.
 
 ### Existing articles
 
@@ -210,8 +210,8 @@ Summarize all pending writes in one confirmation block.
 
 | Pending action | Confirm before write? | Notes |
 |----------------|-----------------------|-------|
-| Create category | Yes | Batch all missing categories together |
-| Create tag | Yes | Batch all missing tags together |
+| Create category | Yes | Batch all missing categories together; create as drafts |
+| Create tag | Yes | Batch all missing tags together; create as published entries |
 | Update article | Yes | Required even if only content changed |
 | Create article | Yes | Covered by the same approval block |
 | Upload media | Yes | Covered by the same approval block |
@@ -222,8 +222,8 @@ Recommended review block:
 Draft publish summary
 - Articles to create: X
 - Articles to update: Y
-- Categories to create: ...
-- Tags to create: ...
+- Draft categories to create: ...
+- Published tags to create: ...
 - Images to upload: ...
 - Unresolved links: ...
 ```

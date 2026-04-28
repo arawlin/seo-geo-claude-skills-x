@@ -41,11 +41,11 @@ metadata:
 
 # Strapi CMS Publisher
 
-This skill publishes finalized Markdown article bundles into a fixed Strapi draft model. It extracts inline and sidecar JSON-LD, resolves taxonomy and article state, uploads linked images, rewrites internal article links, and stages all writes behind a single confirmation step.
+This skill publishes finalized Markdown article bundles into an already-adapted Strapi model. It extracts inline and sidecar JSON-LD, resolves taxonomy and article state, uploads linked images, rewrites internal article links, creates missing tags as published entries, and stages all writes behind a single confirmation step.
 
 ## What This Skill Does
 
-Converts local Markdown, JSON-LD, and image assets into Strapi `Article`, `shared.seo`, `shared.slug`, `shared.source`, `category`, and `tag` records with draft-only saves and read-back verification.
+Converts local Markdown, JSON-LD, and image assets into Strapi `Article`, `shared.seo`, `shared.slug`, `shared.source`, `category`, and `tag` records with draft article/category saves, published tag creation, and read-back verification.
 
 ## Quick Start
 
@@ -86,9 +86,9 @@ and ask before updating the existing entry
 
 ## Preconditions
 
-- The Strapi content model is fixed; do not spend runtime budget re-introspecting content types unless the user says the model changed.
+- The Strapi content model is already adapted and fixed for this skill; do not spend runtime budget querying content type or component schema again unless the user explicitly says the model changed.
 - Use the fixed REST endpoints directly on normal runs: `GET/POST/PUT /api/articles`, `GET/POST /api/categories`, `GET/POST /api/tags`, and `POST /api/upload` for media.
-- Keep writes **draft only**. Never publish automatically.
+- Keep article and category writes **draft only**. Create missing tags as **published** entries after approval. Never publish articles automatically.
 - Rewrite local article links as `/article/{articleSlug}`. Do not prepend a base URL or keep category segments in rewritten internal links.
 - If the connected runtime lacks Strapi write access, still produce the dry-run plan and confirmation summary.
 - Parse article frontmatter using the fixed field names in [references/frontmatter-contract.md](./references/frontmatter-contract.md).
@@ -112,9 +112,9 @@ When a user requests Strapi publishing, run these eight steps in order:
      --content-file "$ARTICLE_MARKDOWN_FILE"
    ```
 4. **Rewrite Internal Links and Images** — convert local article links into `/article/{articleSlug}` form directly from the linked filename, preserve anchors, upload local and remote images to Strapi media, and replace Markdown image URLs with the returned media URLs. Do not spend runtime budget checking whether the linked article already exists in Strapi before rewriting the URL.
-5. **Resolve Taxonomy and Article State** — use `/api/categories`, `/api/tags`, and `/api/articles` directly to look up existing category, tag, and article records before writing. Stage missing categories and tags for creation, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
-6. **Present a Single Confirmation Summary** — show article creates, article updates, pending category creates, pending tag creates, media uploads, and unresolved references. No write operation is allowed before explicit user approval.
-7. **Execute Draft Writes** — after approval, create missing categories via `/api/categories`, create missing tags via `/api/tags`, upload media via `/api/upload`, then create or update the draft article entry via `/api/articles` and attach the resolved relations and media-backed Markdown.
+5. **Resolve Taxonomy and Article State** — use `/api/categories`, `/api/tags`, and `/api/articles` directly to look up existing category, tag, and article records before writing. Stage missing categories as draft creates, stage missing tags as published creates, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
+6. **Present a Single Confirmation Summary** — show article creates, article updates, pending draft category creates, pending published tag creates, media uploads, and unresolved references. No write operation is allowed before explicit user approval.
+7. **Execute Draft Writes** — after approval, create missing draft categories via `/api/categories`, create missing published tags via `/api/tags`, upload media via `/api/upload`, then create or update the draft article entry via `/api/articles` and attach the resolved relations and media-backed Markdown.
 8. **Read Back and Emit Handoff** — fetch the saved draft, verify core fields (`title`, `slug`, `content`, `seo.structuredData`, taxonomy, image URLs), and output a handoff summary plus any remaining blockers.
 
 > **Reference**: See [references/publish-workflow.md](./references/publish-workflow.md) for the fixed endpoint map, field map, schema merge rules, internal-link algorithm, image handling notes, and confirmation matrix.
@@ -126,14 +126,14 @@ When a user requests Strapi publishing, run these eight steps in order:
 **Output** (abbreviated):
 - Dry-run summary: 1 article update or create candidate, 1 category lookup, 5 tag lookups, 0-1 tag creates, N image uploads, 2 internal link rewrites
 - Payload plan: `title`, `description`, Markdown `content`, merged `seo.structuredData`, `slug.label`, `source.contentHash` from `scripts/generate-content-hash.sh`, taxonomy document IDs
-- Confirmation gate: one approval covering tag/category creates, article write, and media uploads
+- Confirmation gate: one approval covering draft category creates, published tag creates, article draft write, and media uploads
 - Read-back result: saved draft `documentId`, preserved Markdown, uploaded media URLs substituted, unresolved links listed if any
 
 ## Decision Rules
 
 - **Schema merge**: combine inline JSON-LD blocks with sidecar JSON-LD, de-duplicate by semantic identity, and prefer sidecar values on direct conflicts.
 - **Article updates**: always ask before overwriting an existing article matched by `slug.label`.
-- **Taxonomy creation**: batch all missing categories and tags into one approval prompt before creating them.
+- **Taxonomy creation**: batch all missing categories and tags into one approval prompt before creating them; create categories as drafts and tags as published entries.
 - **Image handling**: remote image URLs are downloaded to temporary local storage before upload; local images are uploaded directly; temporary downloads are deleted after upload.
 
 ### Save Results
