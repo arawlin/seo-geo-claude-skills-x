@@ -1,6 +1,6 @@
 ---
 name: article-batch-generator
-description: 'Use when the user asks to "generate a full article series", "draft every article from a series plan", or "batch write articles into a directory". Produces article files from a normalized series plan by chaining writing, GEO optimization, metadata, schema, internal linking, and final content audit. For one article only, see seo-content-writer. 批量文章生成/系列文章批处理'
+description: 'Use when the user asks to "generate a full article series", "draft every article from a series plan", or "batch write articles into a directory". Produces article files from a normalized series plan by chaining writing, screenshot placeholder insertion, GEO optimization, metadata, schema, internal linking, and final content audit. For one article only, see seo-content-writer. 批量文章生成/系列文章批处理'
 version: "9.2.1"
 license: Apache-2.0
 compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
@@ -33,8 +33,9 @@ metadata:
 # Article Batch Generator
 
 This skill turns a completed series plan into a finished article set. It drafts
-each article, runs shared post-draft optimization, applies series-level
-internal linking, and finishes with per-article quality gates.
+each article, inserts screenshot placeholders in suitable sections, runs shared
+post-draft optimization, applies series-level internal linking, and finishes
+with per-article quality gates.
 
 ## When This Must Trigger
 
@@ -65,8 +66,8 @@ Expected output:
 
 ## Skill Contract
 
-**Expected output**: a batch of article files with metadata, schema,
-cross-links, and final audit status.
+**Expected output**: a batch of article files with screenshot placeholders,
+metadata, schema, cross-links, and final audit status.
 
 - **Reads**: `<topic_dir>/research/00-series-plan.json`, article requirements,
   stage blockers, and any existing draft files in `<topic_dir>/articles/`.
@@ -87,24 +88,37 @@ and add:
 - **Articles Written**: count of generated files
 - **Audit Failures**: list of any files still marked `DONE_WITH_CONCERNS`
 
+## Data Sources
+
+Use the normalized series plan, any topic-level research artifacts, and the
+current article directory as the primary inputs. When connected, use `~~SEO tool`
+or `~~analytics` only to fill gaps that materially affect the batch; otherwise
+stay anchored to `<topic_dir>/research/00-series-plan.json` and user-provided
+requirements.
+
 ## Instructions
 
-Run this phase in three blocks.
+Run this phase in four blocks.
 
-### Block A — Per-article drafting
+### Block A — Per-article drafting and placeholder insertion
 
 For each article in the series plan:
 
 1. Invoke `seo-content-writer`.
-2. Invoke `geo-content-optimizer`.
-3. Invoke `meta-tags-optimizer`.
-4. Invoke `schema-markup-generator`.
-5. Save the result as `<topic_dir>/articles/NN-slug.md`.
+2. Invoke `seo-image-placeholder` and insert screenshot placeholders in the
+   sections where visual proof, UI guidance, trust signals, or result evidence
+   would materially help the reader.
+3. Invoke `geo-content-optimizer`.
+4. Invoke `meta-tags-optimizer`.
+5. Invoke `schema-markup-generator`.
+6. Save the result as `<topic_dir>/articles/NN-slug.md`.
 
 Each article file must include:
 
 - frontmatter with title, slug, keywords, meta fields, audit placeholders
 - full article body
+- screenshot placeholders in suitable sections when the article would benefit
+  from visual proof or step clarity
 - FAQ when the plan or source skills call for it
 - `JSON-LD`
 - a section for internal link updates
@@ -143,6 +157,7 @@ After all article audits are complete:
 ## Validation Checkpoints
 
 - [ ] Every article in `<topic_dir>/research/00-series-plan.json` has a corresponding `<topic_dir>/articles/NN-slug.md`
+- [ ] `seo-image-placeholder` ran after each article draft and added screenshot placeholders where useful
 - [ ] `internal-linking-optimizer` ran after all drafts existed
 - [ ] Every article includes title, meta description, schema, and audit summary
 - [ ] Final status for each article is `DONE` or `DONE_WITH_CONCERNS`
@@ -151,6 +166,7 @@ After all article audits are complete:
 ## Reference Materials
 
 - [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md)
+- [seo-image-placeholder](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-image-placeholder/SKILL.md)
 - [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md)
 - [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md)
 - [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md)
