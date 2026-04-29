@@ -67,7 +67,8 @@ Expected output:
 **Expected output**: delivery-facing summary files for the full series.
 
 - **Reads**: `<topic_dir>/research/00-series-plan.json`, `<topic_dir>/articles/`,
-  per-article audit summaries, and `<topic_dir>/delivery/50-batch-summary.md`.
+  `<topic_dir>/delivery/internal-links/`, `<topic_dir>/delivery/audits/`, and
+  `<topic_dir>/delivery/50-batch-summary.md`.
 - **Writes**: `<topic_dir>/delivery/99-series-index.md`,
   `<topic_dir>/delivery/99-publish-checklist.md`,
   `<topic_dir>/delivery/99-audit-summary.json`, plus a short completion
@@ -86,12 +87,21 @@ and add:
 - **Final Output Paths**: list of the three generated summary files
 - **Ready to Publish**: yes/no
 
+## Data Sources
+
+Use the series plan, article files, and delivery-side sidecars as the primary
+sources of truth. When connected, use `~~analytics` or `~~CMS data` only to
+verify readiness or enrich a publish queue; do not replace the batch-generated
+artifacts as the canonical workflow record.
+
 ## Instructions
 
 1. **Load the batch inventory**
-   - Read `<topic_dir>/research/00-series-plan.json`, `<topic_dir>/articles/`,
-     and `<topic_dir>/delivery/50-batch-summary.md`.
-   - Confirm the expected article count matches the number of article files.
+    - Read `<topic_dir>/research/00-series-plan.json`, `<topic_dir>/articles/`,
+     `<topic_dir>/delivery/internal-links/`,
+     `<topic_dir>/delivery/audits/`, and
+     `<topic_dir>/delivery/50-batch-summary.md`.
+    - Confirm the expected article count matches the number of article files.
 
 2. **Build `<topic_dir>/delivery/99-series-index.md`**
    - List each article in order with:
@@ -103,31 +113,36 @@ and add:
    - Include a short series overview and publish order.
 
 3. **Build `<topic_dir>/delivery/99-publish-checklist.md`**
-   - Add one row per article with:
-     - file present
-     - metadata present
-     - schema present
-     - audit complete
-     - blockers present
-   - End with a series-level go/no-go note.
+    - Add one row per article with:
+      - file present
+      - metadata present
+      - schema present
+      - internal link sidecar present
+      - audit complete
+      - blockers present
+    - End with a series-level go/no-go note.
 
 4. **Build `<topic_dir>/delivery/99-audit-summary.json`**
-   - Include:
-     - total article count
-     - `DONE` count
-     - `DONE_WITH_CONCERNS` count
-     - unresolved blockers
-     - article-level verdicts
+    - Include:
+      - total article count
+      - `DONE` count
+      - `DONE_WITH_CONCERNS` count
+      - unresolved blockers
+      - article-level verdicts from `delivery/audits/*.audit.json`
 
 5. **Do not rewrite article bodies**
-   - If a content issue is found here, report it in the checklist.
-   - Do not rerun writing or optimization skills from this phase.
+    - If a content issue is found here, report it in the checklist or the audit
+      rollup.
+    - Do not rerun writing or optimization skills from this phase.
+    - Do not expect workflow-only sections such as internal-link notes or audit
+      summaries to live inside the article body.
 
 ## Validation Checkpoints
 
 - [ ] `<topic_dir>/delivery/99-series-index.md` lists every article exactly once
 - [ ] `<topic_dir>/delivery/99-publish-checklist.md` reflects actual file presence and audit state
 - [ ] `<topic_dir>/delivery/99-audit-summary.json` matches article-level statuses
+- [ ] Finalizer reads workflow sidecars from `delivery/`, not from article-body sections
 - [ ] This phase does not change article bodies
 - [ ] Ready-to-publish verdict is explicit
 

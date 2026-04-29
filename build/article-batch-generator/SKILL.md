@@ -61,6 +61,8 @@ Draft a 5-article series from ./topics/my-topic/research/00-series-plan.json
 Expected output:
 
 - `<topic_dir>/articles/NN-slug.md` for each planned article
+- `<topic_dir>/delivery/internal-links/NN-slug.links.md` for each article
+- `<topic_dir>/delivery/audits/NN-slug.audit.json` for each article
 - updated internal links across the batch
 - `<topic_dir>/delivery/50-batch-summary.md`
 
@@ -70,10 +72,11 @@ Expected output:
 metadata, schema, cross-links, and final audit status.
 
 - **Reads**: `<topic_dir>/research/00-series-plan.json`, article requirements,
-  stage blockers, and any existing draft files in `<topic_dir>/articles/`.
+   stage blockers, and any existing draft files in `<topic_dir>/articles/`.
 - **Writes**: `<topic_dir>/articles/NN-slug.md`,
-  `<topic_dir>/delivery/50-batch-summary.md`, and any draft audit notes
-  required by the finalizer.
+  `<topic_dir>/delivery/internal-links/NN-slug.links.md`,
+  `<topic_dir>/delivery/audits/NN-slug.audit.json`, and
+  `<topic_dir>/delivery/50-batch-summary.md`.
 - **Promotes**: validated cross-link relationships, final audit states, and
   missing assets into batch outputs, not memory.
 - **Next handoff**: use `series-finalizer` when all article files and audits are
@@ -121,20 +124,24 @@ Each article file must include:
   from visual proof or step clarity
 - FAQ when the plan or source skills call for it
 - `JSON-LD`
-- a section for internal link updates
-- a section for audit summary
+
+`<topic_dir>/articles/NN-slug.md` must stay publishable. Do not place workflow
+logs, internal-link change notes, or audit summaries inside the article body.
 
 ### Block B — Batch-level linking
 
 After all article drafts exist:
 
 1. Invoke `internal-linking-optimizer` once across the full set.
-2. Update each article's internal links using the full inventory, not partial
-   inventory.
-3. Record which source article links to which target article and which anchor
-   text was chosen.
+2. Update each article's internal links in the publishable body using the full
+   inventory, not partial inventory.
+3. Write `<topic_dir>/delivery/internal-links/NN-slug.links.md` for each
+   article with the outbound links added, inbound targets, and chosen anchor
+   text.
+4. Record the final link inventory in `<topic_dir>/delivery/50-batch-summary.md`.
 
 Do not run `internal-linking-optimizer` inside the per-article drafting loop.
+Do not add an internal-link changelog section inside the article body.
 
 ### Block C — Final per-article audit
 
@@ -144,22 +151,29 @@ For each article after linking updates:
 2. If the verdict is `FIX` and the issue is resolvable in one pass, revise once
    and rerun the audit.
 3. If the article still fails after one revision, mark the file
-     `DONE_WITH_CONCERNS` and surface the blocker in the batch summary.
+      `DONE_WITH_CONCERNS` and surface the blocker in the batch summary.
+4. Write `<topic_dir>/delivery/audits/NN-slug.audit.json` with the final
+   verdict, blockers, and recommended next action for that article.
+
+Do not add an audit summary section inside the article body.
 
 ### Block D — Batch summary
 
 After all article audits are complete:
 
 1. Write `<topic_dir>/delivery/50-batch-summary.md`.
-2. Include article paths, audit statuses, unresolved blockers, and the final
-   link inventory.
+2. Include article paths, audit statuses, unresolved blockers, the final
+   link inventory, and the sidecar paths under `delivery/internal-links/` and
+   `delivery/audits/`.
 
 ## Validation Checkpoints
 
 - [ ] Every article in `<topic_dir>/research/00-series-plan.json` has a corresponding `<topic_dir>/articles/NN-slug.md`
 - [ ] `seo-image-placeholder` ran after each article draft and added screenshot placeholders where useful
+- [ ] Every article has a matching `delivery/internal-links/NN-slug.links.md`
+- [ ] Every article has a matching `delivery/audits/NN-slug.audit.json`
 - [ ] `internal-linking-optimizer` ran after all drafts existed
-- [ ] Every article includes title, meta description, schema, and audit summary
+- [ ] Every article includes title, meta description, schema, and publishable reader-facing content only
 - [ ] Final status for each article is `DONE` or `DONE_WITH_CONCERNS`
 - [ ] `<topic_dir>/delivery/50-batch-summary.md` lists any unresolved blockers clearly
 

@@ -61,6 +61,8 @@ Expected output:
 - `<topic_dir>/research/00-series-research.md`
 - `<topic_dir>/research/00-series-plan.json`
 - `<topic_dir>/articles/*.md`
+- `<topic_dir>/delivery/internal-links/*.links.md`
+- `<topic_dir>/delivery/audits/*.audit.json`
 - `<topic_dir>/delivery/50-batch-summary.md`
 - `<topic_dir>/delivery/99-series-index.md`
 - `<topic_dir>/delivery/99-publish-checklist.md`
@@ -89,6 +91,13 @@ and add:
 - **Stages Completed**: planner / batch / finalizer
 - **Topic Directory**: final resolved topic root path
 
+## Data Sources
+
+Use user-provided topic, language, and optional competitor/site inputs as the
+top-level inputs. All workflow evidence after startup should come from the
+downstream stage artifacts generated under `research/`, `articles/`, and
+`delivery/`, not from duplicated orchestration logic.
+
 ## Instructions
 
 1. **Validate top-level input**
@@ -103,22 +112,26 @@ and add:
    - Stop immediately if the planner returns `BLOCKED` or `NEEDS_INPUT`.
 
 3. **Run the batch generator**
-   - Pass through the planner's `topic_dir` and
-     `<topic_dir>/research/00-series-plan.json` path.
-   - Stop immediately if drafting or audits fail in a blocking way.
+    - Pass through the planner's `topic_dir` and
+      `<topic_dir>/research/00-series-plan.json` path.
+    - Expect publishable article bodies under `articles/` and workflow-only
+      sidecars under `delivery/internal-links/` and `delivery/audits/`.
+    - Stop immediately if drafting or audits fail in a blocking way.
 
 4. **Run the finalizer**
    - Invoke `series-finalizer` only after the batch stage completes.
 
 5. **Return one orchestration summary**
-   - Report what completed, where the topic directory was created, and which
-     article files still need human review.
-   - Never duplicate the full logic of the downstream skills inside this file.
+    - Report what completed, where the topic directory was created, and which
+      article files still need human review.
+    - Keep article-body outputs distinct from delivery-side workflow artifacts.
+    - Never duplicate the full logic of the downstream skills inside this file.
 
 ## Validation Checkpoints
 
 - [ ] The planner, batch generator, and finalizer run in order
 - [ ] Stage outputs become inputs for the next stage without guessing
+- [ ] Workflow-only artifacts stay under `delivery/`, not in publishable article bodies
 - [ ] Failure in an earlier stage stops later stages
 - [ ] Final summary lists the topic directory, delivery files, and unresolved concerns
 - [ ] This skill stays thin and defers specialist work to downstream skills

@@ -91,6 +91,14 @@ and add:
 - **Topic Directory**: path to the resolved topic root
 - **Article Count**: number of planned articles
 
+## Data Sources
+
+Use `~~SEO tool`, `~~SERP data`, and competitor inputs when connected;
+otherwise gather topic, audience, market, article count, and any known site or
+competitor context directly from the user. The planner should preserve source
+provenance in the research brief so downstream stages know which inputs are
+evidence-backed and which were user-provided.
+
 ## Instructions
 
 Run this phase once per series.
@@ -104,8 +112,11 @@ Run this phase once per series.
      - `research_dir = <topic_dir>/research/`
      - `articles_dir = <topic_dir>/articles/`
      - `delivery_dir = <topic_dir>/delivery/`
-   - When `topics_root` stays at the default `./topics`, the resolved layout is
-     `topics/<topic-slug>/research|articles|delivery`.
+     - `internal_links_dir = <topic_dir>/delivery/internal-links/`
+     - `audit_dir = <topic_dir>/delivery/audits/`
+    - When `topics_root` stays at the default `./topics`, the resolved layout is
+      `topics/<topic-slug>/research|articles|delivery`, with workflow-only
+      sidecars stored under `delivery/internal-links/` and `delivery/audits/`.
 
 2. **Run keyword and intent discovery**
    - Invoke `keyword-research` for the seed topic.
@@ -143,8 +154,10 @@ Run this phase once per series.
       - `research_dir`
       - `articles_dir`
       - `delivery_dir`
-      - `pillar`
-      - `articles[]`
+       - `pillar`
+       - `internal_links_dir`
+       - `audit_dir`
+       - `articles[]`
    - Each article must include:
      - `order`
      - `slug`
@@ -167,7 +180,7 @@ Run this phase once per series.
 - [ ] The plan contains one pillar topic and at least one supporting article
 - [ ] Every article includes a primary keyword, angle, and target word count
 - [ ] The plan names data sources or states clearly when inputs were user-provided
-- [ ] Output does not require the next stage to infer missing fields
+- [ ] Output does not require the next stage to infer missing fields or sidecar directories
 
 ## Reference Materials
 
