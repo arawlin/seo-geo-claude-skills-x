@@ -33,7 +33,9 @@ metadata:
 
 This skill is the thin top-level workflow wrapper for multi-article series
 generation. It does not replace specialist skills. It only coordinates the
-three workflow stages and reports success or failure at the series level.
+three workflow stages and reports success or failure at the series level. In
+the batch stage, per-article drafting and final audits are delegated to
+dedicated worker contexts owned by `article-batch-generator`.
 
 ## When This Must Trigger
 
@@ -114,12 +116,19 @@ downstream stage artifacts generated under `research/`, `articles/`, and
 3. **Run the batch generator**
     - Pass through the planner's `topic_dir` and
       `<topic_dir>/research/00-series-plan.json` path.
+    - Expect the batch stage to invoke one dedicated draft worker and one
+      dedicated audit worker per article, while keeping series-level linking and
+      summary logic in the batch orchestrator.
+    - Treat article-local worker blockers as per-article `DONE_WITH_CONCERNS`
+      outcomes that must not stop the full series workflow.
     - Expect publishable article bodies under `articles/` and workflow-only
       sidecars under `delivery/internal-links/` and `delivery/audits/`.
-    - Stop immediately if drafting or audits fail in a blocking way.
+    - Stop immediately only if the batch stage cannot load shared inputs or
+      cannot produce its batch summary and sidecars.
 
 4. **Run the finalizer**
-   - Invoke `series-finalizer` only after the batch stage completes.
+   - Invoke `series-finalizer` after the batch stage completes, including when
+     some articles are marked `DONE_WITH_CONCERNS`.
 
 5. **Return one orchestration summary**
     - Report what completed, where the topic directory was created, and which
@@ -133,6 +142,7 @@ downstream stage artifacts generated under `research/`, `articles/`, and
 - [ ] Stage outputs become inputs for the next stage without guessing
 - [ ] Workflow-only artifacts stay under `delivery/`, not in publishable article bodies
 - [ ] Failure in an earlier stage stops later stages
+- [ ] Article-local worker blockers degrade only the affected article and do not stop the overall workflow
 - [ ] Final summary lists the topic directory, delivery files, and unresolved concerns
 - [ ] This skill stays thin and defers specialist work to downstream skills
 

@@ -101,12 +101,17 @@ artifacts as the canonical workflow record.
      `<topic_dir>/delivery/internal-links/`,
      `<topic_dir>/delivery/audits/`, and
      `<topic_dir>/delivery/50-batch-summary.md`.
-    - Confirm the expected article count matches the number of article files.
+    - Build the expected article inventory from each plan entry's canonical
+      `<zero-padded order>-<slug>` filename, using `slug` as the primary
+      identifier and `order` only as verification.
+    - Confirm the expected article count matches the number of article files, or
+      record any gaps as unresolved blockers without stopping the finalizer.
 
 2. **Build `<topic_dir>/delivery/99-series-index.md`**
    - List each article in order with:
      - title
      - slug
+     - canonical article path
      - primary keyword
      - status
      - recommended next action
@@ -114,13 +119,15 @@ artifacts as the canonical workflow record.
 
 3. **Build `<topic_dir>/delivery/99-publish-checklist.md`**
     - Add one row per article with:
+  - canonical file path
       - file present
       - metadata present
       - schema present
       - internal link sidecar present
       - audit complete
       - blockers present
-    - End with a series-level go/no-go note.
+    - End with a series-level go/no-go note that tolerates per-article
+      `DONE_WITH_CONCERNS` outcomes while surfacing them clearly.
 
 4. **Build `<topic_dir>/delivery/99-audit-summary.json`**
     - Include:
@@ -129,6 +136,8 @@ artifacts as the canonical workflow record.
       - `DONE_WITH_CONCERNS` count
       - unresolved blockers
       - article-level verdicts from `delivery/audits/*.audit.json`
+      - any planned articles that never produced a publishable file or audit
+        sidecar
 
 5. **Do not rewrite article bodies**
     - If a content issue is found here, report it in the checklist or the audit
@@ -140,6 +149,7 @@ artifacts as the canonical workflow record.
 ## Validation Checkpoints
 
 - [ ] `<topic_dir>/delivery/99-series-index.md` lists every article exactly once
+- [ ] Every expected article file is checked against the plan's canonical `<zero-padded order>-<slug>` naming pattern
 - [ ] `<topic_dir>/delivery/99-publish-checklist.md` reflects actual file presence and audit state
 - [ ] `<topic_dir>/delivery/99-audit-summary.json` matches article-level statuses
 - [ ] Finalizer reads workflow sidecars from `delivery/`, not from article-body sections

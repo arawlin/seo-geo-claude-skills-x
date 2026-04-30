@@ -114,6 +114,8 @@ Run this phase once per series.
      - `delivery_dir = <topic_dir>/delivery/`
      - `internal_links_dir = <topic_dir>/delivery/internal-links/`
      - `audit_dir = <topic_dir>/delivery/audits/`
+   - Define the canonical article filename pattern as
+     `<articles_dir>/<zero-padded order>-<slug>.md` for every downstream stage.
     - When `topics_root` stays at the default `./topics`, the resolved layout is
       `topics/<topic-slug>/research|articles|delivery`, with workflow-only
       sidecars stored under `delivery/internal-links/` and `delivery/audits/`.
@@ -159,8 +161,10 @@ Run this phase once per series.
        - `audit_dir`
        - `articles[]`
    - Each article must include:
-     - `order`
-     - `slug`
+     - `order` (unique positive integer used for canonical file ordering)
+     - `slug` (unique stable selector used as the primary downstream selector)
+     - `article_path` (canonical path derived as
+       `<articles_dir>/<zero-padded order>-<slug>.md`)
      - `title`
      - `primary_keyword`
      - `secondary_keywords`
@@ -176,7 +180,7 @@ Run this phase once per series.
 
 ## Validation Checkpoints
 
-- [ ] `<topic_dir>/research/00-series-plan.json` exists and every article has a unique `slug`
+ - [ ] `<topic_dir>/research/00-series-plan.json` exists and every article has a unique `slug`, a unique `order`, and a canonical `article_path`
 - [ ] The plan contains one pillar topic and at least one supporting article
 - [ ] Every article includes a primary keyword, angle, and target word count
 - [ ] The plan names data sources or states clearly when inputs were user-provided
