@@ -158,7 +158,7 @@ artifacts as the canonical workflow record.
 
 ## Reference Materials
 
-- `article-batch-generator`
+- [article-batch-generator](../article-batch-generator/SKILL.md)
 - [performance-reporter](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/monitor/performance-reporter/SKILL.md)
 - [skill-contract.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/skill-contract.md)
 
