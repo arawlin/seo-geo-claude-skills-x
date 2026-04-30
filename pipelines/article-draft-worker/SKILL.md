@@ -166,7 +166,7 @@ Run this worker for exactly one article.
 ## Reference Materials
 
 - [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md)
-- [seo-image-placeholder](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-image-placeholder/SKILL.md)
+- [seo-image-placeholder](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/pipelines/seo-image-placeholder/SKILL.md)
 - [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md)
 - [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md)
 - [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md)

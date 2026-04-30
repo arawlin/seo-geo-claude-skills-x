@@ -221,10 +221,10 @@ After all article audits are complete:
 
 ## Reference Materials
 
-- [article-draft-worker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/article-draft-worker/SKILL.md)
-- [article-audit-worker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/article-audit-worker/SKILL.md)
+- [article-draft-worker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/pipelines/article-draft-worker/SKILL.md)
+- [article-audit-worker](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/pipelines/article-audit-worker/SKILL.md)
 - [seo-content-writer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-content-writer/SKILL.md)
-- [seo-image-placeholder](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/seo-image-placeholder/SKILL.md)
+- [seo-image-placeholder](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/pipelines/seo-image-placeholder/SKILL.md)
 - [geo-content-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/geo-content-optimizer/SKILL.md)
 - [meta-tags-optimizer](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/meta-tags-optimizer/SKILL.md)
 - [schema-markup-generator](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/build/schema-markup-generator/SKILL.md)
