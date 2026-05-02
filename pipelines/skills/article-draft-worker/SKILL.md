@@ -125,6 +125,9 @@ Run this worker for exactly one article.
    - Invoke `seo-image-placeholder` and add screenshot placeholders only in the
      sections where UI proof, workflow clarity, trust signals, or result evidence
      materially improve the draft.
+   - Treat those placeholder blocks as required article content for this
+     workflow. After insertion, later draft-stage skills must preserve them
+     verbatim unless the user explicitly asks to remove or replace them.
    - Override `seo-image-placeholder`'s memory promotion and `Save Results`
      behavior for this worker run.
 
@@ -132,8 +135,13 @@ Run this worker for exactly one article.
    - Invoke `geo-content-optimizer`.
    - Invoke `meta-tags-optimizer`.
    - Invoke `schema-markup-generator`.
-  - Override all default memory promotion and `Save Results` behavior from
-    those skills for this worker run.
+   - When invoking those downstream skills, explicitly state that existing
+     screenshot placeholder blocks are allowed deliverables for this workflow,
+     not workflow logs. They must not delete, rewrite, relocate, or silently
+     normalize them away; if a conflict remains, they should report it in
+     blockers or missing assets instead.
+   - Override all default memory promotion and `Save Results` behavior from
+     those skills for this worker run.
 
 5. **Write the publishable article file**
    - Save the final result to the canonical article path derived from the
@@ -142,6 +150,9 @@ Run this worker for exactly one article.
      `JSON-LD`.
    - Do not include workflow logs, audit notes, or internal-link changelogs in
      the article body.
+   - Screenshot placeholder blocks inserted by this workflow are allowed inside
+     the publishable article body and must not be removed just because the file
+     also needs to stay reader-facing.
    - Do not invent alternate filenames from the title or from directory scans.
    - If article-local blockers prevent a publishable draft, leave the batch to
      record the missing file in its summary instead of stopping the full run.
@@ -158,6 +169,7 @@ Run this worker for exactly one article.
 - [ ] The selected article resolves to exactly one canonical `<zero-padded order>-<slug>.md` path
 - [ ] `<topic_dir>/articles/NN-slug.md` exists for the selected article
 - [ ] `seo-image-placeholder` ran where visual proof or step clarity helps
+- [ ] Screenshot placeholder blocks remained intact after GEO, meta, and schema passes unless the user explicitly requested removal
 - [ ] The article includes frontmatter, publishable body content, and `JSON-LD`
 - [ ] No workflow-only notes were added inside the article body
 - [ ] The worker returned only `DONE` or `DONE_WITH_CONCERNS` plus article-local blockers

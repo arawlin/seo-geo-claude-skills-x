@@ -129,6 +129,12 @@ For each article in the series plan:
    dedicated context.
    - Require the worker to suppress all downstream `Save Results` steps and any
      default memory-promotion behavior from those skills.
+    - Require the worker to preserve any screenshot placeholder blocks inserted by
+       `seo-image-placeholder` through all later draft-stage passes. Downstream
+       skills may improve surrounding copy, metadata, and `JSON-LD`, but they must
+       not delete, rewrite, relocate, or classify those placeholder blocks as
+       workflow logs or non-reader-facing noise unless the user explicitly asks
+       to remove them.
 4. Require the worker to derive the canonical article path from the matched plan
    entry's `order` and `slug`, then save the result as that exact
    `<topic_dir>/articles/NN-slug.md` path.
@@ -149,6 +155,10 @@ Each article file must include:
 
 `<topic_dir>/articles/NN-slug.md` must stay publishable. Do not place workflow
 logs, internal-link change notes, or audit summaries inside the article body.
+For this workflow, approved screenshot placeholder blocks are part of the
+publishable article deliverable. They are temporary editorial markers, not
+workflow logs, and later stages must leave them in place unless the user asks
+to remove them.
 Do not inline the downstream writing workflow in this skill; the worker owns it.
 
 ### Block B — Batch-level linking
@@ -209,6 +219,7 @@ After all article audits are complete:
 - [ ] Every planned article was attempted once and either has a corresponding `<topic_dir>/articles/NN-slug.md` or an explicit blocker in the batch summary
 - [ ] Every article draft ran through one `article-draft-worker` call in its own dedicated context
 - [ ] `seo-image-placeholder` ran after each successful article draft and added screenshot placeholders where useful
+- [ ] Screenshot placeholder blocks inserted for the article survived downstream GEO, meta, and schema passes unless the user explicitly requested removal
 - [ ] Every linked article has a matching `delivery/internal-links/NN-slug.links.md`, or the missing link sidecar is explained in the batch summary
 - [ ] Every audited article has a matching `delivery/audits/NN-slug.audit.json`, or the skipped audit is explained in the batch summary
 - [ ] Every final audit ran through one `article-audit-worker` call in its own dedicated context
