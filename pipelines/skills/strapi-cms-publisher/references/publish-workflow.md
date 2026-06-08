@@ -143,10 +143,11 @@ Target shape:
 ### Rewrite algorithm
 
 1. Identify Markdown links that target local article files such as `./foo.md`, `../bar/baz.md`, or `foo.md#section`.
-2. Resolve the target slug from the filename without extension.
-3. Rewrite the link directly to `/article/{articleSlug}` without checking whether the linked article already exists in Strapi.
+2. Resolve the linked file path relative to the current article and read the target frontmatter `slug`.
+3. Rewrite the link directly to `/article/{articleSlug}` using that frontmatter `slug`, without checking whether the linked article already exists in Strapi.
 4. Preserve anchors, for example:
-  - `./foo.md#section-1` → `/article/foo#section-1`
+  - `./02-foo.md#section-1` with frontmatter `slug: foo` → `/article/foo#section-1`
+5. If the linked Markdown file cannot be read or lacks a frontmatter `slug`, keep it out of the final rewrite set and surface it as an unresolved reference for review.
 
 ### Non-target links
 

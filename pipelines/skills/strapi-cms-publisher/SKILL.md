@@ -89,7 +89,7 @@ and ask before updating the existing entry
 - The Strapi content model is already adapted and fixed for this skill; do not spend runtime budget querying content type or component schema again unless the user explicitly says the model changed.
 - Use the fixed REST endpoints directly on normal runs: `GET/POST/PUT /api/articles`, `GET/POST /api/categories`, `GET/POST /api/tags`, and `POST /api/upload` for media.
 - Keep article and category writes **draft only**. Create missing tags as **published** entries after approval. Never publish articles automatically.
-- Rewrite local article links as `/article/{articleSlug}`. Do not prepend a base URL or keep category segments in rewritten internal links.
+- Rewrite local article links as `/article/{articleSlug}`. Resolve `articleSlug` from the linked article's frontmatter `slug` whenever the target is a local Markdown article; do not assume the filename stem is the publish slug. Do not prepend a base URL or keep category segments in rewritten internal links.
 - If the connected runtime lacks Strapi write access, still produce the dry-run plan and confirmation summary.
 - Parse article frontmatter using the fixed field names in [references/frontmatter-contract.md](./references/frontmatter-contract.md).
 
@@ -111,7 +111,7 @@ When a user requests Strapi publishing, run these eight steps in order:
      --description "$DESCRIPTION" \
      --content-file "$ARTICLE_MARKDOWN_FILE"
    ```
-4. **Rewrite Internal Links and Images** — convert local article links into `/article/{articleSlug}` form directly from the linked filename, preserve anchors, upload local and remote images to Strapi media, and replace Markdown image URLs with the returned media URLs. Do not spend runtime budget checking whether the linked article already exists in Strapi before rewriting the URL.
+4. **Rewrite Internal Links and Images** — resolve local article links against the linked Markdown file, read the target frontmatter `slug`, rewrite links into `/article/{articleSlug}`, preserve anchors, upload local and remote images to Strapi media, and replace Markdown image URLs with the returned media URLs. Do not spend runtime budget checking whether the linked article already exists in Strapi before rewriting the URL. If the linked article cannot be read or has no frontmatter `slug`, treat it as an unresolved reference for the confirmation summary instead of blindly using the filename stem.
 5. **Resolve Taxonomy and Article State** — use `/api/categories`, `/api/tags`, and `/api/articles` directly to look up existing category, tag, and article records before writing. Stage missing categories as draft creates, stage missing tags as published creates, and stage article writes as `create` or `update` based on `slug.label`. If a missing category only has a slug and no clear display name, stop and ask before confirmation.
 6. **Present a Single Confirmation Summary** — show article creates, article updates, pending draft category creates, pending published tag creates, media uploads, and unresolved references. No write operation is allowed before explicit user approval.
 7. **Execute Draft Writes** — after approval, create missing draft categories via `/api/categories`, create missing published tags via `/api/tags`, upload media via `/api/upload`, then create or update the draft article entry via `/api/articles` and attach the resolved relations and media-backed Markdown.
