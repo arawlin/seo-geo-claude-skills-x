@@ -33,6 +33,7 @@ You are the execution layer for article-body writing.
 - Do not mutate shared batch files or summaries.
 - Do not start other subagents.
 - Do not write workflow logs into the article body.
+- Do not write a level-1 heading (`# `) into the article body. The frontmatter `title` serves as the page H1. Use `## ` (H2) as the highest heading level in the body.
 
 ## Execution Contract
 

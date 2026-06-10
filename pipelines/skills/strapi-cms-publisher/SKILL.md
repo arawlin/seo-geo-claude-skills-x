@@ -103,6 +103,8 @@ When a user requests Strapi publishing, run these eight steps in order:
 
 1. **Confirm Publish Scope** — gather article path(s), optional sidecar schema path(s), Strapi server alias, batch vs. single-entry mode, and whether updates or taxonomy creation are allowed after review.
 2. **Parse the Article Bundle** — read frontmatter using the fixed contract, read Markdown body, extract every `<script type="application/ld+json">` block, load any sidecar JSON-LD files, and remove extracted script blocks from the Markdown that will be sent to `Article.content`.
+   - **Reject `# ` (H1) headings** — the frontmatter `title` is the page's H1; body content must start from `## ` (H2). See `references/frontmatter-contract.md` §Markdown Body Rules.
+   - **Reject blockquote screenshot placeholders** — scan for `> [截图占位符：` or `> [Screenshot Placeholder:` lines. If found, **stop the publish** and report file/line references. See `references/frontmatter-contract.md` §No Blockquote Screenshot Placeholders.
 3. **Normalize CMS Fields** — map the content bundle into the fixed Article payload (`title`, `description`, `content`, `slug.label`, `seo`, `source`). Compute `source.contentHash` by running `scripts/generate-content-hash.sh` from this skill directory, with `title`, `description`, and the original article Markdown file path as `--content-file`, without preprocessing the file content. Leave `canonicalURL` and `openGraph.ogUrl` empty when only relative paths are available. Do not set `source.releaseAt`.
 
    ```bash
