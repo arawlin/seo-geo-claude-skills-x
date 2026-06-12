@@ -189,20 +189,6 @@ secondary_keywords:
 
 ---
 
-## Markdown Body Rules
-
-### No H1 (`# `) in Body
-
-Remove any `# ` (H1) heading line from the article body before publish. The page H1 comes from frontmatter `title`; a second `# ` in the body produces a duplicate H1.
-
-### No Blockquote Screenshot Placeholders in Body
-
-**The article body MUST NOT contain unresolved blockquote screenshot placeholders.** Lines matching `> [截图占位符：` or `> [Screenshot Placeholder:` indicate a planned screenshot that has not yet been captured and must be replaced with an actual `![alt](file.png)` image before publish.
-
-**Enforcement:** the publish workflow MUST scan for these lines and **reject the publish** with file/line references before any CMS write.
-
----
-
 ## Recommended Canonical Example
 
 ```yaml

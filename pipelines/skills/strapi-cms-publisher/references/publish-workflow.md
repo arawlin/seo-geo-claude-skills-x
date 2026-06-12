@@ -59,6 +59,14 @@ Expected inputs:
 
 Use the fixed field names in [frontmatter-contract.md](./frontmatter-contract.md) for category, tags, image inputs, and SEO overrides.
 
+### Body Sanitization
+
+Before the Markdown body is saved to `Article.content`, apply these two cleanups:
+
+1. **Strip H1 (`# `) heading lines.** The page H1 is generated from frontmatter `title`; any `# ` heading line in the body would produce a duplicate H1. Delete the line entirely.
+
+2. **Reject unresolved screenshot placeholders.** Scan the body for lines matching `> [截图占位符：` or `> [Screenshot Placeholder:`. If any are found, reject the publish with file path and line number references — these must be replaced with actual `![alt](file.png)` images before upload.
+
 ### Inline JSON-LD
 
 Supported form inside the Markdown body:
