@@ -191,22 +191,9 @@ secondary_keywords:
 
 ## Markdown Body Rules
 
-### No H1 (`# `) Heading in Body
+### No H1 (`# `) in Body
 
-**The article body MUST NOT contain a level-1 Markdown heading (`# `).**
-
-- The CMS frontend derives `<h1>` from the frontmatter `title`; an additional `# ` heading in the body creates duplicate `<h1>` elements on the rendered page.
-- Use `## ` (H2) as the top-level heading inside the article body. Use `### ` (H3) for subsections.
-- If the article currently opens with a `# ` heading immediately below the frontmatter closing `---`, either remove it or convert it to a `## ` heading.
-
-**Rationale:**
-
-- Violates HTML spec: a document should have exactly one `<h1>`.
-- Breaks accessibility: screen-reader users navigate by heading level, and duplicate H1s disorient that navigation.
-- Triggers markdownlint MD025 (`single-title/single-h1`).
-- Dilutes primary-heading SEO signal.
-
-**Enforcement:** the publish workflow should reject or flag any article whose body contains `# ` before proceeding to CMS write.
+Remove any `# ` (H1) heading line from the article body before publish. The page H1 comes from frontmatter `title`; a second `# ` in the body produces a duplicate H1.
 
 ### No Blockquote Screenshot Placeholders in Body
 
